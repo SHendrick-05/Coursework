@@ -65,5 +65,11 @@ namespace Coursework.GUI
                 regPanel.Visible = true;
             }
         }
+
+        private void logButton_Click(object sender, EventArgs e)
+        {
+            Database.addAccount("testUser", "testZ", "testY");
+            Database.addAccount("testUser2", "testZ2", "testY2");
+        }
     }
 }
