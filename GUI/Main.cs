@@ -22,5 +22,11 @@ namespace Coursework.GUI
             Login lgn = new Login();
             lgn.Show();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SongSelect slct = new SongSelect();
+            slct.Show();
+        }
     }
 }
