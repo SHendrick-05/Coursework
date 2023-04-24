@@ -64,6 +64,7 @@ namespace Coursework.Security
             return result;
         }
 
+        // Wraper method
         private static bool fermatTest(BigInteger src)
             => fermatPower(src - 1, src) != 1;
 
@@ -71,7 +72,7 @@ namespace Coursework.Security
         /// A test for whether a number is prime, using three different methods.
         /// </summary>
         /// <param name="src">The BigInteger to be tested for primality</param>
-        /// <param name="k">The bound for the Miller-Rabin test</param>
+        /// <param name="k">The bound for the Miller-Rabin test, usually 64.</param>
         /// <returns>A boolean value representing the primality of src</returns>
         private static bool checkPrime(BigInteger src, int k)
         {
@@ -101,16 +102,30 @@ namespace Coursework.Security
             BigInteger a;
 
             // Perform the Miller-Rabin test for all cases up to k
-            throw new NotImplementedException();
-
-            /*
+            
             for (int i = 0; i < k; i++)
             {
                 do
                 {
-                    a = 
+                    a = RandomGenerator.Next();
+                } while (a < 2 || a >= src - 2);
+
+                BigInteger x = BigInteger.ModPow(a, d, src);
+                if (x == 1 || x == src - 1)
+                    continue;
+
+                for (int r = 1; r < s; r++)
+                {
+                    x = BigInteger.ModPow(x, i, src);
+                    if (x == 1) return false;
+                    if (x == src - 1) break;
                 }
-            }*/
+
+                if (x != src - 1) return false;
+            }
+
+            // The number has passed all tests and is a prime with very high probability.
+            return true;
         }
     }
 }

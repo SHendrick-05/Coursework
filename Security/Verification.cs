@@ -16,8 +16,17 @@ namespace Coursework.Security
         /// <returns>An integer code based on success [0 = Success, 1 = Empty field, 2 = Account exists]</returns>
         internal static int attemptRegister(string username, string password)
         {
+            // One or more of the input fields was empty.
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
                 return 1;
+            }
+
+            // An account with that username already exists.
+            if (Database.getUser(username) != null)
+            {
+                return 2;
+            }
 
             throw new NotImplementedException();
         }
