@@ -21,9 +21,9 @@ namespace Coursework.Security
             byte[] data = RandomNumberGenerator.GetBytes(128);
             BigInteger result = new BigInteger(data);
 
-            // Apply a bitwise mask to make sure the MSB and LSB are both 1.
+            // Apply a bitwise mask to make sure the MSB and the LSB are both 1.
             // This means that the result will be odd, and it will be sufficiently large.
-            result |= 1;
+            result |= (1 << ((int)result.GetBitLength() - 1)) | 1;
             return BigInteger.Abs(result);
         }
     }
