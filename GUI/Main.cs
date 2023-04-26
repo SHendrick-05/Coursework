@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Coursework.Security;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +28,11 @@ namespace Coursework.GUI
         {
             SongSelect slct = new SongSelect();
             slct.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = Primes.generatePrime().ToString();
         }
     }
 }
