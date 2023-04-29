@@ -11,20 +11,33 @@ namespace Coursework.Security
 {
     internal static class RandomGenerator
     {
+        
         /// <summary>
         /// A cryptographically secure random number generator.
         /// </summary>
-        /// <returns>A BigInteger type representing a 1024-bit random number</returns>
-        public static BigInteger Next()
+        /// <returns>A BigInteger type representing a 1024-bit random positive odd number</returns>
+        internal static BigInteger Next()
         {
             // Fill an array of bytes, before making an appropriate BigInteger
             byte[] data = RandomNumberGenerator.GetBytes(128);
             BigInteger result = new BigInteger(data);
-
             // Apply a bitwise mask to make sure the MSB and the LSB are both 1.
             // This means that the result will be odd, and it will be sufficiently large.
             result |= (1 << ((int)result.GetBitLength() - 1)) | 1;
+            // Take absolute value to prevent negative numbers.
             return BigInteger.Abs(result);
+        }
+
+        /// <summary>
+        /// A cryptographically secure random alphanumeric string generator
+        /// </summary>
+        /// <param name="length">The amount of characters to be in the output</param>
+        /// <returns>A string of length "length" that consists of letters and digits.</returns>
+        internal static string NextString(int length)
+        {
+            byte[] data = RandomNumberGenerator.GetBytes(length);
+            string result = Convert.ToBase64String(data);
+            return result;
         }
     }
     internal static class Primes
@@ -33,7 +46,7 @@ namespace Coursework.Security
         /// A function to generate a large (probable) prime number, for security purposes.
         /// </summary>
         /// <returns>A 1024-bit large number</returns>
-        public static BigInteger generatePrime()
+        internal static BigInteger generatePrime()
         {
             // Loops this section of code indefinitely until a prime is found.
             while (true)
