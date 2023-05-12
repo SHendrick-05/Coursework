@@ -12,11 +12,13 @@ namespace Coursework
         public string username { get; set; }
         public string zValue { get; set; }
         public string yShifted { get; set; }
-        public User(string UN, string ZP, string YS)
+        public string Salt { get; set; }
+        public User(string UN, string ZP, string YS, string salt)
         {
             username = UN;
             zValue = ZP;
             yShifted = YS;
+            Salt = salt;
         }
     }
 }

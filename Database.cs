@@ -27,7 +27,8 @@ namespace Coursework
                             UserID INTEGER PRIMARY KEY,
                             Username TEXT NOT NULL,
                             zValue TEXT NOT NULL,
-                            yShift TEXT NOT NULL)";
+                            yShift TEXT NOT NULL,
+                            Salt TEXT NOT NULL)";
 
                 command.ExecuteNonQuery();
             }
@@ -41,7 +42,7 @@ namespace Coursework
         /// <param name="username">The username of the account</param>
         /// <param name="zValue">The "Z" prime obtained by X * Y</param>
         /// <param name="yShift">The circular-shifted Y' value.</param>
-        internal static void addAccount(string username, string zValue, string yShift)
+        internal static void addAccount(string username, string zValue, string yShift, string salt)
         {
             using (var conn = new SqliteConnection($"Data Source={dbPath}"))
             {
@@ -51,12 +52,13 @@ namespace Coursework
                 var command = conn.CreateCommand();
                 command.CommandText =
                     @"INSERT INTO Users
-                        VALUES (NULL,$user,$zVal,$ySh)";
+                        VALUES (NULL,$user,$zVal,$ySh,$sal)";
 
                 // Add parameters separately (to prevent SQL injection)
                 command.Parameters.AddWithValue("$user", username);
                 command.Parameters.AddWithValue("$zVal", zValue);
                 command.Parameters.AddWithValue("$ySh", yShift);
+                command.Parameters.AddWithValue("$sal", salt);
 
                 // Run the command
                 command.ExecuteNonQuery();
@@ -94,9 +96,10 @@ namespace Coursework
                         string uName = reader.GetValue(1).ToString();
                         string zValue = reader.GetValue(2).ToString();
                         string yShift = reader.GetValue(3).ToString();
+                        string salt = reader.GetValue(4).ToString();
 
                         // Set up an object and return it
-                        User result = new User(uName, zValue, yShift);
+                        User result = new User(uName, zValue, yShift, salt);
                         return result;
 
                     }

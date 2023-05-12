@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Coursework.Security;
 
 namespace Coursework.GUI
 {
@@ -69,6 +70,14 @@ namespace Coursework.GUI
         private void logButton_Click(object sender, EventArgs e)
         {
             
+        }
+
+        // Register an account
+        private void regButton_Click(object sender, EventArgs e)
+        {
+            string username = regUserBox.Text;
+            string password = regPassBox.Text;
+            int result = Verification.attemptRegister(username, password);
         }
     }
 }

@@ -135,6 +135,7 @@
             this.regButton.TabIndex = 7;
             this.regButton.Text = "Create Account";
             this.regButton.UseVisualStyleBackColor = true;
+            this.regButton.Click += new System.EventHandler(regButton_Click);
             // 
             // regPassConfirmLabel
             // 
