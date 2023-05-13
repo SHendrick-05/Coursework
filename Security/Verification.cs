@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Security.Policy;
@@ -68,12 +69,63 @@ namespace Coursework.Security
         }
 
         /// <summary>
+        /// Attempts to login to a specific account.
+        /// </summary>
+        /// <param name="username">The username of the login attempt</param>
+        /// <param name="password">The password of the login attempt</param>
+        /// <returns>An integer code representing success [0 = Success, 1 = Empty field, 2 = Account does not exist, 3 = Invalid password]</returns>
+        internal static int attemptLogin(string username, string password)
+        {
+            // One or more of the input fields was empty.
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                return 1;
+            }
+
+            // Fetches the user from database, returning code 2 if null;
+            User user = Database.getUser(username);
+            if (user == null)
+            {
+                return 2;
+            }
+
+            // Salt, hash, and circular shift the password to obtain HK'
+            string salt = user.Salt;
+            byte[] hashKey = hashShift(password, salt);
+
+            //Obtain Z and Y' from database
+            BigInteger Z = BigInteger.Parse(user.zValue);
+            BigInteger yTransformed = BigInteger.Parse(user.yShifted);
+
+            // Use a XOR on Y' and HK' to obtain Y.
+            byte[] yTransformedArray = yTransformed.ToByteArray();
+            byte[] yArray = new byte[yTransformedArray.Length];
+            for(int i = 0; i < yTransformedArray.Length; i++)
+            {
+                var resultByte = yTransformedArray[i] ^ hashKey[i];
+                yArray[i] = Convert.ToByte(resultByte);
+            }
+            // Convert Y to an integer, and use a modulo test
+            BigInteger Y = new BigInteger(yArray);
+            BigInteger result = Z % Y;
+            // If the result of the modulus is zero, that means the Y is the initial Y used, meaning the HK' was correct, owing to the valid password being entered.
+            if (result.IsZero)
+            {
+                return 0;
+            }
+            else
+            {
+                return 3;
+            }
+        }
+
+        /// <summary>
         /// A function that hashes a password, then expands it to 1024 bit, before right-circular shifting by the password length.
         /// </summary>
         /// <param name="password">The password to hash</param>
         /// <param name="salt">The salt with which to hash the password</param>
         /// <returns>A 1024-bit byte array representing the shifted hash key HK'</returns>
-        public static byte[] hashShift(string password, string salt)
+        internal static byte[] hashShift(string password, string salt)
         {
             // We are using SHA512, due to it being a secure hashing algorithm.
             SHA512 hashAlgo = SHA512.Create();

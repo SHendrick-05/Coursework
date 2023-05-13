@@ -80,7 +80,7 @@ namespace Coursework
                 //Initialise the query
                 var command = conn.CreateCommand();
                 command.CommandText =
-                    @"SELECT * FROM Users WHERE Username == '$user'";
+                    @"SELECT * FROM Users WHERE Username == $user";
 
                 // Add the parameter
                 command.Parameters.AddWithValue("$user", username);

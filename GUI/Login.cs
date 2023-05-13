@@ -69,7 +69,11 @@ namespace Coursework.GUI
 
         private void logButton_Click(object sender, EventArgs e)
         {
-            
+            string username = logUserBox.Text;
+            string password = logPassBox.Text;
+            int result = Verification.attemptLogin(username, password);
+            logError.Visible = true;
+            logError.Text = result.ToString();
         }
 
         // Register an account
