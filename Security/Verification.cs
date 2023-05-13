@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,20 +36,7 @@ namespace Coursework.Security
 
             // Hash the password, using a salt and pepper.
             string salt = RandomGenerator.NextString(12);
-            string toHash = password + salt + pepper;
-
-            SHA512 hashAlgo = SHA512.Create();
-            byte[] hash512Array = hashAlgo.ComputeHash(Encoding.Default.GetBytes(toHash));
-
-            // Concaternate the hash with itself to get a 1024-bit hash.
-            byte[] hashArray = hash512Array.Concat(hash512Array).ToArray();
-
-            // Right circular shift the array
-            int len = password.Length;
-            int i, j = 0;
-            // Bytes
-            for (; len > 7; hashArray.)
-            //
+            byte[] hashKey = hashShift(password, salt);
 
             // Generate the two primes, X and Y.
             BigInteger X = Primes.generatePrime();
@@ -62,10 +50,10 @@ namespace Coursework.Security
             byte[] yByteArray = Y.ToByteArray();
 
             // Use a Bitwise XOR between Y and the shifted 1024-bit hash.
-            byte[] yTransformed = new byte[128];
-            for (int i = 0; i < 128; i++)
+            byte[] yTransformed = new byte[hashKey.Length];
+            for (int i = 0; i < hashKey.Length; i++)
             {
-                int transformedByte = yByteArray[i] ^ shiftedArray[i];
+                var transformedByte = hashKey[i] ^ yByteArray[i];
                 yTransformed[i] = Convert.ToByte(transformedByte);
             }
 
@@ -79,5 +67,27 @@ namespace Coursework.Security
             return 0;
         }
 
+        /// <summary>
+        /// A function that hashes a password, then expands it to 1024 bit, before right-circular shifting by the password length.
+        /// </summary>
+        /// <param name="password">The password to hash</param>
+        /// <param name="salt">The salt with which to hash the password</param>
+        /// <returns>A 1024-bit byte array representing the shifted hash key HK'</returns>
+        public static byte[] hashShift(string password, string salt)
+        {
+            // We are using SHA512, due to it being a secure hashing algorithm.
+            SHA512 hashAlgo = SHA512.Create();
+            // Get the string to hash, and hash it
+            string toHash = password + salt + pepper;
+            byte[] hash512Array = hashAlgo.ComputeHash(Encoding.Default.GetBytes(toHash));
+            // Concaternate the hash with itself to get a 1024-bit hash.
+            byte[] hashArray = hash512Array.Concat(hash512Array).ToArray();
+            // Circular shift by passwordlength*4 bits, using hex.
+            string hexHash = Convert.ToHexString(hashArray);
+            string shiftedHex = hexHash.Substring(hexHash.Length - password.Length) + hexHash.Substring(0, hexHash.Length - password.Length);
+            // Convert back and return the result
+            byte[] shiftedArray = Convert.FromHexString(shiftedHex);
+            return shiftedArray;
+        }
     }
 }

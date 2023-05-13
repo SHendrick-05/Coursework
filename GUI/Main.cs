@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,11 +29,6 @@ namespace Coursework.GUI
         {
             SongSelect slct = new SongSelect();
             slct.Show();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            textBox1.Text = Primes.generatePrime().ToString();
         }
     }
 }
