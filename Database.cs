@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 
 namespace Coursework
 {
     internal static class Database
     {
-        public static string dbPath = "database.db";
+        // We can assume the Storage folder already exists, due to being instantiated in Program.cs
+        public static string dbPath = @"Storage\database.db";
 
         // Static constructor to create the database, and initialise a table for user accounts.
         static Database()
@@ -77,7 +72,7 @@ namespace Coursework
             {
                 conn.Open();
 
-                //Initialise the query
+                // Initialise the query
                 var command = conn.CreateCommand();
                 command.CommandText =
                     @"SELECT * FROM Users WHERE Username == $user";
@@ -106,6 +101,29 @@ namespace Coursework
 
                     throw new Exception("Expected account, got none.");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Deletes an account from the database
+        /// </summary>
+        /// <param name="username">The username of the account to delete</param>
+        internal static void deleteUser(string username)
+        {
+            using(var conn = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                conn.Open();
+
+                // Initialise the query
+                var command = conn.CreateCommand();
+                command.CommandText =
+                    @"DELETE FROM Users WHERE Username == $user";
+
+                // Add the parameter
+                command.Parameters.AddWithValue("$user", username);
+
+                // Run the command
+                command.ExecuteNonQuery();
             }
         }
     }

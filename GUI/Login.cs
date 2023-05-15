@@ -12,15 +12,15 @@ using Coursework.Security;
 
 namespace Coursework.GUI
 {
-    public partial class Login : Form
+    internal partial class Login : Form
     {
         // DLL Imports and consts for lower-level functions
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
+        internal const int WM_NCLBUTTONDOWN = 0xA1;
+        internal const int HT_CAPTION = 0x2;
         [DllImport("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        internal static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImport("user32.dll")]
-        public static extern bool ReleaseCapture();
+        internal static extern bool ReleaseCapture();
 
         /// <summary>
         /// A function to allow form dragging by holding the mouse down and moving it.
@@ -36,7 +36,7 @@ namespace Coursework.GUI
             }
         }
 
-        public Login()
+        internal Login()
         {
             InitializeComponent();
         }
@@ -73,7 +73,28 @@ namespace Coursework.GUI
             string password = logPassBox.Text;
             int result = Verification.attemptLogin(username, password);
             logError.Visible = true;
-            logError.Text = result.ToString();
+
+            // Handle the attempt
+            switch(result)
+            {
+                // Success
+                case 0:
+                    logError.Visible = false;
+                    Users.loggedInUser = Database.getUser(username);
+                    Close();
+                    break;
+                case 1:
+                    logError.Text = "One or more fields are empty.";
+                    break;
+                case 2:
+                    logError.Text = "No account with that username found.";
+                    break;
+                case 3:
+                    logError.Text = "Invalid password.";
+                    break;
+                default:
+                    throw new Exception("Invalid login code");
+            }
         }
 
         // Register an account

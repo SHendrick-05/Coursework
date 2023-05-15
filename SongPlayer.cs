@@ -1,15 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Coursework
 {
-    public class SongPlayer : Game
+    internal class SongPlayer : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-        public SongPlayer()
+        private List<Sprite> sprites;
+        internal SongPlayer()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -45,6 +46,11 @@ namespace Coursework
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            foreach(Sprite spr in sprites)
+            {
+
+            }
 
             base.Draw(gameTime);
         }

@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace Coursework.GUI
 {
-    public partial class SongSelect : Form
+    internal partial class SongSelect : Form
     {
-        public SongSelect()
+        internal SongSelect()
         {
             InitializeComponent();
         }

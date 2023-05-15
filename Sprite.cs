@@ -14,7 +14,7 @@ namespace Coursework
         private int posX;
         private int posY;
 
-        public Vector2 position
+        internal Vector2 position
         {
             get
             {
@@ -22,6 +22,6 @@ namespace Coursework
             }
         }
 
-        public Texture2D Texture { get { return texture; } }
+        internal Texture2D Texture { get { return texture; } }
     }
 }

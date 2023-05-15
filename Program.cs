@@ -1,6 +1,13 @@
-﻿
-using Coursework.GUI;
+﻿using Coursework.GUI;
 using System.Windows.Forms;
+using System.IO;
+
+// Initialise the Storage folder, as multiple files will depend on this
+
+if (!Directory.Exists("Storage"))
+{
+    Directory.CreateDirectory("Storage");
+}
 
 Application.EnableVisualStyles();
 Application.SetCompatibleTextRenderingDefault(false);
