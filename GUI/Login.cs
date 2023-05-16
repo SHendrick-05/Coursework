@@ -102,7 +102,34 @@ namespace Coursework.GUI
         {
             string username = regUserBox.Text;
             string password = regPassBox.Text;
+
+            if (password != regPassConfirmBox.Text)
+            {
+                regError.Visible = true;
+                regError.Text = "Passwords do not match.";
+            }
+
             int result = Verification.attemptRegister(username, password);
+
+            regError.ForeColor = Color.FromArgb(192, 44, 51);
+            regError.Visible = true;
+            // Handle the attempt
+            switch(result)
+            {
+                // Success
+                case 0:
+                    regError.ForeColor = Color.FromArgb(44, 192, 51);
+                    regError.Text = "Register successful!";
+                    break;
+                case 1:
+                    regError.Text = "One or more fields are empty.";
+                    break;
+                case 2:
+                    regError.Text = "An account with that username already exists.";
+                    break;
+                default:
+                    throw new Exception("Invalid register code");
+            }
         }
     }
 }

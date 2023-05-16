@@ -37,6 +37,7 @@ namespace Coursework
         /// <param name="username">The username of the account</param>
         /// <param name="zValue">The "Z" prime obtained by X * Y</param>
         /// <param name="yShift">The circular-shifted Y' value.</param>
+        /// <param name="salt">The salt to go along with the password</param>
         internal static void addAccount(string username, string zValue, string yShift, string salt)
         {
             using (var conn = new SqliteConnection($"Data Source={dbPath}"))
@@ -50,6 +51,37 @@ namespace Coursework
                         VALUES (NULL,$user,$zVal,$ySh,$sal)";
 
                 // Add parameters separately (to prevent SQL injection)
+                command.Parameters.AddWithValue("$user", username);
+                command.Parameters.AddWithValue("$zVal", zValue);
+                command.Parameters.AddWithValue("$ySh", yShift);
+                command.Parameters.AddWithValue("$sal", salt);
+
+                // Run the command
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing account with new values.
+        /// </summary>
+        /// <param name="username">The username of the account</param>
+        /// <param name="zValue">The "Z" prime obtained by X * Y</param>
+        /// <param name="yShift">The circular-shifted Y' value.</param>
+        /// <param name="salt">The salt to go along with the password</param>
+        internal static void updateAccount(string username, string zValue, string yShift, string salt)
+        {
+            using (var conn = new SqliteConnection($"Data Source={dbPath}"))
+            {
+                conn.Open();
+
+                // Initialise the command
+                var command = conn.CreateCommand();
+                command.CommandText =
+                    @"UPDATE Users
+                        SET zValue = $zVal, yShift = $ySh, Salt = $sal
+                        WHERE Username = $user";
+
+                // Add the parameters
                 command.Parameters.AddWithValue("$user", username);
                 command.Parameters.AddWithValue("$zVal", zValue);
                 command.Parameters.AddWithValue("$ySh", yShift);

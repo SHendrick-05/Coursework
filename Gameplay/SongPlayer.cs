@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
-namespace Coursework
+namespace Coursework.Gameplay
 {
     internal class SongPlayer : Game
     {
@@ -47,7 +47,7 @@ namespace Coursework
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            foreach(Sprite spr in sprites)
+            foreach (Sprite spr in sprites)
             {
 
             }

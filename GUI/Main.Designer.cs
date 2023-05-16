@@ -78,13 +78,16 @@
             // 
             // titleText
             // 
+            this.titleText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.titleText.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.titleText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
-            this.titleText.Location = new System.Drawing.Point(3, 3);
+            this.titleText.Location = new System.Drawing.Point(0, 0);
             this.titleText.Name = "titleText";
-            this.titleText.Size = new System.Drawing.Size(539, 33);
+            this.titleText.Size = new System.Drawing.Size(548, 36);
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Game";
+            this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.titleText.MouseMove += Drag;
             // 
             // closeButton
             // 
@@ -143,7 +146,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(623, 434);
+            this.ClientSize = new System.Drawing.Size(623, 270);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.signOutButton);
             this.Controls.Add(this.currentUserLabel);

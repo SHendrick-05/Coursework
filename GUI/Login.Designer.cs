@@ -62,9 +62,8 @@
             this.topPanel.Controls.Add(this.closeButton);
             this.topPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.topPanel.Location = new System.Drawing.Point(0, 0);
-            this.topPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(944, 55);
+            this.topPanel.Size = new System.Drawing.Size(826, 41);
             this.topPanel.TabIndex = 0;
             // 
             // titleText
@@ -75,7 +74,7 @@
             this.titleText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.titleText.Location = new System.Drawing.Point(0, 0);
             this.titleText.Name = "titleText";
-            this.titleText.Size = new System.Drawing.Size(861, 55);
+            this.titleText.Size = new System.Drawing.Size(753, 41);
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Login or Create an Account";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -86,10 +85,9 @@
             this.closeButton.Dock = System.Windows.Forms.DockStyle.Right;
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
-            this.closeButton.Location = new System.Drawing.Point(861, 0);
-            this.closeButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.closeButton.Location = new System.Drawing.Point(753, 0);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(83, 55);
+            this.closeButton.Size = new System.Drawing.Size(73, 41);
             this.closeButton.TabIndex = 0;
             this.closeButton.UseVisualStyleBackColor = false;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
@@ -106,19 +104,18 @@
             this.regPanel.Controls.Add(this.regLabel);
             this.regPanel.Controls.Add(this.regPassBox);
             this.regPanel.Controls.Add(this.regUserBox);
-            this.regPanel.Location = new System.Drawing.Point(114, 133);
-            this.regPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.regPanel.Location = new System.Drawing.Point(100, 100);
             this.regPanel.Name = "regPanel";
-            this.regPanel.Size = new System.Drawing.Size(628, 466);
+            this.regPanel.Size = new System.Drawing.Size(550, 350);
             this.regPanel.TabIndex = 1;
             // 
             // regError
             // 
             this.regError.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.regError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.regError.Location = new System.Drawing.Point(171, 333);
+            this.regError.Location = new System.Drawing.Point(150, 250);
             this.regError.Name = "regError";
-            this.regError.Size = new System.Drawing.Size(286, 37);
+            this.regError.Size = new System.Drawing.Size(250, 28);
             this.regError.TabIndex = 8;
             this.regError.Text = "Confirm Password";
             this.regError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -128,22 +125,21 @@
             // 
             this.regButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.regButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.regButton.Location = new System.Drawing.Point(229, 400);
-            this.regButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.regButton.Location = new System.Drawing.Point(200, 300);
             this.regButton.Name = "regButton";
-            this.regButton.Size = new System.Drawing.Size(171, 49);
+            this.regButton.Size = new System.Drawing.Size(150, 37);
             this.regButton.TabIndex = 7;
             this.regButton.Text = "Create Account";
             this.regButton.UseVisualStyleBackColor = true;
-            this.regButton.Click += new System.EventHandler(regButton_Click);
+            this.regButton.Click += new System.EventHandler(this.regButton_Click);
             // 
             // regPassConfirmLabel
             // 
             this.regPassConfirmLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.regPassConfirmLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.regPassConfirmLabel.Location = new System.Drawing.Point(0, 267);
+            this.regPassConfirmLabel.Location = new System.Drawing.Point(0, 200);
             this.regPassConfirmLabel.Name = "regPassConfirmLabel";
-            this.regPassConfirmLabel.Size = new System.Drawing.Size(165, 37);
+            this.regPassConfirmLabel.Size = new System.Drawing.Size(144, 28);
             this.regPassConfirmLabel.TabIndex = 6;
             this.regPassConfirmLabel.Text = "Confirm Password";
             this.regPassConfirmLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -152,9 +148,9 @@
             // 
             this.regPassLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.regPassLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.regPassLabel.Location = new System.Drawing.Point(0, 204);
+            this.regPassLabel.Location = new System.Drawing.Point(0, 153);
             this.regPassLabel.Name = "regPassLabel";
-            this.regPassLabel.Size = new System.Drawing.Size(165, 33);
+            this.regPassLabel.Size = new System.Drawing.Size(144, 25);
             this.regPassLabel.TabIndex = 5;
             this.regPassLabel.Text = "Password";
             this.regPassLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -163,9 +159,9 @@
             // 
             this.regUserLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.regUserLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.regUserLabel.Location = new System.Drawing.Point(0, 132);
+            this.regUserLabel.Location = new System.Drawing.Point(0, 99);
             this.regUserLabel.Name = "regUserLabel";
-            this.regUserLabel.Size = new System.Drawing.Size(165, 37);
+            this.regUserLabel.Size = new System.Drawing.Size(144, 28);
             this.regUserLabel.TabIndex = 4;
             this.regUserLabel.Text = "Username";
             this.regUserLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -175,19 +171,19 @@
             this.regPassConfirmBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.regPassConfirmBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.regPassConfirmBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.regPassConfirmBox.Location = new System.Drawing.Point(171, 267);
-            this.regPassConfirmBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.regPassConfirmBox.Location = new System.Drawing.Point(150, 200);
             this.regPassConfirmBox.Name = "regPassConfirmBox";
-            this.regPassConfirmBox.Size = new System.Drawing.Size(285, 30);
+            this.regPassConfirmBox.Size = new System.Drawing.Size(250, 26);
             this.regPassConfirmBox.TabIndex = 3;
+            this.regPassConfirmBox.PasswordChar = '*';
             // 
             // regLabel
             // 
             this.regLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.regLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.regLabel.Location = new System.Drawing.Point(0, 36);
+            this.regLabel.Location = new System.Drawing.Point(0, 27);
             this.regLabel.Name = "regLabel";
-            this.regLabel.Size = new System.Drawing.Size(629, 69);
+            this.regLabel.Size = new System.Drawing.Size(550, 52);
             this.regLabel.TabIndex = 2;
             this.regLabel.Text = "Create an account";
             this.regLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -197,21 +193,20 @@
             this.regPassBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.regPassBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.regPassBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.regPassBox.Location = new System.Drawing.Point(171, 200);
-            this.regPassBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.regPassBox.Location = new System.Drawing.Point(150, 150);
             this.regPassBox.Name = "regPassBox";
-            this.regPassBox.Size = new System.Drawing.Size(285, 30);
+            this.regPassBox.Size = new System.Drawing.Size(250, 26);
             this.regPassBox.TabIndex = 1;
+            this.regPassBox.PasswordChar = '*';
             // 
             // regUserBox
             // 
             this.regUserBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.regUserBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.regUserBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.regUserBox.Location = new System.Drawing.Point(171, 133);
-            this.regUserBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.regUserBox.Location = new System.Drawing.Point(150, 100);
             this.regUserBox.Name = "regUserBox";
-            this.regUserBox.Size = new System.Drawing.Size(285, 30);
+            this.regUserBox.Size = new System.Drawing.Size(250, 26);
             this.regUserBox.TabIndex = 0;
             // 
             // logPanel
@@ -224,10 +219,9 @@
             this.logPanel.Controls.Add(this.logLabel);
             this.logPanel.Controls.Add(this.logPassBox);
             this.logPanel.Controls.Add(this.logUserBox);
-            this.logPanel.Location = new System.Drawing.Point(114, 133);
-            this.logPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.logPanel.Location = new System.Drawing.Point(100, 100);
             this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(628, 466);
+            this.logPanel.Size = new System.Drawing.Size(550, 350);
             this.logPanel.TabIndex = 8;
             this.logPanel.Visible = false;
             // 
@@ -235,9 +229,9 @@
             // 
             this.logError.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.logError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.logError.Location = new System.Drawing.Point(171, 267);
+            this.logError.Location = new System.Drawing.Point(150, 200);
             this.logError.Name = "logError";
-            this.logError.Size = new System.Drawing.Size(286, 37);
+            this.logError.Size = new System.Drawing.Size(250, 28);
             this.logError.TabIndex = 9;
             this.logError.Text = "Confirm Password";
             this.logError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -247,10 +241,9 @@
             // 
             this.logButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.logButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.logButton.Location = new System.Drawing.Point(229, 333);
-            this.logButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.logButton.Location = new System.Drawing.Point(200, 250);
             this.logButton.Name = "logButton";
-            this.logButton.Size = new System.Drawing.Size(171, 49);
+            this.logButton.Size = new System.Drawing.Size(150, 37);
             this.logButton.TabIndex = 7;
             this.logButton.Text = "Log in";
             this.logButton.UseVisualStyleBackColor = true;
@@ -260,9 +253,9 @@
             // 
             this.logPassLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.logPassLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.logPassLabel.Location = new System.Drawing.Point(0, 204);
+            this.logPassLabel.Location = new System.Drawing.Point(0, 153);
             this.logPassLabel.Name = "logPassLabel";
-            this.logPassLabel.Size = new System.Drawing.Size(165, 33);
+            this.logPassLabel.Size = new System.Drawing.Size(144, 25);
             this.logPassLabel.TabIndex = 5;
             this.logPassLabel.Text = "Password";
             this.logPassLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -271,9 +264,9 @@
             // 
             this.logUserLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.logUserLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.logUserLabel.Location = new System.Drawing.Point(0, 132);
+            this.logUserLabel.Location = new System.Drawing.Point(0, 99);
             this.logUserLabel.Name = "logUserLabel";
-            this.logUserLabel.Size = new System.Drawing.Size(165, 37);
+            this.logUserLabel.Size = new System.Drawing.Size(144, 28);
             this.logUserLabel.TabIndex = 4;
             this.logUserLabel.Text = "Username";
             this.logUserLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -282,9 +275,9 @@
             // 
             this.logLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.logLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.logLabel.Location = new System.Drawing.Point(0, 36);
+            this.logLabel.Location = new System.Drawing.Point(0, 27);
             this.logLabel.Name = "logLabel";
-            this.logLabel.Size = new System.Drawing.Size(629, 69);
+            this.logLabel.Size = new System.Drawing.Size(550, 52);
             this.logLabel.TabIndex = 2;
             this.logLabel.Text = "Login to your account";
             this.logLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -294,10 +287,10 @@
             this.logPassBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.logPassBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.logPassBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.logPassBox.Location = new System.Drawing.Point(171, 200);
-            this.logPassBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.logPassBox.Location = new System.Drawing.Point(150, 150);
             this.logPassBox.Name = "logPassBox";
-            this.logPassBox.Size = new System.Drawing.Size(285, 30);
+            this.logPassBox.PasswordChar = '*';
+            this.logPassBox.Size = new System.Drawing.Size(250, 26);
             this.logPassBox.TabIndex = 1;
             // 
             // logUserBox
@@ -305,10 +298,9 @@
             this.logUserBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.logUserBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.logUserBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.logUserBox.Location = new System.Drawing.Point(171, 133);
-            this.logUserBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.logUserBox.Location = new System.Drawing.Point(150, 100);
             this.logUserBox.Name = "logUserBox";
-            this.logUserBox.Size = new System.Drawing.Size(285, 30);
+            this.logUserBox.Size = new System.Drawing.Size(250, 26);
             this.logUserBox.TabIndex = 0;
             // 
             // regDisplayButton
@@ -316,10 +308,9 @@
             this.regDisplayButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.WindowFrame;
             this.regDisplayButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.regDisplayButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.regDisplayButton.Location = new System.Drawing.Point(114, 93);
-            this.regDisplayButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.regDisplayButton.Location = new System.Drawing.Point(100, 70);
             this.regDisplayButton.Name = "regDisplayButton";
-            this.regDisplayButton.Size = new System.Drawing.Size(114, 41);
+            this.regDisplayButton.Size = new System.Drawing.Size(100, 31);
             this.regDisplayButton.TabIndex = 8;
             this.regDisplayButton.Text = "Register";
             this.regDisplayButton.UseVisualStyleBackColor = true;
@@ -330,10 +321,9 @@
             this.logDisplayButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.WindowFrame;
             this.logDisplayButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.logDisplayButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.logDisplayButton.Location = new System.Drawing.Point(229, 93);
-            this.logDisplayButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.logDisplayButton.Location = new System.Drawing.Point(200, 70);
             this.logDisplayButton.Name = "logDisplayButton";
-            this.logDisplayButton.Size = new System.Drawing.Size(114, 41);
+            this.logDisplayButton.Size = new System.Drawing.Size(100, 31);
             this.logDisplayButton.TabIndex = 9;
             this.logDisplayButton.Text = "Login";
             this.logDisplayButton.UseVisualStyleBackColor = true;
@@ -341,17 +331,16 @@
             // 
             // Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(944, 727);
+            this.ClientSize = new System.Drawing.Size(826, 545);
             this.Controls.Add(this.logDisplayButton);
             this.Controls.Add(this.regDisplayButton);
             this.Controls.Add(this.logPanel);
             this.Controls.Add(this.regPanel);
             this.Controls.Add(this.topPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Login";
             this.Text = "Login";
             this.topPanel.ResumeLayout(false);

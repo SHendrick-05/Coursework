@@ -51,21 +51,52 @@ namespace Coursework.Security
             byte[] yByteArray = Y.ToByteArray();
 
             // Use a Bitwise XOR between Y and the shifted 1024-bit hash.
-            byte[] yTransformed = new byte[hashKey.Length];
-            for (int i = 0; i < hashKey.Length; i++)
-            {
-                var transformedByte = hashKey[i] ^ yByteArray[i];
-                yTransformed[i] = Convert.ToByte(transformedByte);
-            }
+            byte[] yTransformed = bitwiseXOR(hashKey, yByteArray);
 
             // Convert the transformed Y value to an integer
             BigInteger yTransformedInt = new BigInteger(yTransformed);
+
             // Find Z, given by X * Y
             BigInteger Z = BigInteger.Multiply(X, Y);
 
             // Now we have all the values we need, register the account with the database, and return a success code.
             Database.addAccount(username, Z.ToString(), yTransformedInt.ToString(), salt);
             return 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username">The username of the account to update</param>
+        /// <param name="password">The new password, used to overwrite the old one</param>
+        /// <returns>An integer code [0 = Success, 1 = Field empty]</returns>
+        internal static int attemptUpdate(string username, string password)
+        {
+            // One or more of the input fields was empty.
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                return 1;
+            }
+
+            // Generate new encryption values for the new password.
+            string salt = RandomGenerator.NextString(12);
+            byte[] hashKey = hashShift(password, salt);
+
+            BigInteger X = Primes.generatePrime();
+            BigInteger Y;
+            do
+            {
+                Y = Primes.generatePrime();
+            } while (X == Y);
+            // Get new values and push to DB
+            byte[] yByteArray = Y.ToByteArray();
+            byte[] yTransformed = bitwiseXOR(hashKey, yByteArray);
+            BigInteger yTransformedInt = new BigInteger(yTransformed);
+            BigInteger Z = BigInteger.Multiply(X, Y);
+            Database.updateAccount(username, Z.ToString(), yTransformedInt.ToString(), salt);
+            // Success
+            return 0;
+
         }
 
         /// <summary>
@@ -99,12 +130,8 @@ namespace Coursework.Security
 
             // Use a XOR on Y' and HK' to obtain Y.
             byte[] yTransformedArray = yTransformed.ToByteArray();
-            byte[] yArray = new byte[yTransformedArray.Length];
-            for(int i = 0; i < yTransformedArray.Length; i++)
-            {
-                var resultByte = yTransformedArray[i] ^ hashKey[i];
-                yArray[i] = Convert.ToByte(resultByte);
-            }
+            byte[] yArray = bitwiseXOR(yTransformedArray, hashKey);
+
             // Convert Y to an integer, and use a modulo test
             BigInteger Y = new BigInteger(yArray);
             BigInteger result = Z % Y;
@@ -140,6 +167,18 @@ namespace Coursework.Security
             // Convert back and return the result
             byte[] shiftedArray = Convert.FromHexString(shiftedHex);
             return shiftedArray;
+        }
+
+        // A bitwise XOR between 2 arrays.
+        internal static byte[] bitwiseXOR(byte[] array1, byte[] array2)
+        {
+            byte[] result = new byte[array1.Length];
+            for(int i = 0; i < array1.Length; i++)
+            {
+                int resultByte = array1[i] ^ array2[i];
+                result[i] = Convert.ToByte(resultByte);
+            }
+            return result;
         }
     }
 }
