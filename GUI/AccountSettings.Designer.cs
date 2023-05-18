@@ -106,6 +106,7 @@
             this.closeButton.Size = new System.Drawing.Size(75, 36);
             this.closeButton.TabIndex = 0;
             this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click_1);
             // 
             // titleText
             // 
@@ -118,6 +119,7 @@
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Game";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.titleText.MouseMove += Drag;
             // 
             // topPanel
             // 

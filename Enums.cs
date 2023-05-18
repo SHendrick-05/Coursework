@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace Coursework
 {
-    internal class Conversion
+    enum Dir
     {
+        LEFT,
+        DOWN,
+        UP,
+        RIGHT
     }
+    enum arrowType
+    {
+        HIT,
+        MINE
+    }
+
 }

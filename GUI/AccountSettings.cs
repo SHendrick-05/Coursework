@@ -21,6 +21,7 @@ namespace Coursework.GUI
         [DllImport("user32.dll")]
         internal static extern bool ReleaseCapture();
 
+        internal static bool debounce = false;
         /// <summary>
         /// A function to allow form dragging by holding the mouse down and moving it.
         /// </summary>
@@ -44,6 +45,25 @@ namespace Coursework.GUI
             Close();
         }
 
+
+        private void AccountSettings_Load(object sender, EventArgs e)
+        {
+            userLabel.Text = $"Logged in as: {Users.loggedInUser.username}";
+        }
+
+        // Functions handling account deletion
+        private void deleteAccount_Click(object sender, EventArgs e)
+        {
+            deleteN.Visible = true;
+            deleteWarning.Visible = true;
+            deleteY.Visible = true;
+        }
+        private void deleteN_Click(object sender, EventArgs e)
+        {
+            deleteY.Visible = false;
+            deleteN.Visible = false;
+            deleteWarning.Visible = false;
+        }
         private void deleteY_Click(object sender, EventArgs e)
         {
             User toDelete = Users.loggedInUser;
@@ -52,33 +72,18 @@ namespace Coursework.GUI
             Close();
         }
 
-        private void AccountSettings_Load(object sender, EventArgs e)
-        {
-            userLabel.Text = $"Logged in as: {Users.loggedInUser.username}";
-        }
-
-        private void deleteN_Click(object sender, EventArgs e)
-        {
-            deleteY.Visible = false;
-            deleteN.Visible = false;
-            deleteWarning.Visible = false;
-        }
-
-        private void deleteAccount_Click(object sender, EventArgs e)
-        {
-            deleteN.Visible = true;
-            deleteWarning.Visible = true;
-            deleteY.Visible = true;
-        }
-
         private void updatePassword_Click(object sender, EventArgs e)
         {
+            if (debounce) return;
+            debounce = true;
             string username = Users.loggedInUser.username;
             string password = newPassBox.Text;
             if (password != newPassConfirmBox.Text)
             {
                 newPassError.Visible = true;
                 newPassError.Text = "Passwords do not match.";
+                debounce = false;
+                return;
             }
             int result = Security.Verification.attemptUpdate(username, password);
 
@@ -96,6 +101,12 @@ namespace Coursework.GUI
                 default:
                     throw new Exception();
             }
+            debounce = false;
+        }
+
+        private void closeButton_Click_1(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -26,19 +26,19 @@ namespace Coursework
         {
             string serialisedScores = File.ReadAllText(scorePath);
             // To ensure the cast to dynamic will work, make sure the user does not have any access to modify scores.json
-            scoreList = JsonConvert.DeserializeObject<dynamic>(serialisedScores);
+            scoreList = JsonConvert.DeserializeObject<List<Score>>(serialisedScores);
         }
 
         // Init the scoreList
         static Scores()
         {
+            scoreList = new List<Score>();
             if (File.Exists(scorePath))
             {
                 LoadScores();
             }
             else
             {
-                scoreList = new List<Score>();
                 SaveScores();
             }
         }

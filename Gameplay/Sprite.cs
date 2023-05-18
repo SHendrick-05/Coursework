@@ -8,11 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Coursework.Gameplay
 {
-    internal class Sprite
+    internal abstract class Sprite
     {
-        private Texture2D texture;
-        private int posX;
-        private int posY;
+        protected Texture2D texture;
+        protected int posX;
+        protected int posY;
 
         internal Vector2 position
         {
@@ -22,6 +22,7 @@ namespace Coursework.Gameplay
             }
         }
 
+        internal abstract void Update(GameTime gameTime);
         internal Texture2D Texture { get { return texture; } }
     }
 }

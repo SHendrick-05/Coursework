@@ -10,6 +10,8 @@ namespace Coursework.Gameplay
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<Sprite> sprites;
+        
+
         internal SongPlayer()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -19,7 +21,18 @@ namespace Coursework.Gameplay
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Set the monogame to borderless
+            if (GraphicsDevice == null)
+                _graphics.ApplyChanges();
+            _graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.HardwareModeSwitch = false;
+            _graphics.ApplyChanges();
+
+            // Initialise the list
+            sprites = new List<Sprite>();
+            arrows = new List<Arrow>[4];
 
             base.Initialize();
         }
@@ -27,6 +40,12 @@ namespace Coursework.Gameplay
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            // Load receptors
+            for(int i = 0; i < 4; i++)
+            {
+
+            }
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -37,13 +56,17 @@ namespace Coursework.Gameplay
                 Exit();
 
             // TODO: Add your update logic here
+            foreach(Sprite spr in sprites)
+            {
+                spr.
+            }
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
@@ -51,8 +74,11 @@ namespace Coursework.Gameplay
             {
 
             }
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+
     }
 }
