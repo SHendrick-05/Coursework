@@ -18,5 +18,10 @@ namespace Coursework
         HIT,
         MINE
     }
-
+    public enum songNoteType
+    {
+        NONE,
+        HIT,
+        MINE
+    }
 }
