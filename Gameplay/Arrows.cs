@@ -33,6 +33,11 @@ namespace Coursework.Gameplay
             double distance = gameTime.ElapsedGameTime.TotalSeconds * GameHandler.speed;
             posY += (int)Math.Round(distance);
         }
+        internal override void Deprecate()
+        {
+            GameHandler.arrows[(int)dir].Remove(this);
+            isDeprecated = true;
+        }
     }
 
 
@@ -63,15 +68,30 @@ namespace Coursework.Gameplay
         {
             KeyboardState kState = Input.kbState;
             KeyboardState lastKstate = Input.lastkbState;
+            // If the corresponding key is pressed
             if (kState.IsKeyDown(hitKey))
             {
                 spriteCrop.X = 1;
+                // If the key was just pressed, not held from before.
                 if (lastKstate.IsKeyUp(hitKey))
                 {
+                    // Get all the possible arrows of that column
                     List<Arrow> candidates = GameHandler.arrows[(int)dir];
                     Dictionary<Arrow, float> timings
                         = candidates.ToDictionary(x => x,
-                        x => Math.Abs(x.position.Y - position.Y));
+                        x => position.Y - x.position.Y);
+                    // Find the latest/earliest possible hit.
+                    double maximum = GameHandler.timeWindows[5] * GameHandler.speed;
+                    // Find the possible ones, then filter to the earliest one.
+                    List<Arrow> canBeHit = timings.Keys.Where(x => Math.Abs(timings[x])<= maximum).ToList();
+                    // If there are any arrows that can be hit.
+                    if (canBeHit.Count != 0)
+                    {
+                        Arrow closest = canBeHit.MinBy(x => timings[x]);
+                        // This is the hit arrow. Pass it on.
+                        GameHandler.arrowHit(closest, timings[closest]);
+                    }
+                }
             }
             else
             {

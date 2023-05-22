@@ -22,6 +22,7 @@ namespace Coursework.Gameplay
         protected int posX;
         protected int posY;
 
+        internal bool isDeprecated;
         internal Point size;
         internal float rotation;
         internal Point spriteCrop;
@@ -64,10 +65,16 @@ namespace Coursework.Gameplay
         internal abstract void Update(GameTime gameTime);
         internal Texture2D Texture { get { return texture; } }
 
+        internal virtual void Deprecate()
+        {
+            isDeprecated = true;
+        }
+
         internal Sprite()
         {
             rotation = 0f;
             SongPlayer.addSprite(this);
+            isDeprecated = false;
         }
     }
 }

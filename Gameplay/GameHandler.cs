@@ -14,7 +14,7 @@ namespace Coursework.Gameplay
         // The X positions of each arrow on the screen.
         internal static int[] arrowColumns = new int[4]
         {
-            200, 300, 400, 500
+            600, 700, 800, 900
         };
         // The keys the user has to press to hit arrows.
         internal static Keys[] hitKeys = new Keys[4]
@@ -22,13 +22,14 @@ namespace Coursework.Gameplay
             Keys.A, Keys.S, Keys.L, Keys.OemSemicolon
         };
         // Timing windows for judgement boundaries
-        internal static double[] timeWindows = new double[5]
+        internal static double[] timeWindows = new double[6]
         {
             0.022, // Perfect
             0.045, // Great
             0.090, // Good
             0.135, // OK
-            0.180  // Bad
+            0.180,  // Bad
+            0.200
         };
         // An array of lists, divided by column
         internal static List<Arrow>[] arrows = new List<Arrow>[4]
@@ -47,14 +48,13 @@ namespace Coursework.Gameplay
             arrows[(int)dir].Add(arrow);
         }
 
-        internal static void arrowHit(Arrow arrow, Receptor recep)
+        internal static void arrowHit(Arrow arrow, float distance)
         {
-            float distance = Math.Abs(arrow.position.Y - recep.position.Y);
             double time = distance / speed;
             int judgement = 5;
             for(int i = 0; i < 5; i++)
             {
-                if (timeWindows[i] > time)
+                if (timeWindows[i] >= time)
                 {
                     judgement = i;
                     break;
@@ -82,6 +82,7 @@ namespace Coursework.Gameplay
                 default:
                     throw new Exception();
             }
+            arrow.Deprecate();
         }
     }
 }
