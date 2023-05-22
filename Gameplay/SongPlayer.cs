@@ -46,6 +46,7 @@ namespace Coursework.Gameplay
 
             // Get textures
             arrowTexture = Content.Load<Texture2D>("downTap");
+            recepTexture = Content.Load<Texture2D>("downReceptor");
 
             base.Initialize();
         }
@@ -56,9 +57,13 @@ namespace Coursework.Gameplay
             // Load receptors
             for(int i = 0; i < 4; i++)
             {
-
+                Receptor rcp = new Receptor(GameHandler.arrowColumns[i],
+                                        _graphics.PreferredBackBufferHeight - 200,
+                                        (Dir)i,
+                                        new Point(0, 0));
             }
 
+            /*
             Random rnd = new Random();
             Song sng = new Song();
             sng.BPM = 110;
@@ -77,8 +82,8 @@ namespace Coursework.Gameplay
                 }
                 sng.measures.Add(measure);
             }
-            string songTXT = JsonConvert.SerializeObject(sng);
-            File.WriteAllText(@"Storage\test.json", songTXT);
+            string songTXT = JsonConvert.SerializeObject(sng, Formatting.None);
+            File.WriteAllText(@"Storage\test.json", songTXT); */
             // TODO: use this.Content to load your game content here
         }
 
@@ -93,12 +98,14 @@ namespace Coursework.Gameplay
                 spr.Update(gameTime);
             }
 
+            Input.Update();
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
@@ -109,9 +116,9 @@ namespace Coursework.Gameplay
                     spr.position,
                     spr.crop,
                     Color.White,
-                    1f,
-                    new Vector2(0, 0),
-                    0f,
+                    spr.rotation,
+                    spr.origin,
+                    1f, // Scale
                     SpriteEffects.None,
                     0f
                     );

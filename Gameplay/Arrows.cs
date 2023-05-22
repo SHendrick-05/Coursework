@@ -24,6 +24,7 @@ namespace Coursework.Gameplay
             spriteCrop = new Point(0, rnd.Next(5));
             texture = SongPlayer.arrowTexture;
             posX = GameHandler.arrowColumns[(int)dir];
+            rotation = rotations[(int)dir];
         }
 
         internal override void Update(GameTime gameTime)
@@ -47,13 +48,15 @@ namespace Coursework.Gameplay
             }
         }
 
-        internal Receptor(int X, int Y, Texture2D texture, Dir dir) : base()
+        internal Receptor(int X, int Y, Dir dir, Point spriteCrop) : base()
         {
             posX = X;
             posY = Y;
             size = new Point(64, 64);
+            this.spriteCrop = spriteCrop;
             this.dir = dir;
-            this.texture = texture;
+            texture = SongPlayer.recepTexture;
+            rotation = rotations[(int)dir];
         }
 
         internal override void Update(GameTime gameTime)
@@ -62,11 +65,26 @@ namespace Coursework.Gameplay
             KeyboardState lastKstate = Input.lastkbState;
             if (kState.IsKeyDown(hitKey))
             {
+                spriteCrop.X = 1;
                 if (lastKstate.IsKeyUp(hitKey))
                 {
                     List<Arrow> candidates = GameHandler.arrows[(int)dir];
-                }
+                    Dictionary<Arrow, float> timings
+                        = candidates.ToDictionary(x => x,
+                        x => Math.Abs(x.position.Y - position.Y));
+            }
+            else
+            {
+                spriteCrop.X = 0;
             }
         }
     }
 }
+
+/* 
+ * Dir to rotation:
+ * 0 = 90* ACW
+ * 1 = 0
+ * 2 = 180*
+ * 3 = 90* CW
+ */

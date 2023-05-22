@@ -10,13 +10,21 @@ namespace Coursework.Gameplay
 {
     internal abstract class Sprite
     {
+        internal static float[] rotations = new float[4]
+        {
+            (float)Math.PI * 0.5f,
+            0f,
+            (float)Math.PI,
+            (float)Math.PI * -0.5f
+        };
+
         protected Texture2D texture;
         protected int posX;
         protected int posY;
 
         internal Point size;
         internal float rotation;
-        internal Point? spriteCrop;
+        internal Point spriteCrop;
 
         /// <summary>
         /// A rectangle representing how the texture should be cropped.
@@ -30,10 +38,18 @@ namespace Coursework.Gameplay
                     return Texture.Bounds;
                 }
                 Point location = new Point(
-                    spriteCrop.Value.X * size.X,
-                    spriteCrop.Value.Y * size.Y);
+                    spriteCrop.X * size.X,
+                    spriteCrop.Y * size.Y);
 
                 return new Rectangle(location, size);
+            }
+        }
+
+        internal Vector2 origin
+        {
+            get
+            {
+                return new Vector2(size.X * 0.5f, size.Y * 0.5f);
             }
         }
 
@@ -50,6 +66,7 @@ namespace Coursework.Gameplay
 
         internal Sprite()
         {
+            rotation = 0f;
             SongPlayer.addSprite(this);
         }
     }
