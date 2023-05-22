@@ -35,22 +35,31 @@ namespace Coursework.GUI
 
         private void registerButton_Click(object sender, EventArgs e)
         {
-            Login lgn = new Login();
-            lgn.FormClosed += updateUserText;
-            lgn.Show();
+            if (Application.OpenForms["Login"] as Login == null)
+            {
+                Login lgn = new Login();
+                lgn.FormClosed += updateUserText;
+                lgn.Show();
+            }
         }
 
         private void settingsButton_Click(object sender, EventArgs e)
         {
-            AccountSettings acSettings = new AccountSettings();
-            acSettings.FormClosed += updateUserText;
-            acSettings.Show();
+            if (Application.OpenForms["AccountSettings"] as AccountSettings == null)
+            { 
+                AccountSettings acSettings = new AccountSettings();
+                acSettings.FormClosed += updateUserText;
+                acSettings.Show();
+            }
         }
 
         private void playButton_Click(object sender, EventArgs e)
         {
-            SongSelect slct = new SongSelect();
-            slct.Show();
+            if (Application.OpenForms["SongSelect"] as SongSelect == null)
+            {
+                SongSelect slct = new SongSelect();
+                slct.Show();
+            }
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -82,6 +91,23 @@ namespace Coursework.GUI
                 signOutButton.Visible = true;
             }
             currentUserLabel.Text = $"Logged in as: {user}";
+        }
+
+        private void songEditorButton_Click(object sender, EventArgs e)
+        {
+            if (Application.OpenForms["AccountSettings"] as AccountSettings != null) return;
+
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = @"C:\";
+            ofd.Filter = "Songs (*.mp3)|*.mp3";
+            ofd.FilterIndex = 0;
+            ofd.RestoreDirectory = true;
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                SongEditor editor = new SongEditor(ofd.FileName);
+                editor.Show();
+            }
         }
     }
 }

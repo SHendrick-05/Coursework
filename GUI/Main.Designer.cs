@@ -36,6 +36,7 @@
             this.currentUserLabel = new System.Windows.Forms.Label();
             this.signOutButton = new System.Windows.Forms.Button();
             this.settingsButton = new System.Windows.Forms.Button();
+            this.songEditorButton = new System.Windows.Forms.Button();
             this.topPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +88,6 @@
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Game";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.titleText.MouseMove += Drag;
             // 
             // closeButton
             // 
@@ -141,12 +141,26 @@
             this.settingsButton.Visible = false;
             this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
             // 
+            // songEditorButton
+            // 
+            this.songEditorButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
+            this.songEditorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.songEditorButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.songEditorButton.Location = new System.Drawing.Point(258, 185);
+            this.songEditorButton.Name = "songEditorButton";
+            this.songEditorButton.Size = new System.Drawing.Size(105, 42);
+            this.songEditorButton.TabIndex = 6;
+            this.songEditorButton.Text = "Create a song";
+            this.songEditorButton.UseVisualStyleBackColor = true;
+            this.songEditorButton.Click += new System.EventHandler(this.songEditorButton_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(623, 270);
+            this.Controls.Add(this.songEditorButton);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.signOutButton);
             this.Controls.Add(this.currentUserLabel);
@@ -171,5 +185,6 @@
         private System.Windows.Forms.Label currentUserLabel;
         private System.Windows.Forms.Button signOutButton;
         private System.Windows.Forms.Button settingsButton;
+        private System.Windows.Forms.Button songEditorButton;
     }
 }

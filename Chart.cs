@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,24 @@ using System.Threading.Tasks;
 
 namespace Coursework
 {
-    public class Song
+    internal static class Charts
     {
-        public string name;
+        internal static Chart loadChart(string path)
+        {
+            throw new NotImplementedException();
+        }
+        internal static void saveChart(Chart song)
+        {
+
+        }
+    }
+    public class Chart
+    {
+        public string title;
         public string description;
         public double BPM;
         public List<songNoteType[,]> measures;
-        public Song()
+        public Chart()
         {
             measures = new List<songNoteType[,]>();
         }

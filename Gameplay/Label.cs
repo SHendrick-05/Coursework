@@ -14,6 +14,7 @@ namespace Coursework.Gameplay
         private int posX;
         private int posY;
         internal string text;
+        internal Color color;
 
         internal Vector2 position
         {
@@ -24,7 +25,6 @@ namespace Coursework.Gameplay
         }
         internal void Deprecate()
         {
-            SongPlayer.labels[this] = 0;
         }
     }
 }

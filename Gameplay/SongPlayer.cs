@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,19 @@ namespace Coursework.Gameplay
         internal static Texture2D arrowTexture;
         internal static Texture2D recepTexture;
         internal static SpriteFont centuryGothic;
+        internal static Song audio;
 
-        /// <summary>
-        /// A dictionary representing all labels via keys, with the value being how many frames they are displayed for. -1 means they are always displayed.
-        /// </summary>
-        internal static Dictionary<Label, int> labels;
+       
 
+        internal static Label judgementLabel;
+        internal static int labelFrames = 0;
+
+        internal static void updateJudge(Color color, string text)
+        {
+            labelFrames = 30;
+            judgementLabel.text = text;
+            judgementLabel.color = color;
+        }
 
         internal static void addSprite(Sprite spr)
             => sprites.Add(spr);
@@ -52,7 +60,9 @@ namespace Coursework.Gameplay
 
             // Initialise the list
             sprites = new List<Sprite>();
-            labels = new Dictionary<Label, int>();
+
+            judgementLabel = new Label();
+            judgementLabel.sFont = centuryGothic;
 
             // Get textures
             arrowTexture = Content.Load<Texture2D>("downTap");
@@ -75,35 +85,9 @@ namespace Coursework.Gameplay
             }
             Random rnd = new Random();
 
-            int baseY = 100;
-            for (int i = 0; i < 100; i++)
-            {
-                GameHandler.loadArrow(baseY, (Dir)rnd.Next(4), new Point(0, rnd.Next(5)));
-                baseY -= 100;
-            }
+            GameHandler.loadSong(@"Songs\");
+            MediaPlayer.Play(audio);
 
-            /*
-            Random rnd = new Random();
-            Song sng = new Song();
-            sng.BPM = 110;
-            sng.name = "test";
-            sng.description = "test2";
-            for (int i = 0; i < 200; i++)
-            {
-                songNoteType[,] measure = new songNoteType[16, 4];
-                for (int j = 0; j < 4; j++)
-                {
-                    for (int k = 0; k < 16; k++)
-                    {
-                        songNoteType note = rnd.Next(10) == 0 ? songNoteType.HIT : songNoteType.NONE;
-                        measure[k, j] = note;
-                    }
-                }
-                sng.measures.Add(measure);
-            }
-            string songTXT = JsonConvert.SerializeObject(sng, Formatting.None);
-            File.WriteAllText(@"Storage\test.json", songTXT); */
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -125,26 +109,17 @@ namespace Coursework.Gameplay
 
             // Update input
             Input.Update();
+            labelFrames--;
 
-            // Update labels
-            foreach(KeyValuePair<Label, int> pair in labels)
-            {
-                // Permanent label, or one to deprecate
-                if (pair.Value <= 0) continue;
-                // Label to decrement
-                else labels[pair.Key]--;
-            }
-            // Remove the deprecated labels.
-            labels = labels.Where(x => x.Value != 0).ToDictionary(x => x.Key, x => x.Value);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-            _spriteBatch.Begin(SpriteSortMode.BackToFront);
+            GraphicsDevice.Clear(Color.Black);
+            
+            
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack);
             float ord = 1;
             foreach (Sprite spr in sprites)
             {
@@ -157,25 +132,27 @@ namespace Coursework.Gameplay
                     spr.origin,
                     1f, // Scale
                     SpriteEffects.None,
-                    ord
+                    1/ord
                     );
                 ord++;
             }
-            /*
+            
             // Draw labels
-            foreach(Label lab in labels.Keys)
-            {
-                _spriteBatch.DrawString(
-                    lab.sFont,
-                    lab.text,
-                    lab.position,
-                    Color.White);
+            
 
+            // Judgement
+            if (labelFrames > 0)
+            {
+                float centerX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2]) / 2f;
+                Vector2 bound = centuryGothic.MeasureString(judgementLabel.text);
+                float width = bound.X;
+
+                _spriteBatch.DrawString(centuryGothic, judgementLabel.text, new Vector2(centerX - (width / 2f), 500), judgementLabel.color);
             }
 
             _spriteBatch.DrawString(centuryGothic, "test", new Vector2(0, 0), Color.Black);
             _spriteBatch.End();
-            */
+            
             base.Draw(gameTime);
         }
 
