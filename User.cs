@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,24 @@ namespace Coursework
         internal string yShifted { get; set; }
         internal string Salt { get; set; }
         internal List<Score> scores { get; set; }
+        // The notespeed used (given as pixels per measure)
+        internal int noteSpeed { get; set; }
+
+        // The keybinds to be used for gameplay
+        internal Keys keyLeft;
+        internal Keys keyDown;
+        internal Keys keyUp;
+        internal Keys keyRight;
+        internal Keys[] keyLayout { get
+            {
+                return new Keys[4]
+                {
+                    keyLeft,
+                    keyDown,
+                    keyUp,
+                    keyRight
+                };
+            } }
         internal User(string UN, string ZP, string YS, string salt)
         {
             username = UN;

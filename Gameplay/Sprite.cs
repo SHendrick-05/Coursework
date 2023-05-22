@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Coursework.Gameplay
 {
-    internal class Sprite
+    internal abstract class Sprite
     {
         private Texture2D texture;
         private int posX;
@@ -22,6 +22,10 @@ namespace Coursework.Gameplay
             }
         }
 
-        internal Texture2D Texture { get { return texture; } }
+        public abstract void Update(GameTime gameTime);
+        internal void Deprecate()
+        {
+
+        }
     }
 }
