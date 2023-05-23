@@ -52,6 +52,11 @@ namespace Coursework.Gameplay
             arrows[(int)dir].Add(arrow);
         }
 
+        internal static void loadMine(int Y, Dir dir, Point spriteCrop)
+        {
+            
+        }
+
         internal static void arrowHit(Arrow arrow, float distance)
         {
             double time = distance / speed;
@@ -97,20 +102,30 @@ namespace Coursework.Gameplay
 
         internal static void loadSong(string path)
         {
+            // Load the audio
             var uri = new Uri(path+@"\audio.mp3", UriKind.Relative);
             SongPlayer.audio = Song.FromUri(path + @"\audio.mp3", uri);
+
+            // Load the chart
             string chartText = File.ReadAllText(path + @"\chart.json");
             Chart chart = JsonConvert.DeserializeObject<Chart>(chartText);
 
+            // 
             double measuresPerSecond = chart.BPM / 60.0;
             pixelsPerMeasure = speed / measuresPerSecond;
-            int Y = 0;
             double jumpGap = pixelsPerMeasure / 16;
 
+
+            // The position of the receptor is height - 200, so the first note will hit 2 seconds after.
+            double offsetPixels = chart.offset * 0.001 * speed;
+            int Y = (int)Math.Round(SongPlayer._height - 200 - 2 * speed - offsetPixels);
+
+            // Loop over the measures in the song
             foreach (songNoteType[,] measure in chart.measures)
             {
                 for (int j = 0; j < 16; j++)
                 {
+                    // Iterate over each column
                     for (int i = 0; i < 4; i++)
                     {
                         songNoteType note = measure[j, i];
@@ -127,6 +142,7 @@ namespace Coursework.Gameplay
                                 break;
                         }
                     }
+                    // Move up the Y, as we are moving on to the next division.
                     Y -= (int)Math.Round(jumpGap);
                 }
             }

@@ -169,7 +169,10 @@ namespace Coursework.Security
             return shiftedArray;
         }
 
-        // A bitwise XOR between 2 arrays.
+        /// <summary>
+        /// A bitwise XOR function between two byte arrays
+        /// </summary>
+        /// <returns>A byte array representing the result.</returns>
         internal static byte[] bitwiseXOR(byte[] array1, byte[] array2)
         {
             byte[] result = new byte[array1.Length];

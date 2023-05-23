@@ -39,8 +39,6 @@ namespace Coursework.GUI
                 SongEditor.audioPath = audioPath.Text;
             if (!string.IsNullOrWhiteSpace(titleBox.Text))
                 SongEditor.editingChart.title = titleBox.Text;
-            if (!string.IsNullOrWhiteSpace(descriptionBox.Text))
-                SongEditor.editingChart.description = descriptionBox.Text;
             if (imagePath.Text != "...")
                 SongEditor.imagePath = imagePath.Text;
             Close();

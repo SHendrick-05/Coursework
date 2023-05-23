@@ -17,12 +17,13 @@ namespace Coursework.Gameplay
 
         private static List<Sprite> sprites;
         internal static Texture2D arrowTexture;
+        internal static Texture2D mineTexture;
         internal static Texture2D recepTexture;
         internal static SpriteFont centuryGothic;
         internal static Song audio;
 
-       
 
+        internal static int _height;
         internal static Label judgementLabel;
         internal static int labelFrames = 0;
 
@@ -66,9 +67,10 @@ namespace Coursework.Gameplay
 
             // Get textures
             arrowTexture = Content.Load<Texture2D>("downTap");
+            mineTexture = Content.Load<Texture2D>("downMine");
             recepTexture = Content.Load<Texture2D>("downReceptor");
             centuryGothic = Content.Load<SpriteFont>("centuryGothic16");
-
+            _height = _graphics.PreferredBackBufferHeight;
             base.Initialize();
         }
 
@@ -79,14 +81,14 @@ namespace Coursework.Gameplay
             for(int i = 0; i < 4; i++)
             {
                 Receptor rcp = new Receptor(GameHandler.arrowColumns[i],
-                                        _graphics.PreferredBackBufferHeight - 200,
+                                        _height - 200,
                                         (Dir)i,
                                         new Point(0, 0));
             }
             Random rnd = new Random();
 
-            GameHandler.loadSong(@"Songs\test");
-            MediaPlayer.Play(audio);
+            //GameHandler.loadSong(@"Songs\test");
+            //MediaPlayer.Play(audio);
 
         }
 
@@ -94,8 +96,6 @@ namespace Coursework.Gameplay
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            // TODO: Add your update logic here
 
             // Update sprites
             List<Sprite> toRemove = new List<Sprite>();
@@ -136,8 +136,6 @@ namespace Coursework.Gameplay
                     );
                 ord++;
             }
-            
-            // Draw labels
             
 
             // Judgement

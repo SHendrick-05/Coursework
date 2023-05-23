@@ -14,15 +14,19 @@ namespace Coursework.Gameplay
     {
         internal Random rnd = new Random();
         internal Dir dir;
+        /// <summary>
+        /// Constructor for the arrow class
+        /// </summary>
+        /// <param name="posY">The Y-position of the arrow (position of the top of the arrow)</param>
+        /// <param name="dir">The directional enum of the arrow</param>
+        /// <param name="spriteCrop">The point at which to crop the main sprite</param>
         internal Arrow(int posY, Dir dir, Point spriteCrop) : base()
         {
-            
+            // Set the variables
             this.posY = posY;
             this.dir = dir;
-            size = new Point(64, 64);
             this.spriteCrop = spriteCrop;
-            spriteCrop = new Point(0, rnd.Next(5));
-            texture = SongPlayer.arrowTexture;
+            size = new Point(64, 64);
             posX = GameHandler.arrowColumns[(int)dir];
             rotation = rotations[(int)dir];
         }
@@ -32,11 +36,40 @@ namespace Coursework.Gameplay
             // Move the arrow downwards by the appropriate amount.
             double distance = gameTime.ElapsedGameTime.TotalSeconds * GameHandler.speed;
             posY += (int)Math.Round(distance);
+            MineUpdate();
         }
+        internal virtual void MineUpdate() { }
         internal override void Deprecate()
         {
             GameHandler.arrows[(int)dir].Remove(this);
             isDeprecated = true;
+        }
+    }
+
+    internal class Hit : Arrow
+    {
+        internal Hit(int posY, Dir dir, Point spriteCrop) : base(posY, dir, spriteCrop)
+        {
+            texture = SongPlayer.arrowTexture;
+        }
+    }
+
+    internal class Mine : Arrow
+    {
+        int framesPerUpdate = 10;
+        int frame = 0;
+        internal Mine(int posY, Dir dir, Point spriteCrop) : base(posY, dir, spriteCrop)
+        {
+            texture = SongPlayer.mineTexture;
+        }
+        internal override void MineUpdate()
+        {
+            if (++frame >= framesPerUpdate)
+            {
+                if (spriteCrop.X++ == 7)
+                    spriteCrop.X = 0;
+                frame = 0;
+            }
         }
     }
 

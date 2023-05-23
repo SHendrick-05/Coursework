@@ -18,11 +18,23 @@ namespace Coursework
 
         }
     }
+    /// <summary>
+    /// A class representing each mapped song in the game.
+    /// </summary>
     public class Chart
     {
         public string title;
-        public string description;
+        /// <summary>
+        /// The beats per minute of the song.
+        /// </summary>
         public double BPM;
+        /// <summary>
+        /// The offset of the song, in milliseconds.
+        /// </summary>
+        public double offset;
+        /// <summary>
+        /// A list of all the notes in the song, broken down into measures.
+        /// </summary>
         public List<songNoteType[,]> measures;
         public Chart()
         {

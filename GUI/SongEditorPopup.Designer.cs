@@ -37,8 +37,6 @@
             this.audioPath = new System.Windows.Forms.Label();
             this.browseButton = new System.Windows.Forms.Button();
             this.titleLabel = new System.Windows.Forms.Label();
-            this.descLabel = new System.Windows.Forms.Label();
-            this.descriptionBox = new System.Windows.Forms.TextBox();
             this.browseImage = new System.Windows.Forms.Button();
             this.imagePath = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -68,7 +66,6 @@
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Editing song...";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.titleText.MouseMove += Drag;
             // 
             // closeButton
             // 
@@ -89,7 +86,7 @@
             this.OKbutton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.OKbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OKbutton.ForeColor = System.Drawing.SystemColors.Control;
-            this.OKbutton.Location = new System.Drawing.Point(112, 244);
+            this.OKbutton.Location = new System.Drawing.Point(112, 142);
             this.OKbutton.Name = "OKbutton";
             this.OKbutton.Size = new System.Drawing.Size(322, 42);
             this.OKbutton.TabIndex = 17;
@@ -99,7 +96,7 @@
             // 
             // pathLabel
             // 
-            this.pathLabel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.pathLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pathLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.pathLabel.Location = new System.Drawing.Point(30, 42);
             this.pathLabel.Name = "pathLabel";
@@ -111,16 +108,16 @@
             // titleBox
             // 
             this.titleBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.titleBox.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.titleBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.titleBox.ForeColor = System.Drawing.SystemColors.Control;
             this.titleBox.Location = new System.Drawing.Point(112, 110);
             this.titleBox.Name = "titleBox";
-            this.titleBox.Size = new System.Drawing.Size(322, 27);
+            this.titleBox.Size = new System.Drawing.Size(322, 26);
             this.titleBox.TabIndex = 19;
             // 
             // audioPath
             // 
-            this.audioPath.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.audioPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.audioPath.ForeColor = System.Drawing.SystemColors.Control;
             this.audioPath.Location = new System.Drawing.Point(112, 42);
             this.audioPath.Name = "audioPath";
@@ -143,7 +140,7 @@
             // 
             // titleLabel
             // 
-            this.titleLabel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.titleLabel.ForeColor = System.Drawing.SystemColors.Control;
             this.titleLabel.Location = new System.Drawing.Point(30, 110);
             this.titleLabel.Name = "titleLabel";
@@ -151,28 +148,6 @@
             this.titleLabel.TabIndex = 22;
             this.titleLabel.Text = "Title:";
             this.titleLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // descLabel
-            // 
-            this.descLabel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.descLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.descLabel.Location = new System.Drawing.Point(5, 143);
-            this.descLabel.Name = "descLabel";
-            this.descLabel.Size = new System.Drawing.Size(101, 50);
-            this.descLabel.TabIndex = 24;
-            this.descLabel.Text = "Description:";
-            this.descLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // descriptionBox
-            // 
-            this.descriptionBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.descriptionBox.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.descriptionBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.descriptionBox.Location = new System.Drawing.Point(112, 143);
-            this.descriptionBox.Multiline = true;
-            this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(322, 95);
-            this.descriptionBox.TabIndex = 23;
             // 
             // browseImage
             // 
@@ -189,7 +164,7 @@
             // 
             // imagePath
             // 
-            this.imagePath.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.imagePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.imagePath.ForeColor = System.Drawing.SystemColors.Control;
             this.imagePath.Location = new System.Drawing.Point(112, 78);
             this.imagePath.Name = "imagePath";
@@ -199,7 +174,7 @@
             // 
             // label2
             // 
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.SystemColors.Control;
             this.label2.Location = new System.Drawing.Point(30, 78);
             this.label2.Name = "label2";
@@ -213,12 +188,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
-            this.ClientSize = new System.Drawing.Size(446, 296);
+            this.ClientSize = new System.Drawing.Size(446, 205);
             this.Controls.Add(this.browseImage);
             this.Controls.Add(this.imagePath);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.descLabel);
-            this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.browseButton);
             this.Controls.Add(this.audioPath);
@@ -247,8 +220,6 @@
         private System.Windows.Forms.Label audioPath;
         private System.Windows.Forms.Button browseButton;
         private System.Windows.Forms.Label titleLabel;
-        private System.Windows.Forms.Label descLabel;
-        private System.Windows.Forms.TextBox descriptionBox;
         private System.Windows.Forms.Button browseImage;
         private System.Windows.Forms.Label imagePath;
         private System.Windows.Forms.Label label2;
