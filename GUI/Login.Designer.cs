@@ -78,6 +78,7 @@
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Login or Create an Account";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.titleText.MouseMove += Drag;
             // 
             // closeButton
             // 

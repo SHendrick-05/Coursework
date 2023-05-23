@@ -85,7 +85,7 @@ namespace Coursework.Gameplay
             }
             Random rnd = new Random();
 
-            GameHandler.loadSong(@"Songs\");
+            GameHandler.loadSong(@"Songs\test");
             MediaPlayer.Play(audio);
 
         }

@@ -60,6 +60,7 @@
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Game";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.titleText.MouseMove += Drag;
             // 
             // closeButton
             // 

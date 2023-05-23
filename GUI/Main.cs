@@ -6,25 +6,12 @@ namespace Coursework.GUI
 {
     internal partial class Main : Form
     {
-        // DLL Imports and consts for lower-level functions
-        internal const int WM_NCLBUTTONDOWN = 0xA1;
-        internal const int HT_CAPTION = 0x2;
-        [DllImport("user32.dll")]
-        internal static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImport("user32.dll")]
-        internal static extern bool ReleaseCapture();
-
-        /// <summary>
-        /// A function to allow form dragging by holding the mouse down and moving it.
-        /// </summary>
-        /// <param name="e">Arguments for the mouse, including mouse position and button presses</param>
         private void Drag(object sender, MouseEventArgs e)
         {
             // Ensure the button press was the left mouse button
             if (e.Button == MouseButtons.Left)
             {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                MouseDrag.DragForm(Handle);
             }
         }
 
@@ -98,7 +85,7 @@ namespace Coursework.GUI
             if (Application.OpenForms["AccountSettings"] as AccountSettings != null) return;
 
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = @"C:\";
+            ofd.InitialDirectory = SongEditor.getDownloadsFolder();
             ofd.Filter = "Songs (*.mp3)|*.mp3";
             ofd.FilterIndex = 0;
             ofd.RestoreDirectory = true;
@@ -109,5 +96,29 @@ namespace Coursework.GUI
                 editor.Show();
             }
         }
+    }
+
+    internal static class MouseDrag
+    {
+        // DLL Imports and consts for lower-level functions
+        internal const int WM_NCLBUTTONDOWN = 0xA1;
+        internal const int HT_CAPTION = 0x2;
+        [DllImport("user32.dll")]
+        internal static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImport("user32.dll")]
+        internal static extern bool ReleaseCapture();
+
+        /// <summary>
+        /// A function to drag a form
+        /// </summary>
+        /// <param name="handle">The handle (HWND) of the form.</param>
+        internal static void DragForm(IntPtr handle)
+        {
+            ReleaseCapture();
+            SendMessage(handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+        }
+
+        
+
     }
 }

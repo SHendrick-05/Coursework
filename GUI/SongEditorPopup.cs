@@ -1,17 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Coursework.GUI
 {
     public partial class SongEditorPopup : Form
     {
+        private void Drag(object sender, MouseEventArgs e)
+        {
+            // Ensure the button press was the left mouse button
+            if (e.Button == MouseButtons.Left)
+            {
+                MouseDrag.DragForm(Handle);
+            }
+        }
+
         public SongEditorPopup()
         {
             InitializeComponent();
@@ -20,7 +22,7 @@ namespace Coursework.GUI
         private void browseButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = @"C:\";
+            ofd.InitialDirectory = SongEditor.getDownloadsFolder();
             ofd.Filter = "Songs (*.mp3)|*.mp3";
             ofd.FilterIndex = 0;
             ofd.RestoreDirectory = true;
@@ -39,6 +41,8 @@ namespace Coursework.GUI
                 SongEditor.editingChart.title = titleBox.Text;
             if (!string.IsNullOrWhiteSpace(descriptionBox.Text))
                 SongEditor.editingChart.description = descriptionBox.Text;
+            if (imagePath.Text != "...")
+                SongEditor.imagePath = imagePath.Text;
             Close();
         }
 
@@ -51,5 +55,21 @@ namespace Coursework.GUI
         {
 
         }
+
+        private void browseImage_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = SongEditor.getDownloadsFolder();
+            ofd.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif";
+            ofd.FilterIndex = 0;
+            ofd.RestoreDirectory = true;
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                imagePath.Text = ofd.FileName;
+            }
+        }
+
+        
     }
 }
