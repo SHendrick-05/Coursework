@@ -1,15 +1,7 @@
-﻿using Microsoft.Xna.Framework.Media;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Coursework.GUI
@@ -33,7 +25,7 @@ namespace Coursework.GUI
         public SongEditor(string path)
         {
             editingChart = new Chart();
-            editingChart.BPM = 110;
+            editingChart.BPM = 119;
             editingChart.title = "Song";
             audioPath = path;
             InitializeComponent();
@@ -44,9 +36,9 @@ namespace Coursework.GUI
             
         }
 
+
         private void songEditorButton_Click(object sender, EventArgs e)
         {
-            int difficulty = 30;
             var audioFile = TagLib.File.Create(audioPath);
             double length = audioFile.Properties.Duration.TotalMinutes;
             double measures = 4.0 * length * editingChart.BPM;
@@ -54,16 +46,69 @@ namespace Coursework.GUI
             Random rnd = new Random();
             for (int i = 0; i < Math.Floor(measures); i++)
             {
-                songNoteType[,] measure = new songNoteType[16, 4];
+                songNoteType[,] measure = generateMeasure(Difficulty.HARD);
+                editingChart.measures.Add(measure);
+            }
+        }
+
+        /// <summary>
+        /// Creates a randomly-generated measure for use in a chart.
+        /// </summary>
+        /// <param name="diff">The difficulty with which to generate the measure</param>
+        /// <returns>A measure with the appropriate difficulty.</returns>
+        private songNoteType[,] generateMeasure(Difficulty diff)
+        {
+            // Init a RNG for the generation.
+            Random rnd = new Random();
+            // Create an empty measure first.
+            songNoteType[,] measure = new songNoteType[16, 4];
+            for (int i = 0; i < 16; i++)
+            {
                 for (int j = 0; j < 4; j++)
                 {
-                    for (int k = 0; k < 16; k++)
-                    {
-                        songNoteType note = rnd.Next(difficulty) == 0 ? songNoteType.HIT : songNoteType.NONE;
-                        measure[k, j] = note;
-                    }
+                    measure[i,j] = songNoteType.NONE;
                 }
-                editingChart.measures.Add(measure);
+            }
+
+            // Populate it depending on the difficulty
+            switch(diff)
+            {
+                // Easy = 1/4 streams.
+                case Difficulty.EASY:
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if (i % 4 == 0)
+                            measure[i, rnd.Next(4)] = rnd.Next(2) == 0 ? songNoteType.HIT : songNoteType.MINE;
+                    }
+                    return measure;
+                // 1/8 streams
+                case Difficulty.MEDIUM:
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if (i % 2 == 0)
+                            measure[i, rnd.Next(4)] = songNoteType.HIT;
+                    }
+                    return measure;
+                // 1/8 JS
+                case Difficulty.HARD:
+                    for (int i = 0; i < 16; i++)
+                    {
+                        int gen = rnd.Next(4);
+                        if (i % 2 == 0)
+                            measure[i, gen] = songNoteType.HIT;
+                        if (i % 4 == 0)
+                        {
+                            int gen2;
+                            do
+                            {
+                                gen2 = rnd.Next(4);
+                                measure[i, gen2] = songNoteType.HIT;
+                            } while (gen2 == gen);
+                        }
+                    }
+                    return measure;
+                default:
+                    throw new Exception("Invalid difficulty");
             }
         }
 
@@ -87,10 +132,20 @@ namespace Coursework.GUI
                     Directory.CreateDirectory(path);
                 }
                 // Save the audio and image.
+                if (File.Exists(path+@"\audio.mp3"))
+                {
+                    File.Delete(path + @"\audio.mp3");
+                }
                 File.Copy(audioPath, path + @"\audio.mp3");
+                //Copy image
                 if (imagePath != null)
                 {
                     string ext = Path.GetExtension(imagePath);
+
+                    if (File.Exists(path + @"\image" + ext))
+                    {
+                        File.Delete(path + @"\image" + ext);
+                    }
                     File.Copy(imagePath, path + @"\image" + ext);
                 }
                 // Serialize and save the chart.
@@ -110,5 +165,10 @@ namespace Coursework.GUI
         }
         [DllImport("shell32", CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = false)]
         private static extern string SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, nint hToken = 0);
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

@@ -5,9 +5,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coursework.Gameplay
 {
@@ -42,24 +39,35 @@ namespace Coursework.Gameplay
         // How fast the arrows should fall. (pixels per second)
         internal static double speed = 300;
         internal static double pixelsPerMeasure;
-
+        // The score of the user
         internal static int score;
+        // The health of the user
+        internal static int HP;
 
         // Creates an arrow and adds it to the list.
         internal static void loadArrow(int Y, Dir dir, Point spriteCrop)
         {
-            Arrow arrow = new(Y, dir, spriteCrop);
+            Hit arrow = new(Y, dir, spriteCrop);
             arrows[(int)dir].Add(arrow);
         }
 
         internal static void loadMine(int Y, Dir dir, Point spriteCrop)
         {
-            
+            Mine mine = new(Y, dir, spriteCrop);
+            arrows[(int)dir].Add(mine);
         }
 
+        /// <summary>
+        /// A function that handles when an note is hit, and awards an appropriate score
+        /// </summary>
+        /// <param name="arrow">The arrow class that has been hit</param>
+        /// <param name="distance">The pixel distance from the receptor</param>
+        /// <exception cref="Exception">Invalid judgement</exception>
         internal static void arrowHit(Arrow arrow, float distance)
         {
+            // Get the time taken
             double time = distance / speed;
+            // Find the appropriate judgement window
             int judgement = 5;
             for(int i = 0; i < 5; i++)
             {
@@ -69,6 +77,7 @@ namespace Coursework.Gameplay
                     break;
                 }
             }
+            // Award the points
             switch (judgement)
             {
                 case 0: // Perfect
@@ -97,9 +106,15 @@ namespace Coursework.Gameplay
                 default:
                     throw new Exception();
             }
+            // Remove the arrow.
             arrow.Deprecate();
         }
 
+
+        /// <summary>
+        /// Loads a chart from a folder path, playing the song and inserting the arrows.
+        /// </summary>
+        /// <param name="path">The folder of the chart.</param>
         internal static void loadSong(string path)
         {
             // Load the audio
@@ -110,8 +125,8 @@ namespace Coursework.Gameplay
             string chartText = File.ReadAllText(path + @"\chart.json");
             Chart chart = JsonConvert.DeserializeObject<Chart>(chartText);
 
-            // 
-            double measuresPerSecond = chart.BPM / 60.0;
+            // Assume 4/4.
+            double measuresPerSecond = (chart.BPM) / (4 * 60.0);
             pixelsPerMeasure = speed / measuresPerSecond;
             double jumpGap = pixelsPerMeasure / 16;
 
@@ -133,10 +148,13 @@ namespace Coursework.Gameplay
                         {
                             case songNoteType.NONE:
                                 break;
+                                // Load a hit arrow
                             case songNoteType.HIT:
                                 loadArrow(Y, (Dir)i, new Point(0, 0));
                                 break;
+                                // Load a mine
                             case songNoteType.MINE:
+                                loadMine(Y, (Dir)i, new Point(0, 0));
                                 break;
                             default:
                                 break;

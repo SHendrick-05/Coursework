@@ -36,6 +36,10 @@ namespace Coursework
         /// A list of all the notes in the song, broken down into measures.
         /// </summary>
         public List<songNoteType[,]> measures;
+        /// <summary>
+        /// The username of the author of the chart.
+        /// </summary>
+        public string author;
         public Chart()
         {
             measures = new List<songNoteType[,]>();

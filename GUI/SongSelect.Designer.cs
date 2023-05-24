@@ -33,7 +33,8 @@
             this.titleText = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Button();
             this.songTitle = new System.Windows.Forms.Label();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.chartLayout = new System.Windows.Forms.FlowLayoutPanel();
+            this.currentUserLabel = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,7 +42,7 @@
             // 
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.playButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.playButton.Location = new System.Drawing.Point(691, 395);
+            this.playButton.Location = new System.Drawing.Point(596, 395);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(97, 43);
             this.playButton.TabIndex = 0;
@@ -83,14 +84,33 @@
             this.closeButton.Size = new System.Drawing.Size(75, 36);
             this.closeButton.TabIndex = 0;
             this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
-            // flowLayoutPanel1
+            // songTitle
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(29, 278);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(509, 160);
-            this.flowLayoutPanel1.TabIndex = 19;
-
+            this.songTitle.Location = new System.Drawing.Point(0, 0);
+            this.songTitle.Name = "songTitle";
+            this.songTitle.Size = new System.Drawing.Size(100, 23);
+            this.songTitle.TabIndex = 0;
+            // 
+            // chartLayout
+            // 
+            this.chartLayout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.chartLayout.Location = new System.Drawing.Point(12, 42);
+            this.chartLayout.Name = "chartLayout";
+            this.chartLayout.Size = new System.Drawing.Size(578, 396);
+            this.chartLayout.TabIndex = 19;
+            // 
+            // currentUserLabel
+            // 
+            this.currentUserLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.currentUserLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.currentUserLabel.Location = new System.Drawing.Point(596, 42);
+            this.currentUserLabel.Name = "currentUserLabel";
+            this.currentUserLabel.Size = new System.Drawing.Size(192, 350);
+            this.currentUserLabel.TabIndex = 20;
+            this.currentUserLabel.Text = "Chart selected:";
+            this.currentUserLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // SongSelect
             // 
@@ -98,7 +118,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.currentUserLabel);
+            this.Controls.Add(this.chartLayout);
             this.Controls.Add(this.topPanel);
             this.Controls.Add(this.playButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -117,6 +138,7 @@
         private System.Windows.Forms.Label titleText;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Label songTitle;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel chartLayout;
+        private System.Windows.Forms.Label currentUserLabel;
     }
 }

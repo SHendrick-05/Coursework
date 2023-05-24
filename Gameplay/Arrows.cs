@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coursework.Gameplay
 {
@@ -56,17 +53,21 @@ namespace Coursework.Gameplay
 
     internal class Mine : Arrow
     {
-        int framesPerUpdate = 10;
-        int frame = 0;
+        int framesPerUpdate;
+        int frame;
+        int frames;
         internal Mine(int posY, Dir dir, Point spriteCrop) : base(posY, dir, spriteCrop)
         {
             texture = SongPlayer.mineTexture;
+            framesPerUpdate = 10;
+            frame = 0;
+            frames = 8;
         }
         internal override void MineUpdate()
         {
             if (++frame >= framesPerUpdate)
             {
-                if (spriteCrop.X++ == 7)
+                if (spriteCrop.X++ == frames-1)
                     spriteCrop.X = 0;
                 frame = 0;
             }

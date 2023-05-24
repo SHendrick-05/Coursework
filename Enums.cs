@@ -17,14 +17,6 @@ namespace Coursework
         RIGHT
     }
     /// <summary>
-    /// Enum to differentiate between different types of arrows.
-    /// </summary>
-    enum arrowType
-    {
-        HIT,
-        MINE
-    }
-    /// <summary>
     /// Differential enum used for loading and saving charts.
     /// </summary>
     public enum songNoteType
@@ -32,5 +24,14 @@ namespace Coursework
         NONE,
         HIT,
         MINE
+    }
+    /// <summary>
+    /// Reprenting the difficulty of the chart
+    /// </summary>
+    public enum Difficulty
+    {
+        EASY,
+        MEDIUM,
+        HARD
     }
 }

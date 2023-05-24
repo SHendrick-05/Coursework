@@ -2,10 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Coursework.Gameplay
@@ -22,10 +19,11 @@ namespace Coursework.Gameplay
         internal static SpriteFont centuryGothic;
         internal static Song audio;
 
-
+        internal static string chartFolder;
         internal static int _height;
         internal static Label judgementLabel;
-        internal static int labelFrames = 0;
+        internal static int labelFrames;
+        internal static List<float> variations;
 
         internal static void updateJudge(Color color, string text)
         {
@@ -41,8 +39,9 @@ namespace Coursework.Gameplay
             => sprites.Remove(spr);
         
 
-        internal SongPlayer()
+        internal SongPlayer(string folder)
         {
+            chartFolder = folder;
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -59,9 +58,14 @@ namespace Coursework.Gameplay
             _graphics.HardwareModeSwitch = false;
             _graphics.ApplyChanges();
 
+            // Reset all variables
+            labelFrames = 0;
+            _height = _graphics.PreferredBackBufferHeight;
+
+
             // Initialise the list
             sprites = new List<Sprite>();
-
+            variations = new List<float>();
             judgementLabel = new Label();
             judgementLabel.sFont = centuryGothic;
 
@@ -70,7 +74,6 @@ namespace Coursework.Gameplay
             mineTexture = Content.Load<Texture2D>("downMine");
             recepTexture = Content.Load<Texture2D>("downReceptor");
             centuryGothic = Content.Load<SpriteFont>("centuryGothic16");
-            _height = _graphics.PreferredBackBufferHeight;
             base.Initialize();
         }
 
@@ -85,10 +88,9 @@ namespace Coursework.Gameplay
                                         (Dir)i,
                                         new Point(0, 0));
             }
-            Random rnd = new Random();
 
-            //GameHandler.loadSong(@"Songs\test");
-            //MediaPlayer.Play(audio);
+            GameHandler.loadSong(chartFolder);
+            MediaPlayer.Play(audio);
 
         }
 
