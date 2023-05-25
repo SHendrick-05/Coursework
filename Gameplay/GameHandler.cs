@@ -57,13 +57,30 @@ namespace Coursework.Gameplay
             arrows[(int)dir].Add(mine);
         }
 
+
+        /// <summary>
+        /// The entry point for handling hits of any arrow type, including notes, mines and holds.
+        /// </summary>
+        /// <param name="arrow">The arrow that has been hit</param>
+        /// <param name="distance">The pixel distance from the receptor</param>
+        internal static void ArrowHit(Arrow arrow, float distance)
+        {
+            Type arrowType = arrow.GetType();
+            // Note hit
+            if (arrowType == typeof(Hit))
+                HitNote(arrow as Hit, distance);
+            // Mine hit
+            else if (arrowType == typeof(Mine))
+                MineHit(arrow as Mine);
+
+        }
         /// <summary>
         /// A function that handles when an note is hit, and awards an appropriate score
         /// </summary>
         /// <param name="arrow">The arrow class that has been hit</param>
         /// <param name="distance">The pixel distance from the receptor</param>
         /// <exception cref="Exception">Invalid judgement</exception>
-        internal static void arrowHit(Arrow arrow, float distance)
+        internal static void HitNote(Hit arrow, float distance)
         {
             // Get the time taken
             double time = distance / speed;
@@ -81,6 +98,7 @@ namespace Coursework.Gameplay
             switch (judgement)
             {
                 case 0: // Perfect
+                    HP += 20;
                     SongPlayer.updateJudge(Color.Teal, "Perfect");
                     score += 300;
                     break;
@@ -108,6 +126,14 @@ namespace Coursework.Gameplay
             }
             // Remove the arrow.
             arrow.Deprecate();
+        }
+
+        internal static void MineHit(Mine mine)
+        {
+            HP -= 20;
+
+            // Remove the mine
+            mine.Deprecate();
         }
 
 

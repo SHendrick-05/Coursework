@@ -19,17 +19,21 @@ namespace Coursework.Gameplay
         internal static SpriteFont centuryGothic;
         internal static Song audio;
 
+        internal static bool isPlaying;
         internal static string chartFolder;
         internal static int _height;
-        internal static Label judgementLabel;
         internal static int labelFrames;
         internal static List<float> variations;
+
+        // Judgement label
+        private static string judgeText;
+        private static Color judgeColor;
 
         internal static void updateJudge(Color color, string text)
         {
             labelFrames = 30;
-            judgementLabel.text = text;
-            judgementLabel.color = color;
+            judgeText = text;
+            judgeColor = color;
         }
 
         internal static void addSprite(Sprite spr)
@@ -61,13 +65,13 @@ namespace Coursework.Gameplay
             // Reset all variables
             labelFrames = 0;
             _height = _graphics.PreferredBackBufferHeight;
+            isPlaying = false;
 
 
             // Initialise the list
             sprites = new List<Sprite>();
             variations = new List<float>();
-            judgementLabel = new Label();
-            judgementLabel.sFont = centuryGothic;
+
 
             // Get textures
             arrowTexture = Content.Load<Texture2D>("downTap");
@@ -90,7 +94,7 @@ namespace Coursework.Gameplay
             }
 
             GameHandler.loadSong(chartFolder);
-            MediaPlayer.Play(audio);
+            
 
         }
 
@@ -108,6 +112,12 @@ namespace Coursework.Gameplay
             }
             // Remove the deprecated sprites
             sprites = sprites.Except(toRemove).ToList();
+            
+            if (gameTime.TotalGameTime.TotalSeconds >= 2 && !isPlaying)
+            {
+                isPlaying = true;
+                MediaPlayer.Play(audio);
+            }
 
             // Update input
             Input.Update();
@@ -144,13 +154,16 @@ namespace Coursework.Gameplay
             if (labelFrames > 0)
             {
                 float centerX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2]) / 2f;
-                Vector2 bound = centuryGothic.MeasureString(judgementLabel.text);
+                Vector2 bound = centuryGothic.MeasureString(judgeText);
                 float width = bound.X;
 
-                _spriteBatch.DrawString(centuryGothic, judgementLabel.text, new Vector2(centerX - (width / 2f), 500), judgementLabel.color);
+                _spriteBatch.DrawString(centuryGothic, judgeText, new Vector2(centerX - (width / 2f), 500), judgeColor);
             }
 
-            _spriteBatch.DrawString(centuryGothic, "test", new Vector2(0, 0), Color.Black);
+            // Health
+            _spriteBatch.DrawString(centuryGothic, "HP: " + GameHandler.HP, new Vector2(0, 0), Color.White);
+            // Score
+            _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(GameHandler.arrowColumns[3] + 100, 300), Color.White);
             _spriteBatch.End();
             
             base.Draw(gameTime);

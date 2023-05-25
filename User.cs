@@ -28,6 +28,7 @@ namespace Coursework
         internal string zValue { get; set; }
         internal string yShifted { get; set; }
         internal string Salt { get; set; }
+        internal int Speed { get; set; }
         internal List<Score> scores { get; set; }
         internal User(string UN, string ZP, string YS, string salt)
         {

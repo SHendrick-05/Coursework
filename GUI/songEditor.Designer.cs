@@ -32,10 +32,13 @@
             this.titleText = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Button();
             this.noteCreator = new System.Windows.Forms.Button();
-            this.currentUserLabel = new System.Windows.Forms.Label();
+            this.generationLabel = new System.Windows.Forms.Label();
             this.settingsButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
+            this.bpmBox = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).BeginInit();
             this.SuspendLayout();
             // 
             // topPanel
@@ -79,7 +82,7 @@
             this.noteCreator.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.noteCreator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.noteCreator.ForeColor = System.Drawing.SystemColors.Control;
-            this.noteCreator.Location = new System.Drawing.Point(294, 147);
+            this.noteCreator.Location = new System.Drawing.Point(420, 149);
             this.noteCreator.Name = "noteCreator";
             this.noteCreator.Size = new System.Drawing.Size(105, 42);
             this.noteCreator.TabIndex = 13;
@@ -87,20 +90,21 @@
             this.noteCreator.UseVisualStyleBackColor = true;
             this.noteCreator.Click += new System.EventHandler(this.songEditorButton_Click);
             // 
-            // currentUserLabel
+            // generationLabel
             // 
-            this.currentUserLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.currentUserLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.currentUserLabel.Location = new System.Drawing.Point(259, 114);
-            this.currentUserLabel.Name = "currentUserLabel";
-            this.currentUserLabel.Size = new System.Drawing.Size(140, 30);
-            this.currentUserLabel.TabIndex = 10;
-            this.currentUserLabel.Text = "Notes generated!";
-            this.currentUserLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.generationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.generationLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.generationLabel.Location = new System.Drawing.Point(385, 116);
+            this.generationLabel.Name = "generationLabel";
+            this.generationLabel.Size = new System.Drawing.Size(140, 30);
+            this.generationLabel.TabIndex = 10;
+            this.generationLabel.Text = "Notes generated!";
+            this.generationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.generationLabel.Visible = false;
             // 
             // settingsButton
             // 
-            this.settingsButton.Location = new System.Drawing.Point(12, 42);
+            this.settingsButton.Location = new System.Drawing.Point(450, 42);
             this.settingsButton.Name = "settingsButton";
             this.settingsButton.Size = new System.Drawing.Size(75, 23);
             this.settingsButton.TabIndex = 14;
@@ -113,7 +117,7 @@
             this.saveButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.saveButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.saveButton.Location = new System.Drawing.Point(294, 244);
+            this.saveButton.Location = new System.Drawing.Point(420, 197);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(105, 42);
             this.saveButton.TabIndex = 15;
@@ -121,22 +125,53 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
+            // bpmBox
+            // 
+            this.bpmBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
+            this.bpmBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.bpmBox.DecimalPlaces = 2;
+            this.bpmBox.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.bpmBox.ForeColor = System.Drawing.SystemColors.Control;
+            this.bpmBox.Location = new System.Drawing.Point(595, 203);
+            this.bpmBox.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.bpmBox.Name = "bpmBox";
+            this.bpmBox.Size = new System.Drawing.Size(120, 31);
+            this.bpmBox.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
+            this.label1.Location = new System.Drawing.Point(595, 170);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(120, 30);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "BPM";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // SongEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.bpmBox);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.topPanel);
             this.Controls.Add(this.noteCreator);
-            this.Controls.Add(this.currentUserLabel);
+            this.Controls.Add(this.generationLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SongEditor";
             this.Text = "songEditor";
             this.Load += new System.EventHandler(this.SongEditor_Load);
             this.topPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -147,8 +182,10 @@
         private System.Windows.Forms.Label titleText;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button noteCreator;
-        private System.Windows.Forms.Label currentUserLabel;
+        private System.Windows.Forms.Label generationLabel;
         private System.Windows.Forms.Button settingsButton;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.NumericUpDown bpmBox;
+        private System.Windows.Forms.Label label1;
     }
 }

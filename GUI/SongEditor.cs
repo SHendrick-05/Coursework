@@ -46,9 +46,10 @@ namespace Coursework.GUI
             Random rnd = new Random();
             for (int i = 0; i < Math.Floor(measures); i++)
             {
-                songNoteType[,] measure = generateMeasure(Difficulty.HARD);
+                songNoteType[,] measure = generateMeasure(Difficulty.EASY);
                 editingChart.measures.Add(measure);
             }
+            generationLabel.Visible = true;
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace Coursework.GUI
                     for (int i = 0; i < 16; i++)
                     {
                         if (i % 4 == 0)
-                            measure[i, rnd.Next(4)] = rnd.Next(2) == 0 ? songNoteType.HIT : songNoteType.MINE;
+                            measure[i, rnd.Next(4)] = rnd.Next(3) == 0 ? songNoteType.MINE : songNoteType.HIT;
                     }
                     return measure;
                 // 1/8 streams
@@ -123,8 +124,10 @@ namespace Coursework.GUI
         /// </summary>
         private void saveButton_Click(object sender, EventArgs e)
         {
+
             if (!string.IsNullOrWhiteSpace(editingChart.title))
             {
+                editingChart.BPM = (double)bpmBox.Value;
                 string path = @$"Songs\{editingChart.title}";
                 // Creates the folder if it does not already exist.
                 if (!Directory.Exists(path))

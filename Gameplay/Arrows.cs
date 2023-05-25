@@ -123,7 +123,7 @@ namespace Coursework.Gameplay
                     {
                         Arrow closest = canBeHit.MinBy(x => timings[x]);
                         // This is the hit arrow. Pass it on.
-                        GameHandler.arrowHit(closest, timings[closest]);
+                        GameHandler.ArrowHit(closest, timings[closest]);
                     }
                 }
             }

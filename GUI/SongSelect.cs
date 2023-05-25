@@ -11,6 +11,7 @@ namespace Coursework.GUI
     internal partial class SongSelect : Form
     {
         private static string selectedFolder;
+        private static Label selectLabel;
         private void Drag(object sender, MouseEventArgs e)
         {
             // Ensure the button press was the left mouse button
@@ -23,6 +24,7 @@ namespace Coursework.GUI
         {
             selectedFolder = "";
             InitializeComponent();
+            selectLabel = selectedLabel;
         }
 
         // Runs the game upon clicking the button
@@ -58,7 +60,18 @@ namespace Coursework.GUI
         }
         internal static void SelectSong(object sender, EventArgs e)
         {
-            selectedFolder = (string)(sender as Control).Tag;
+            Control ctrl = sender as Control;
+            if (ctrl.GetType() == typeof(Panel))
+            {
+                selectedFolder = (string)ctrl.Tag;
+                selectLabel.Text = "Selected song: " + ctrl.Controls[3].Text;
+            }
+            else 
+            { 
+                selectedFolder = (string)ctrl.Parent.Tag;
+                selectLabel.Text = "Selected song: " + ctrl.Parent.Controls[3].Text;
+            }
+
         }
     }
 
@@ -148,6 +161,7 @@ namespace Coursework.GUI
             chartTitle.Size = new Size(330, 30);
             chartTitle.TabIndex = 17;
             chartTitle.TextAlign = ContentAlignment.MiddleLeft;
+            chartTitle.Click += SongSelect.SelectSong;
             // 
             // songAuthor
             // 
@@ -158,6 +172,7 @@ namespace Coursework.GUI
             authorLabel.Size = new Size(156, 25);
             authorLabel.TabIndex = 19;
             authorLabel.TextAlign = ContentAlignment.MiddleLeft;
+            authorLabel.Click += SongSelect.SelectSong;
             // 
             // songPicture
             // 
@@ -167,6 +182,7 @@ namespace Coursework.GUI
             chartPicture.TabIndex = 0;
             chartPicture.TabStop = false;
             chartPicture.SizeMode = PictureBoxSizeMode.Zoom;
+            chartPicture.Click += SongSelect.SelectSong;
             // 
             // songBPM
             // 
@@ -177,6 +193,7 @@ namespace Coursework.GUI
             chartBPM.Size = new Size(156, 25);
             chartBPM.TabIndex = 18;
             chartBPM.TextAlign = ContentAlignment.MiddleLeft;
+            chartBPM.Click += SongSelect.SelectSong;
 
             return chartPanel;
         }

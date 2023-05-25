@@ -34,7 +34,7 @@
             this.closeButton = new System.Windows.Forms.Button();
             this.songTitle = new System.Windows.Forms.Label();
             this.chartLayout = new System.Windows.Forms.FlowLayoutPanel();
-            this.currentUserLabel = new System.Windows.Forms.Label();
+            this.selectedLabel = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -101,16 +101,16 @@
             this.chartLayout.Size = new System.Drawing.Size(578, 396);
             this.chartLayout.TabIndex = 19;
             // 
-            // currentUserLabel
+            // selectedLabel
             // 
-            this.currentUserLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.currentUserLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.currentUserLabel.Location = new System.Drawing.Point(596, 42);
-            this.currentUserLabel.Name = "currentUserLabel";
-            this.currentUserLabel.Size = new System.Drawing.Size(192, 350);
-            this.currentUserLabel.TabIndex = 20;
-            this.currentUserLabel.Text = "Chart selected:";
-            this.currentUserLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.selectedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.selectedLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.selectedLabel.Location = new System.Drawing.Point(596, 42);
+            this.selectedLabel.Name = "selectedLabel";
+            this.selectedLabel.Size = new System.Drawing.Size(192, 350);
+            this.selectedLabel.TabIndex = 20;
+            this.selectedLabel.Text = "Chart selected:";
+            this.selectedLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // SongSelect
             // 
@@ -118,7 +118,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.currentUserLabel);
+            this.Controls.Add(this.selectedLabel);
             this.Controls.Add(this.chartLayout);
             this.Controls.Add(this.topPanel);
             this.Controls.Add(this.playButton);
@@ -139,6 +139,6 @@
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Label songTitle;
         private System.Windows.Forms.FlowLayoutPanel chartLayout;
-        private System.Windows.Forms.Label currentUserLabel;
+        private System.Windows.Forms.Label selectedLabel;
     }
 }
