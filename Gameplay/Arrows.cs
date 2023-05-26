@@ -27,7 +27,6 @@ namespace Coursework.Gameplay
             posX = GameHandler.arrowColumns[(int)dir];
             rotation = rotations[(int)dir];
         }
-
         internal override void Update(GameTime gameTime)
         {
             // Move the arrow downwards by the appropriate amount.

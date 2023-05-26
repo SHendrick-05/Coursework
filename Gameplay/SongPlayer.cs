@@ -13,24 +13,42 @@ namespace Coursework.Gameplay
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        /// <summary>
+        /// A list of sprites, which is used in drawing.
+        /// </summary>
         private static List<Sprite> sprites;
+        // Textures
         internal static Texture2D arrowTexture;
         internal static Texture2D mineTexture;
         internal static Texture2D recepTexture;
         internal static SpriteFont centuryGothic;
+
+        // Sound handling
         internal static SoundEffect mineHit;
         internal static Song audio;
 
+        /// <summary>
+        /// How many more frames the judgement label should be displayed for.
+        /// </summary>
+        internal static int labelFrames;
         internal static bool isPlaying;
         internal static string chartFolder;
         internal static int _height;
-        internal static int labelFrames;
+        
+        /// <summary>
+        /// A list of all hit notes, given by the time difference from the actual note time.
+        /// </summary>
         internal static List<float> variations;
 
         // Judgement label
         private static string judgeText;
         private static Color judgeColor;
 
+        /// <summary>
+        /// Updates the judgement label on a note hit.
+        /// </summary>
+        /// <param name="color">The color of the label</param>
+        /// <param name="text">The text it should display.</param>
         internal static void updateJudge(Color color, string text)
         {
             labelFrames = 30;
@@ -53,6 +71,9 @@ namespace Coursework.Gameplay
             IsMouseVisible = true;
         }
 
+        /// <summary>
+        /// Initialise variables and other things.
+        /// </summary>
         protected override void Initialize()
         {
             // Set the monogame to borderless
@@ -75,17 +96,22 @@ namespace Coursework.Gameplay
             variations = new List<float>();
 
 
+            
+            base.Initialize();
+        }
+
+        /// <summary>
+        /// Loads the content into the game.
+        /// </summary>
+        protected override void LoadContent()
+        {
             // Get textures
             arrowTexture = Content.Load<Texture2D>("downTap");
             mineTexture = Content.Load<Texture2D>("downMine");
             recepTexture = Content.Load<Texture2D>("downReceptor");
             centuryGothic = Content.Load<SpriteFont>("centuryGothic16");
             mineHit = Content.Load<SoundEffect>("explosion");
-            base.Initialize();
-        }
 
-        protected override void LoadContent()
-        {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             // Load receptors
             for(int i = 0; i < 4; i++)
@@ -97,10 +123,14 @@ namespace Coursework.Gameplay
             }
 
             GameHandler.loadSong(chartFolder);
-            
-
         }
 
+
+
+        /// <summary>
+        /// A function to update the behaviour of the game every frame
+        /// </summary>
+        /// <param name="gameTime">The running time of the game.</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -129,15 +159,21 @@ namespace Coursework.Gameplay
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// A function to draw the sprites on screen every frame
+        /// </summary>
+        /// <param name="gameTime">The running time of the game.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
             
-            
+            // Open the sprite drawer.
             _spriteBatch.Begin(SpriteSortMode.FrontToBack);
+            
             float ord = 1;
             foreach (Sprite spr in sprites)
             {
+                // Draw the sprite.
                 _spriteBatch.Draw(
                     spr.Texture,
                     spr.position,
