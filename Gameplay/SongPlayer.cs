@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,7 @@ namespace Coursework.Gameplay
         internal static Texture2D mineTexture;
         internal static Texture2D recepTexture;
         internal static SpriteFont centuryGothic;
+        internal static SoundEffect mineHit;
         internal static Song audio;
 
         internal static bool isPlaying;
@@ -78,6 +80,7 @@ namespace Coursework.Gameplay
             mineTexture = Content.Load<Texture2D>("downMine");
             recepTexture = Content.Load<Texture2D>("downReceptor");
             centuryGothic = Content.Load<SpriteFont>("centuryGothic16");
+            mineHit = Content.Load<SoundEffect>("explosion");
             base.Initialize();
         }
 

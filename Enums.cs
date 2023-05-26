@@ -23,7 +23,9 @@ namespace Coursework
     {
         NONE,
         HIT,
-        MINE
+        MINE,
+        HOLDSTART,
+        HOLDEND
     }
     /// <summary>
     /// Reprenting the difficulty of the chart

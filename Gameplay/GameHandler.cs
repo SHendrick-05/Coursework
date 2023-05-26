@@ -57,6 +57,10 @@ namespace Coursework.Gameplay
             arrows[(int)dir].Add(mine);
         }
 
+        internal static void loadHold(int Y, Dir dir, Point spriteCrop)
+        {
+
+        }
 
         /// <summary>
         /// The entry point for handling hits of any arrow type, including notes, mines and holds.
@@ -76,7 +80,7 @@ namespace Coursework.Gameplay
         }
         /// <summary>
         /// A function that handles when an note is hit, and awards an appropriate score
-        /// </summary>
+        /// </summary>  
         /// <param name="arrow">The arrow class that has been hit</param>
         /// <param name="distance">The pixel distance from the receptor</param>
         /// <exception cref="Exception">Invalid judgement</exception>
@@ -131,7 +135,9 @@ namespace Coursework.Gameplay
         internal static void MineHit(Mine mine)
         {
             HP -= 20;
-
+            // Play the SFX
+            var boom = SongPlayer.mineHit.CreateInstance();
+            boom.Play();
             // Remove the mine
             mine.Deprecate();
         }
@@ -156,11 +162,10 @@ namespace Coursework.Gameplay
             pixelsPerMeasure = speed / measuresPerSecond;
             double jumpGap = pixelsPerMeasure / 16;
 
-
             // The position of the receptor is height - 200, so the first note will hit 2 seconds after.
             double offsetPixels = chart.offset * 0.001 * speed;
             int Y = (int)Math.Round(SongPlayer._height - 200 - 2 * speed - offsetPixels);
-
+            bool[] holds = new bool[4];
             // Loop over the measures in the song
             foreach (songNoteType[,] measure in chart.measures)
             {
@@ -170,17 +175,31 @@ namespace Coursework.Gameplay
                     for (int i = 0; i < 4; i++)
                     {
                         songNoteType note = measure[j, i];
+                        // Load a hold body
+                        if (holds[i])
+                        {
+
+                        }
                         switch(note)
                         {
+                            // Load nothing
                             case songNoteType.NONE:
                                 break;
-                                // Load a hit arrow
+                            // Load a hit arrow
                             case songNoteType.HIT:
                                 loadArrow(Y, (Dir)i, new Point(0, 0));
                                 break;
-                                // Load a mine
+                            // Load a mine
                             case songNoteType.MINE:
                                 loadMine(Y, (Dir)i, new Point(0, 0));
+                                break;
+                            /// Load a hold note start
+                            case songNoteType.HOLDSTART:
+                                holds[i] = true;
+                                break;
+                            // Load a hold note tail
+                            case songNoteType.HOLDEND:
+                                holds[i] = false;
                                 break;
                             default:
                                 break;
