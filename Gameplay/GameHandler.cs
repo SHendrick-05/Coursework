@@ -37,12 +37,18 @@ namespace Coursework.Gameplay
             new List<Arrow>(), new List<Arrow>(), new List<Arrow>(), new List<Arrow>()
         };
         // How fast the arrows should fall. (pixels per second)
-        internal static double speed = 300;
+        internal static double speed = 800;
         internal static double pixelsPerMeasure;
         // The score of the user
         internal static int score;
         // The health of the user
-        internal static int HP;
+        internal static int HP = 100;
+        /// <summary>
+        /// A list of all hit notes, given by the time difference from the actual note time.
+        /// </summary>
+        internal static List<double> variations = new List<double>();
+        // A list of the amount of judgements of each type
+        internal static int[] judgements = new int[6];
 
         // Creates an arrow and adds it to the list.
         internal static void loadArrow(int Y, Dir dir, Point spriteCrop)
@@ -98,6 +104,9 @@ namespace Coursework.Gameplay
                     break;
                 }
             }
+            // Add this judgement to the lists.
+            variations.Add(time);
+            judgements[judgement]++;
             // Award the points
             switch (judgement)
             {

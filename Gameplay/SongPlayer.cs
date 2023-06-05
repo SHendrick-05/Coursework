@@ -32,13 +32,12 @@ namespace Coursework.Gameplay
         /// </summary>
         internal static int labelFrames;
         internal static bool isPlaying;
+        internal static int gameOverFrames;
         internal static string chartFolder;
         internal static int _height;
+        internal static bool resultsScreen;
         
-        /// <summary>
-        /// A list of all hit notes, given by the time difference from the actual note time.
-        /// </summary>
-        internal static List<float> variations;
+
 
         // Judgement label
         private static string judgeText;
@@ -89,11 +88,11 @@ namespace Coursework.Gameplay
             labelFrames = 0;
             _height = _graphics.PreferredBackBufferHeight;
             isPlaying = false;
+            resultsScreen = false;
 
 
             // Initialise the list
             sprites = new List<Sprite>();
-            variations = new List<float>();
 
 
             
@@ -137,24 +136,42 @@ namespace Coursework.Gameplay
                 Exit();
 
             // Update sprites
-            List<Sprite> toRemove = new List<Sprite>();
-            foreach(Sprite spr in sprites)
+            if (gameOverFrames == 0)
             {
-                spr.Update(gameTime);
-                if (spr.isDeprecated) toRemove.Add(spr);
+                List<Sprite> toRemove = new List<Sprite>();
+                foreach (Sprite spr in sprites)
+                {
+                    spr.Update(gameTime);
+                    if (spr.isDeprecated) toRemove.Add(spr);
+                }
+                // Remove the deprecated sprites
+                sprites = sprites.Except(toRemove).ToList();
             }
-            // Remove the deprecated sprites
-            sprites = sprites.Except(toRemove).ToList();
-            
-            if (gameTime.TotalGameTime.TotalSeconds >= 2 && !isPlaying)
+            else
             {
-                isPlaying = true;
-                MediaPlayer.Play(audio);
+                gameOverFrames--;
+                if (gameOverFrames == 0)
+                    // Close the application and return a fail.
+                    resultsScreen = true;
             }
 
+            if (gameTime.TotalGameTime.TotalSeconds >= 2 && !isPlaying)
+            {
+                    isPlaying = true;
+                    MediaPlayer.Play(audio);
+            }
             // Update input
             Input.Update();
             labelFrames--;
+
+            // Check HP
+            if (GameHandler.HP <= 0 && gameOverFrames == 0)
+            {
+                GameHandler.HP = 0;
+                GameHandler.speed = 0;
+                gameOverFrames = 120;
+                MediaPlayer.Stop();
+            }
 
             base.Update(gameTime);
         }
@@ -199,12 +216,27 @@ namespace Coursework.Gameplay
                 _spriteBatch.DrawString(centuryGothic, judgeText, new Vector2(centerX - (width / 2f), 500), judgeColor);
             }
 
+            int rightX = GameHandler.arrowColumns[3] + 100;
+            float judgeDiv = centuryGothic.MeasureString("test").Y + 20;
+
             // Health
             _spriteBatch.DrawString(centuryGothic, "HP: " + GameHandler.HP, new Vector2(0, 0), Color.White);
             // Score
-            _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(GameHandler.arrowColumns[3] + 100, 300), Color.White);
+            _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
+            // Judgements
+            _spriteBatch.DrawString(centuryGothic, "Perfects: " + GameHandler.judgements[0], new Vector2(rightX, 400), Color.White);
+            _spriteBatch.DrawString(centuryGothic, "Greats: " + GameHandler.judgements[1], new Vector2(rightX, 400 + judgeDiv), Color.White);
+            _spriteBatch.DrawString(centuryGothic, "Goods: " + GameHandler.judgements[2], new Vector2(rightX, 400 + 2 * judgeDiv), Color.White);
+            _spriteBatch.DrawString(centuryGothic, "OKs: " + GameHandler.judgements[3], new Vector2(rightX, 400 + 3 * judgeDiv), Color.White);
+            _spriteBatch.DrawString(centuryGothic, "Bads: " + GameHandler.judgements[4], new Vector2(rightX, 400 + 4 * judgeDiv), Color.White);
+            _spriteBatch.DrawString(centuryGothic, "Misses: " + GameHandler.judgements[5], new Vector2(rightX, 400 + 5 * judgeDiv), Color.White);
             _spriteBatch.End();
             
+
+            if (resultsScreen)
+            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+            }
             base.Draw(gameTime);
         }
 
