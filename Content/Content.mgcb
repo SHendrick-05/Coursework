@@ -86,3 +86,10 @@
 /processorParam:Quality=Best
 /build:explosion.mp3
 
+#begin resultsFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:resultsFont.spritefont
+

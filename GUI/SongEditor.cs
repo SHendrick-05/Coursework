@@ -46,7 +46,7 @@ namespace Coursework.GUI
             Random rnd = new Random();
             for (int i = 0; i < Math.Floor(measures); i++)
             {
-                songNoteType[,] measure = generateMeasure(Difficulty.EASY);
+                songNoteType[,] measure = generateMeasure(Difficulty.HARD);
                 editingChart.measures.Add(measure);
             }
             generationLabel.Visible = true;

@@ -20,8 +20,12 @@ namespace Coursework.Gameplay
         // Textures
         internal static Texture2D arrowTexture;
         internal static Texture2D mineTexture;
+        internal static Texture2D rectangle;
         internal static Texture2D recepTexture;
+
+        // Fonts
         internal static SpriteFont centuryGothic;
+        internal static SpriteFont resultsFont;
 
         // Sound handling
         internal static SoundEffect mineHit;
@@ -93,8 +97,6 @@ namespace Coursework.Gameplay
 
             // Initialise the list
             sprites = new List<Sprite>();
-
-
             
             base.Initialize();
         }
@@ -108,8 +110,13 @@ namespace Coursework.Gameplay
             arrowTexture = Content.Load<Texture2D>("downTap");
             mineTexture = Content.Load<Texture2D>("downMine");
             recepTexture = Content.Load<Texture2D>("downReceptor");
-            centuryGothic = Content.Load<SpriteFont>("centuryGothic16");
             mineHit = Content.Load<SoundEffect>("explosion");
+            //Fonts
+            centuryGothic = Content.Load<SpriteFont>("centuryGothic16");
+            resultsFont = Content.Load<SpriteFont>("resultsFont");
+
+            rectangle = new Texture2D(GraphicsDevice, 1, 1);
+            rectangle.SetData(new[] { Color.White });
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             // Load receptors
@@ -134,7 +141,8 @@ namespace Coursework.Gameplay
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            if (Input.kbState.IsKeyDown(Keys.Space))
+                GameHandler.HP = 0;
             // Update sprites
             if (gameOverFrames == 0)
             {
@@ -182,11 +190,68 @@ namespace Coursework.Gameplay
         /// <param name="gameTime">The running time of the game.</param>
         protected override void Draw(GameTime gameTime)
         {
+            if (resultsScreen)
+                DrawResults();
+            else
+                DrawGameplay();
+        }
+
+        private void DrawResults()
+        {
+            // Clear the screen
+            GraphicsDevice.Clear(Color.DarkSlateGray);
+            // Open the sprite drawer
+            _spriteBatch.Begin();
+
+            float middle = _graphics.PreferredBackBufferWidth / 2f;
+            float titleX = centuryGothic.MeasureString(GameHandler.currentChart.title).X;
+
+            int rectWidth = (int)middle - 100;
+
+            // Draw the base for the note count
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 200, rectWidth, 50), Color.Turquoise * 0.5f);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 300, rectWidth, 50), Color.Goldenrod * 0.5f);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 400, rectWidth, 50), Color.Green * 0.5f);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 500, rectWidth, 50), Color.Blue * 0.5f);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 600, rectWidth, 50), Color.HotPink * 0.5f);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 700, rectWidth, 50), Color.DarkRed * 0.5f);
+
+            // Draw the note count itself
+            int numJudges = GameHandler.judgements.Sum();
+            int perfectBound = GameHandler.judgements[0] * rectWidth / numJudges;
+            int greatBound = GameHandler.judgements[1] * rectWidth / numJudges;
+            int goodBound = GameHandler.judgements[2] * rectWidth / numJudges;
+            int okBound = GameHandler.judgements[3] * rectWidth / numJudges;
+            int badBound = GameHandler.judgements[4] * rectWidth / numJudges;
+            int missBound = GameHandler.judgements[5] * rectWidth / numJudges;
+
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 200, perfectBound, 50), Color.Turquoise);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 300, greatBound, 50), Color.Goldenrod);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 400, goodBound, 50), Color.Green);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 500, okBound, 50), Color.Blue);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 600, badBound, 50), Color.HotPink);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 700, missBound, 50), Color.DarkRed);
+
+            // Draw the text
+            int textY = 25 - (int)(resultsFont.MeasureString("Test").Y / 2);
+            _spriteBatch.DrawString(resultsFont, "Perfect", new Vector2(110, 200 + textY), Color.White);
+            _spriteBatch.DrawString(resultsFont, "Great", new Vector2(110, 300 + textY), Color.White);
+            _spriteBatch.DrawString(resultsFont, "Good", new Vector2(110, 400 + textY), Color.White);
+            _spriteBatch.DrawString(resultsFont, "OK", new Vector2(110, 500 + textY), Color.White);
+            _spriteBatch.DrawString(resultsFont, "Bad", new Vector2(110, 600 + textY), Color.White);
+            _spriteBatch.DrawString(resultsFont, "Miss", new Vector2(110, 700 + textY), Color.White);
+            _spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Draws to the screen during gameplay
+        /// </summary>
+        private void DrawGameplay()
+        {
             GraphicsDevice.Clear(Color.Black);
-            
             // Open the sprite drawer.
             _spriteBatch.Begin(SpriteSortMode.FrontToBack);
-            
+
             float ord = 1;
             foreach (Sprite spr in sprites)
             {
@@ -200,11 +265,10 @@ namespace Coursework.Gameplay
                     spr.origin,
                     1f, // Scale
                     SpriteEffects.None,
-                    1/ord
+                    1 / ord
                     );
                 ord++;
             }
-            
 
             // Judgement
             if (labelFrames > 0)
@@ -221,6 +285,9 @@ namespace Coursework.Gameplay
 
             // Health
             _spriteBatch.DrawString(centuryGothic, "HP: " + GameHandler.HP, new Vector2(0, 0), Color.White);
+            // Mean
+            if (GameHandler.variations.Count != 0)
+            _spriteBatch.DrawString(centuryGothic, GameHandler.variations.Average() * 1000, new Vector2(rightX, 200), Color.White);
             // Score
             _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
             // Judgements
@@ -231,15 +298,6 @@ namespace Coursework.Gameplay
             _spriteBatch.DrawString(centuryGothic, "Bads: " + GameHandler.judgements[4], new Vector2(rightX, 400 + 4 * judgeDiv), Color.White);
             _spriteBatch.DrawString(centuryGothic, "Misses: " + GameHandler.judgements[5], new Vector2(rightX, 400 + 5 * judgeDiv), Color.White);
             _spriteBatch.End();
-            
-
-            if (resultsScreen)
-            {
-                GraphicsDevice.Clear(Color.CornflowerBlue);
-            }
-            base.Draw(gameTime);
         }
-
-
     }
 }

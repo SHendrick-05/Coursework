@@ -112,24 +112,24 @@ namespace Coursework.Gameplay
             {
                 case 0: // Perfect
                     HP += 20;
-                    SongPlayer.updateJudge(Color.Teal, "Perfect");
+                    SongPlayer.updateJudge(Color.Turquoise, "Perfect");
                     score += 300;
                     break;
                 case 1: // Great
-                    SongPlayer.updateJudge(Color.Green, "Great");
+                    SongPlayer.updateJudge(Color.Goldenrod, "Great");
                     score += 200;
                     break;
                 case 2: // Good
-                    SongPlayer.updateJudge(Color.Blue, "Good");
+                    SongPlayer.updateJudge(Color.Green, "Good");
                     score += 150;
                     break;
                 case 3: // OK
-                    SongPlayer.updateJudge(Color.Yellow, "OK");
+                    SongPlayer.updateJudge(Color.Blue, "OK");
                     score += 100;
                     break;
                 case 4: // Bad
                     score += 50;
-                    SongPlayer.updateJudge(Color.Red, "Bad");
+                    SongPlayer.updateJudge(Color.HotPink, "Bad");
                     break;
                 case 5: // Miss
                     SongPlayer.updateJudge(Color.DarkRed, "Miss");
@@ -165,6 +165,7 @@ namespace Coursework.Gameplay
             // Load the chart
             string chartText = File.ReadAllText(path + @"\chart.json");
             Chart chart = JsonConvert.DeserializeObject<Chart>(chartText);
+            currentChart = chart;
 
             // Assume 4/4.
             double measuresPerSecond = (chart.BPM) / (4 * 60.0);
