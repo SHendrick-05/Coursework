@@ -170,7 +170,7 @@ namespace Coursework.Gameplay
             // Assume 4/4.
             double measuresPerSecond = (chart.BPM) / (4 * 60.0);
             pixelsPerMeasure = speed / measuresPerSecond;
-            double jumpGap = pixelsPerMeasure / 16;
+            double jumpGap = pixelsPerMeasure / 64;
 
             // The position of the receptor is height - 200, so the first note will hit 2 seconds after.
             double offsetPixels = chart.offset * 0.001 * speed;
@@ -179,7 +179,7 @@ namespace Coursework.Gameplay
             // Loop over the measures in the song
             foreach (songNoteType[,] measure in chart.measures)
             {
-                for (int j = 0; j < 16; j++)
+                for (int j = 0; j < 64; j++)
                 {
                     // Iterate over each column
                     for (int i = 0; i < 4; i++)
@@ -197,13 +197,18 @@ namespace Coursework.Gameplay
                                 break;
                             // Load a hit arrow
                             case songNoteType.HIT:
-                                loadArrow(Y, (Dir)i, new Point(0, 0));
+                                int colourCrop = 0;
+                                if (j % 16 == 0) colourCrop = 0;
+                                else if (j % 8 == 0) colourCrop = 1;
+                                else if (j % 6 == 0) colourCrop = 2;
+                                else if (j % 4 == 0) colourCrop = 3;
+                                loadArrow(Y, (Dir)i, new Point(0, colourCrop));
                                 break;
                             // Load a mine
                             case songNoteType.MINE:
                                 loadMine(Y, (Dir)i, new Point(0, 0));
                                 break;
-                            /// Load a hold note start
+                            // Load a hold note start
                             case songNoteType.HOLDSTART:
                                 holds[i] = true;
                                 break;

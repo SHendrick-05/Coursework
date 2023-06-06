@@ -35,16 +35,16 @@ namespace Coursework
         /// <summary>
         /// A list of all the notes in the song, broken down into measures.
         /// </summary>
-        public List<songNoteType[,]> measures;
+        public List<Dictionary<int, songNoteType>[]> measures;
         /// <summary>
         /// The username of the author of the chart.
         /// </summary>
         public string author;
         public Chart()
         {
-            measures = new List<songNoteType[,]>();
+            measures = new List<Dictionary<int, songNoteType>[]>();
         }
     }
 }
 
-// Measure = 4x16 array [i,j], where i is the position in the measure, and j is the column (Dir)
+// Measure = 960 long

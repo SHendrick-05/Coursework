@@ -159,7 +159,7 @@ namespace Coursework.Gameplay
             {
                 gameOverFrames--;
                 if (gameOverFrames == 0)
-                    // Close the application and return a fail.
+                    // Move on to the results screen
                     resultsScreen = true;
             }
 
@@ -196,6 +196,9 @@ namespace Coursework.Gameplay
                 DrawGameplay();
         }
 
+        /// <summary>
+        /// Draws the results of a chart performance after gameplay has ended
+        /// </summary>
         private void DrawResults()
         {
             // Clear the screen
@@ -203,13 +206,17 @@ namespace Coursework.Gameplay
             // Open the sprite drawer
             _spriteBatch.Begin();
 
+            // Get coordinates to use in drawing
             float middle = _graphics.PreferredBackBufferWidth / 2f;
-            float titleX = centuryGothic.MeasureString(GameHandler.currentChart.title).X;
+            float titleX = middle - centuryGothic.MeasureString(GameHandler.currentChart.title).X;
 
             int rectWidth = (int)middle - 100;
 
+            // Chart title
+            _spriteBatch.DrawString(resultsFont, GameHandler.currentChart.title, new Vector2(titleX, 50), Color.White);
+
             // Draw the base for the note count
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 200, rectWidth, 50), Color.Turquoise * 0.5f);
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 200, rectWidth, 50), Color.DarkTurquoise * 0.5f);
             _spriteBatch.Draw(rectangle, new Rectangle(100, 300, rectWidth, 50), Color.Goldenrod * 0.5f);
             _spriteBatch.Draw(rectangle, new Rectangle(100, 400, rectWidth, 50), Color.Green * 0.5f);
             _spriteBatch.Draw(rectangle, new Rectangle(100, 500, rectWidth, 50), Color.Blue * 0.5f);
@@ -225,14 +232,15 @@ namespace Coursework.Gameplay
             int badBound = GameHandler.judgements[4] * rectWidth / numJudges;
             int missBound = GameHandler.judgements[5] * rectWidth / numJudges;
 
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 200, perfectBound, 50), Color.Turquoise);
+            // Draw the note count rectangles
+            _spriteBatch.Draw(rectangle, new Rectangle(100, 200, perfectBound, 50), Color.DarkTurquoise);
             _spriteBatch.Draw(rectangle, new Rectangle(100, 300, greatBound, 50), Color.Goldenrod);
             _spriteBatch.Draw(rectangle, new Rectangle(100, 400, goodBound, 50), Color.Green);
             _spriteBatch.Draw(rectangle, new Rectangle(100, 500, okBound, 50), Color.Blue);
             _spriteBatch.Draw(rectangle, new Rectangle(100, 600, badBound, 50), Color.HotPink);
             _spriteBatch.Draw(rectangle, new Rectangle(100, 700, missBound, 50), Color.DarkRed);
 
-            // Draw the text
+            // Draw the judgement text
             int textY = 25 - (int)(resultsFont.MeasureString("Test").Y / 2);
             _spriteBatch.DrawString(resultsFont, "Perfect", new Vector2(110, 200 + textY), Color.White);
             _spriteBatch.DrawString(resultsFont, "Great", new Vector2(110, 300 + textY), Color.White);
@@ -240,6 +248,8 @@ namespace Coursework.Gameplay
             _spriteBatch.DrawString(resultsFont, "OK", new Vector2(110, 500 + textY), Color.White);
             _spriteBatch.DrawString(resultsFont, "Bad", new Vector2(110, 600 + textY), Color.White);
             _spriteBatch.DrawString(resultsFont, "Miss", new Vector2(110, 700 + textY), Color.White);
+
+            // Drawing is finished.
             _spriteBatch.End();
         }
 
@@ -287,7 +297,7 @@ namespace Coursework.Gameplay
             _spriteBatch.DrawString(centuryGothic, "HP: " + GameHandler.HP, new Vector2(0, 0), Color.White);
             // Mean
             if (GameHandler.variations.Count != 0)
-            _spriteBatch.DrawString(centuryGothic, GameHandler.variations.Average() * 1000, new Vector2(rightX, 200), Color.White);
+            _spriteBatch.DrawString(centuryGothic, (GameHandler.variations.Average() * 1000).ToString(), new Vector2(rightX, 200), Color.White);
             // Score
             _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
             // Judgements
