@@ -47,7 +47,7 @@ namespace Coursework.GUI
             Random rnd = new Random();
             for (int i = 0; i < Math.Floor(measures); i++)
             {
-                Dictionary<int, songNoteType>[] measure = generateMeasure(Difficulty.HARD);
+                Dictionary<int, songNoteType>[] measure = generateMeasure(Difficulty.MEDIUM);
                 editingChart.measures.Add(measure);
             }
             generationLabel.Visible = true;
@@ -72,17 +72,21 @@ namespace Coursework.GUI
             // Populate it depending on the difficulty
             switch (diff)
             {
-                // Easy = 1/4 streams.
+                // Easy = 1/2 streams.
                 case Difficulty.EASY:
                     for(int i = 0; i < 8; i++)
                     {
                         int gen = rnd.Next(4);
-                        measure[gen].Add(i * 120, songNoteType.HIT);
+                        measure[gen].Add(i * 120, rnd.Next(4) != 1 ? songNoteType.HIT : songNoteType.MINE);
                     }
                     return measure;
-                // 1/8 streams
+                // 1/4 streams
                 case Difficulty.MEDIUM:
-                    
+                    for (int i = 0; i < 16; i++)
+                    {
+                        int gen = rnd.Next(4);
+                        measure[gen].Add(i * 60, rnd.Next(4) != 1 ? songNoteType.HIT : songNoteType.MINE);
+                    }
                     return measure;
                 // 1/8 JS
                 case Difficulty.HARD:

@@ -163,7 +163,7 @@ namespace Coursework.Gameplay
                     resultsScreen = true;
             }
 
-            if (gameTime.TotalGameTime.TotalSeconds >= 2 && !isPlaying)
+            if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay && !isPlaying)
             {
                     isPlaying = true;
                     MediaPlayer.Play(audio);
@@ -180,7 +180,8 @@ namespace Coursework.Gameplay
                 gameOverFrames = 120;
                 MediaPlayer.Stop();
             }
-
+            else if (GameHandler.HP > 100)
+                GameHandler.HP = 100;
             base.Update(gameTime);
         }
 
@@ -191,15 +192,15 @@ namespace Coursework.Gameplay
         protected override void Draw(GameTime gameTime)
         {
             if (resultsScreen)
-                DrawResults();
+                DrawResults(gameTime);
             else
-                DrawGameplay();
+                DrawGameplay(gameTime);
         }
 
         /// <summary>
         /// Draws the results of a chart performance after gameplay has ended
         /// </summary>
-        private void DrawResults()
+        private void DrawResults(GameTime gameTime)
         {
             // Clear the screen
             GraphicsDevice.Clear(Color.DarkSlateGray);
@@ -256,7 +257,7 @@ namespace Coursework.Gameplay
         /// <summary>
         /// Draws to the screen during gameplay
         /// </summary>
-        private void DrawGameplay()
+        private void DrawGameplay(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
             // Open the sprite drawer.
@@ -293,8 +294,12 @@ namespace Coursework.Gameplay
             int rightX = GameHandler.arrowColumns[3] + 100;
             float judgeDiv = centuryGothic.MeasureString("test").Y + 20;
 
+
+            _spriteBatch.DrawString(resultsFont, (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(0, 0), Color.White);
+
             // Health
-            _spriteBatch.DrawString(centuryGothic, "HP: " + GameHandler.HP, new Vector2(0, 0), Color.White);
+            Color hpColor = GameHandler.HP > 40 ? Color.Green : Color.Red;
+            _spriteBatch.Draw(rectangle, new Rectangle(50, 50, 5*GameHandler.HP, 50), hpColor);
             // Mean
             if (GameHandler.variations.Count != 0)
             _spriteBatch.DrawString(centuryGothic, (GameHandler.variations.Average() * 1000).ToString(), new Vector2(rightX, 200), Color.White);

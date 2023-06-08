@@ -36,9 +36,14 @@ namespace Coursework.Gameplay
         {
             new List<Arrow>(), new List<Arrow>(), new List<Arrow>(), new List<Arrow>()
         };
-        // How fast the arrows should fall. (pixels per second)
+        /// <summary>
+        /// How many pixels the notes should fall each second.
+        /// </summary>
         internal static double speed = 800;
         internal static double pixelsPerMeasure;
+        // How finely a measure is divided into notes
+        internal static int measureDivions = 960;
+        internal static float timeDelay = 3;
         // The score of the user
         internal static int score;
         // The health of the user
@@ -50,13 +55,18 @@ namespace Coursework.Gameplay
         // A list of the amount of judgements of each type
         internal static int[] judgements = new int[6];
 
-        // Creates an arrow and adds it to the list.
+        /// <summary>
+        /// Creates an arrow and adds it to the list
+        /// </summary>
         internal static void loadArrow(int Y, Dir dir, Point spriteCrop)
         {
             Hit arrow = new(Y, dir, spriteCrop);
             arrows[(int)dir].Add(arrow);
         }
 
+        /// <summary>
+        /// Creates a mine and adds it to the list.
+        /// </summary>
         internal static void loadMine(int Y, Dir dir, Point spriteCrop)
         {
             Mine mine = new(Y, dir, spriteCrop);
@@ -65,7 +75,8 @@ namespace Coursework.Gameplay
 
         internal static void loadHold(int Y, Dir dir, Point spriteCrop)
         {
-
+            throw new NotImplementedException();
+            // TODO: Add hold notes.
         }
 
         /// <summary>
@@ -141,6 +152,10 @@ namespace Coursework.Gameplay
             arrow.Deprecate();
         }
 
+        /// <summary>
+        /// Event that occurs whenever a mine is hit
+        /// </summary>
+        /// <param name="mine">The mine that has been hit</param>
         internal static void MineHit(Mine mine)
         {
             HP -= 20;
@@ -170,59 +185,60 @@ namespace Coursework.Gameplay
             // Assume 4/4.
             double measuresPerSecond = (chart.BPM) / (4 * 60.0);
             pixelsPerMeasure = speed / measuresPerSecond;
-            double jumpGap = pixelsPerMeasure / 64;
+            double jumpGap = pixelsPerMeasure / measureDivions;
 
             // The position of the receptor is height - 200, so the first note will hit 2 seconds after.
             double offsetPixels = chart.offset * 0.001 * speed;
-            int Y = (int)Math.Round(SongPlayer._height - 200 - 2 * speed - offsetPixels);
+            int baseY = (int)Math.Round(SongPlayer._height - 200 - timeDelay * speed - offsetPixels);
             bool[] holds = new bool[4];
             // Loop over the measures in the song
-            foreach (songNoteType[,] measure in chart.measures)
+            foreach (Dictionary<int, songNoteType>[] measure in chart.measures)
             {
-                for (int j = 0; j < 64; j++)
+                // Loop over every column
+                for(int i = 0; i < 4; i++)
                 {
-                    // Iterate over each column
-                    for (int i = 0; i < 4; i++)
+                    foreach(KeyValuePair<int, songNoteType> note in measure[i])
                     {
-                        songNoteType note = measure[j, i];
-                        // Load a hold body
-                        if (holds[i])
+                        // Get the Y position of the note
+                        int noteY = baseY - (int)Math.Round(note.Key * jumpGap);
+                        
+                        switch(note.Value)
                         {
-
-                        }
-                        switch(note)
-                        {
-                            // Load nothing
-                            case songNoteType.NONE:
-                                break;
                             // Load a hit arrow
                             case songNoteType.HIT:
-                                int colourCrop = 0;
-                                if (j % 16 == 0) colourCrop = 0;
-                                else if (j % 8 == 0) colourCrop = 1;
-                                else if (j % 6 == 0) colourCrop = 2;
-                                else if (j % 4 == 0) colourCrop = 3;
-                                loadArrow(Y, (Dir)i, new Point(0, colourCrop));
+                                // Get the correct colour
+                                int colourCrop;
+                                if (note.Key % 240 == 0) colourCrop = 0; // 1 beat
+                                else if (note.Key % 120 == 0) colourCrop = 1; // 1/2 beat
+                                else if (note.Key % 80 == 0) colourCrop = 2; // 1/3 beat
+                                else if (note.Key % 60 == 0) colourCrop = 3; // 1/4 beat
+                                else if (note.Key % 40 == 0) colourCrop = 4; // 1/6 beat
+                                else if (note.Key % 30 == 0) colourCrop = 5; // 1/8 beat
+                                else if (note.Key % 20 == 0) colourCrop = 6; // 1/12 beat
+                                else colourCrop = 7; // Other interval
+                                loadArrow(noteY, (Dir)i, new Point(0, colourCrop));
                                 break;
                             // Load a mine
                             case songNoteType.MINE:
-                                loadMine(Y, (Dir)i, new Point(0, 0));
+                                loadMine(noteY, (Dir)i, new Point(0, 0));
                                 break;
-                            // Load a hold note start
+                            // Begin a LN
                             case songNoteType.HOLDSTART:
                                 holds[i] = true;
                                 break;
-                            // Load a hold note tail
+                            // End a LN
                             case songNoteType.HOLDEND:
                                 holds[i] = false;
                                 break;
+                            // Nothing there.
                             default:
                                 break;
                         }
                     }
-                    // Move up the Y, as we are moving on to the next division.
-                    Y -= (int)Math.Round(jumpGap);
                 }
+
+                // Set the base to the start of the next measure.
+                baseY -= (int)Math.Round(pixelsPerMeasure);
             }
         }
     }
