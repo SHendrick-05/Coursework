@@ -1,6 +1,6 @@
 ﻿namespace Coursework.GUI
 {
-    partial class SongSelect
+    partial class EditorOpenChart
     {
         /// <summary>
         /// Required designer variable.
@@ -28,27 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.playButton = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
             this.titleText = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Button();
+            this.openButton = new System.Windows.Forms.Button();
             this.songTitle = new System.Windows.Forms.Label();
-            this.chartLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.selectedLabel = new System.Windows.Forms.Label();
+            this.chartLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.topPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // playButton
-            // 
-            this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.playButton.Location = new System.Drawing.Point(596, 395);
-            this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(97, 43);
-            this.playButton.TabIndex = 0;
-            this.playButton.Text = "Play!";
-            this.playButton.UseVisualStyleBackColor = true;
-            this.playButton.Click += new System.EventHandler(this.playButton_Click);
             // 
             // topPanel
             // 
@@ -59,7 +47,7 @@
             this.topPanel.Location = new System.Drawing.Point(0, 0);
             this.topPanel.Name = "topPanel";
             this.topPanel.Size = new System.Drawing.Size(800, 36);
-            this.topPanel.TabIndex = 16;
+            this.topPanel.TabIndex = 23;
             // 
             // titleText
             // 
@@ -86,46 +74,60 @@
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
+            // openButton
+            // 
+            this.openButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.openButton.Font = new System.Drawing.Font("Century Gothic", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.openButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.openButton.Location = new System.Drawing.Point(596, 401);
+            this.openButton.Name = "openButton";
+            this.openButton.Size = new System.Drawing.Size(192, 43);
+            this.openButton.TabIndex = 21;
+            this.openButton.Text = "Edit";
+            this.openButton.UseVisualStyleBackColor = true;
+            this.openButton.Click += new System.EventHandler(this.openButton_Click);
+            // 
             // songTitle
             // 
-            this.songTitle.Location = new System.Drawing.Point(0, 0);
+            this.songTitle.Location = new System.Drawing.Point(0, 6);
             this.songTitle.Name = "songTitle";
             this.songTitle.Size = new System.Drawing.Size(100, 23);
-            this.songTitle.TabIndex = 0;
+            this.songTitle.TabIndex = 22;
+            // 
+            // selectedLabel
+            // 
+            this.selectedLabel.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.selectedLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.selectedLabel.Location = new System.Drawing.Point(596, 48);
+            this.selectedLabel.Name = "selectedLabel";
+            this.selectedLabel.Size = new System.Drawing.Size(192, 350);
+            this.selectedLabel.TabIndex = 25;
+            this.selectedLabel.Text = "Chart selected:";
+            this.selectedLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // chartLayout
             // 
             this.chartLayout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.chartLayout.Location = new System.Drawing.Point(12, 42);
+            this.chartLayout.Location = new System.Drawing.Point(12, 48);
             this.chartLayout.Name = "chartLayout";
             this.chartLayout.Size = new System.Drawing.Size(578, 396);
-            this.chartLayout.TabIndex = 19;
+            this.chartLayout.TabIndex = 24;
             // 
-            // selectedLabel
-            // 
-            this.selectedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.selectedLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.selectedLabel.Location = new System.Drawing.Point(596, 42);
-            this.selectedLabel.Name = "selectedLabel";
-            this.selectedLabel.Size = new System.Drawing.Size(192, 350);
-            this.selectedLabel.TabIndex = 20;
-            this.selectedLabel.Text = "Chart selected:";
-            this.selectedLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // SongSelect
+            // EditorOpenChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.topPanel);
+            this.Controls.Add(this.openButton);
+            this.Controls.Add(this.songTitle);
             this.Controls.Add(this.selectedLabel);
             this.Controls.Add(this.chartLayout);
-            this.Controls.Add(this.topPanel);
-            this.Controls.Add(this.playButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "SongSelect";
-            this.Text = "SongSelect";
-            this.Load += new System.EventHandler(this.SongSelect_Load);
+            this.Name = "EditorOpenChart";
+            this.Text = "EditorOpenChart";
+            this.Load += new System.EventHandler(this.EditorOpenChart_Load);
             this.topPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -133,12 +135,12 @@
 
         #endregion
 
-        private System.Windows.Forms.Button playButton;
         private System.Windows.Forms.Panel topPanel;
         private System.Windows.Forms.Label titleText;
         private System.Windows.Forms.Button closeButton;
+        private System.Windows.Forms.Button openButton;
         private System.Windows.Forms.Label songTitle;
-        private System.Windows.Forms.FlowLayoutPanel chartLayout;
         private System.Windows.Forms.Label selectedLabel;
+        private System.Windows.Forms.FlowLayoutPanel chartLayout;
     }
 }

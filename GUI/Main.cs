@@ -27,6 +27,7 @@ namespace Coursework.GUI
                 Login lgn = new Login();
                 lgn.FormClosed += updateUserText;
                 lgn.Show();
+                Hide();
             }
         }
 
@@ -37,6 +38,7 @@ namespace Coursework.GUI
                 AccountSettings acSettings = new AccountSettings();
                 acSettings.FormClosed += updateUserText;
                 acSettings.Show();
+                Hide();
             }
         }
 
@@ -46,6 +48,7 @@ namespace Coursework.GUI
             {
                 SongSelect slct = new SongSelect();
                 slct.Show();
+                Hide();
             }
         }
 
@@ -82,18 +85,11 @@ namespace Coursework.GUI
 
         private void songEditorButton_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms["AccountSettings"] as AccountSettings != null) return;
-
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = SongEditor.getDownloadsFolder();
-            ofd.Filter = "Songs (*.mp3)|*.mp3";
-            ofd.FilterIndex = 0;
-            ofd.RestoreDirectory = true;
-
-            if (ofd.ShowDialog() == DialogResult.OK)
+            if (Application.OpenForms["SongEditor"] as SongEditor == null) return;
             {
-                SongEditor editor = new SongEditor(ofd.FileName);
+                SongEditor editor = new SongEditor();
                 editor.Show();
+                Hide();
             }
         }
     }
@@ -117,8 +113,5 @@ namespace Coursework.GUI
             ReleaseCapture();
             SendMessage(handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
         }
-
-        
-
     }
 }

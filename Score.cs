@@ -6,49 +6,38 @@ namespace Coursework
 {
     internal static class Scores
     {
-        internal static string scorePath = @"Storage\scores.json";
 
-        internal static List<Score> scoreList;
+        internal static Dictionary<uint, List<Score>> scoreDict;
 
-        internal static void AddScore(Score score)
+        internal static void AddScore(Chart chart, Score score)
         {
-
+            if (scoreDict.ContainsKey(chart.ID))
+            {
+                scoreDict[chart.ID].Add(score);
+            }
+            else
+            {
+                scoreDict.Add(chart.ID, new List<Score>() { score });
+            }
+            
         }
 
-        // Converts the dictionary into a json string, and then saves it
-        internal static void SaveScores()
-        {
-            string serialisedScores = JsonConvert.SerializeObject(scoreList, Formatting.Indented);
-            File.WriteAllText(scorePath, serialisedScores);
-        }
-        // Reads the json from the file, and converts it into a dictionary
-        internal static void LoadScores()
-        {
-            string serialisedScores = File.ReadAllText(scorePath);
-            // To ensure the cast to dynamic will work, make sure the user does not have any access to modify scores.json
-            scoreList = JsonConvert.DeserializeObject<List<Score>>(serialisedScores);
-        }
 
         // Init the scoreList
         static Scores()
         {
-            scoreList = new List<Score>();
-            if (File.Exists(scorePath))
-            {
-                LoadScores();
-            }
-            else
-            {
-                SaveScores();
-            }
+            scoreDict = new Dictionary<uint, List<Score>>();
         }
     }
     internal class Score
     {
         internal string User { get; set; }
+        internal int[] Judgements { get; set; }
+        internal float Accuracy { get; set; }
         internal Score(string user)
         {
             User = user;
+            Judgements = new int[6];
         }
     }
 }

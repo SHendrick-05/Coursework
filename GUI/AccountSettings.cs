@@ -23,6 +23,7 @@ namespace Coursework.GUI
 
         private void closeButton_Click(object sender, EventArgs e)
         {
+            (Application.OpenForms["Main"] as Main).Show();
             Close();
         }
 

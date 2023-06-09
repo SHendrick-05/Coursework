@@ -23,12 +23,8 @@ namespace Coursework.GUI
         internal static Chart editingChart;
 
 
-        public SongEditor(string path)
+        public SongEditor()
         {
-            editingChart = new Chart();
-            editingChart.BPM = 119;
-            editingChart.title = "Song";
-            audioPath = path;
             InitializeComponent();
         }
 
@@ -108,27 +104,28 @@ namespace Coursework.GUI
         /// </summary>
         private void saveButton_Click(object sender, EventArgs e)
         {
-
+            // Ensure the title is not empty
             if (!string.IsNullOrWhiteSpace(editingChart.title))
             {
-                editingChart.BPM = (double)bpmBox.Value;
+                // Get the BPM and path
                 string path = @$"Songs\{editingChart.title}";
+                editingChart.folderPath = path;
+                editingChart.BPM = (double)bpmBox.Value;
                 // Creates the folder if it does not already exist.
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
-                // Save the audio and image.
+                // Copy audio
                 if (File.Exists(path+@"\audio.mp3"))
                 {
                     File.Delete(path + @"\audio.mp3");
                 }
                 File.Copy(audioPath, path + @"\audio.mp3");
-                //Copy image
+                // Copy image
                 if (imagePath != null)
                 {
                     string ext = Path.GetExtension(imagePath);
-
                     if (File.Exists(path + @"\image" + ext))
                     {
                         File.Delete(path + @"\image" + ext);
@@ -138,6 +135,24 @@ namespace Coursework.GUI
                 // Serialize and save the chart.
                 string chart = JsonConvert.SerializeObject(editingChart);
                 File.WriteAllText(path + @"\chart.json", chart);
+            }
+        }
+
+        private void createSong_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = getDownloadsFolder();
+            ofd.Filter = "Songs (*.mp3)|*.mp3";
+            ofd.FilterIndex = 0;
+            ofd.RestoreDirectory = true;
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                editingChart = new Chart();
+                editingChart.title = "Song";
+                editingChart.BPM = 110;
+                bpmBox.Value = 110;
+                audioPath = ofd.FileName;
             }
         }
 
@@ -155,6 +170,7 @@ namespace Coursework.GUI
 
         private void closeButton_Click(object sender, EventArgs e)
         {
+            (Application.OpenForms["Main"] as Main).Show();
             Close();
         }
     }

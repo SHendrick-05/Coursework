@@ -24,6 +24,7 @@ namespace Coursework.GUI
         // Closes the form when the button is clicked.
         private void closeButton_Click(object sender, EventArgs e)
         {
+            (Application.OpenForms["Main"] as Main).Show();
             Close();
         }
 

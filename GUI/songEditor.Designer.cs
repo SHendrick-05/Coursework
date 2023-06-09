@@ -37,6 +37,9 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.bpmBox = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.titleLabel = new System.Windows.Forms.Label();
+            this.createSong = new System.Windows.Forms.Button();
+            this.difficultyBox = new System.Windows.Forms.ComboBox();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).BeginInit();
             this.SuspendLayout();
@@ -94,7 +97,7 @@
             // 
             this.generationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.generationLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.generationLabel.Location = new System.Drawing.Point(385, 116);
+            this.generationLabel.Location = new System.Drawing.Point(172, 278);
             this.generationLabel.Name = "generationLabel";
             this.generationLabel.Size = new System.Drawing.Size(140, 30);
             this.generationLabel.TabIndex = 10;
@@ -104,7 +107,7 @@
             // 
             // settingsButton
             // 
-            this.settingsButton.Location = new System.Drawing.Point(450, 42);
+            this.settingsButton.Location = new System.Drawing.Point(629, 78);
             this.settingsButton.Name = "settingsButton";
             this.settingsButton.Size = new System.Drawing.Size(75, 23);
             this.settingsButton.TabIndex = 14;
@@ -153,12 +156,52 @@
             this.label1.Text = "BPM";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // titleLabel
+            // 
+            this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.titleLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.titleLabel.Location = new System.Drawing.Point(0, 39);
+            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Size = new System.Drawing.Size(800, 30);
+            this.titleLabel.TabIndex = 23;
+            this.titleLabel.Text = "Currently editing: ";
+            this.titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // createSong
+            // 
+            this.createSong.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
+            this.createSong.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.createSong.ForeColor = System.Drawing.SystemColors.Control;
+            this.createSong.Location = new System.Drawing.Point(242, 149);
+            this.createSong.Name = "createSong";
+            this.createSong.Size = new System.Drawing.Size(105, 42);
+            this.createSong.TabIndex = 24;
+            this.createSong.Text = "Create new song";
+            this.createSong.UseVisualStyleBackColor = true;
+            this.createSong.Click += new System.EventHandler(this.createSong_Click);
+            // 
+            // difficultyBox
+            // 
+            this.difficultyBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.difficultyBox.FormattingEnabled = true;
+            this.difficultyBox.Items.AddRange(new object[] {
+            "Easy",
+            "Medium",
+            "Hard"});
+            this.difficultyBox.Location = new System.Drawing.Point(458, 285);
+            this.difficultyBox.Name = "difficultyBox";
+            this.difficultyBox.Size = new System.Drawing.Size(121, 23);
+            this.difficultyBox.TabIndex = 25;
+            // 
             // SongEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.difficultyBox);
+            this.Controls.Add(this.createSong);
+            this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.bpmBox);
             this.Controls.Add(this.saveButton);
@@ -187,5 +230,8 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.NumericUpDown bpmBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label titleLabel;
+        private System.Windows.Forms.Button createSong;
+        private System.Windows.Forms.ComboBox difficultyBox;
     }
 }

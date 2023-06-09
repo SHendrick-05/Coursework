@@ -13,11 +13,6 @@ namespace Coursework
         internal static void deleteAccount(User user)
         {
             string username = user.username;
-            foreach(Score score in Scores.scoreList)
-            {
-                if (score.User == username)
-                    Scores.scoreList.Remove(score);
-            }
             Database.deleteUser(username);
         }
     }

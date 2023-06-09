@@ -28,7 +28,7 @@ namespace Coursework.GUI
         }
 
         // Runs the game upon clicking the button
-        private void button1_Click(object sender, EventArgs e)
+        private void playButton_Click(object sender, EventArgs e)
         {
             // Ensure the game isn't started with no song to play
             if (string.IsNullOrWhiteSpace(selectedFolder)) return;
@@ -56,6 +56,7 @@ namespace Coursework.GUI
 
         private void closeButton_Click(object sender, EventArgs e)
         {
+            (Application.OpenForms["Main"] as Main).Show();
             Close();
         }
         internal static void SelectSong(object sender, EventArgs e)
@@ -115,7 +116,7 @@ namespace Coursework.GUI
             }
 
             // Get a template panel.
-            Panel template = getTemplate(i);
+            Panel template = getTemplate(i, true);
             // Fill it in with relevant information.
             template.Tag = folderPath;
             template.Controls[0].Text = $"Charted by {chart.author}";
@@ -131,13 +132,30 @@ namespace Coursework.GUI
         /// </summary>
         /// <param name="i">The order of the panel to appear</param>
         /// <returns>A template panel to be filled in.</returns>
-        private static Panel getTemplate(int i)
+        private static Panel getTemplate(int i, bool select)
         {
             Panel chartPanel = new Panel();
             PictureBox chartPicture = new PictureBox();
             Label chartTitle = new Label();
             Label chartBPM = new Label();
             Label authorLabel = new Label();
+
+            if (select)
+            {
+                chartPanel.Click += SongSelect.SelectSong;
+                chartTitle.Click += SongSelect.SelectSong;
+                authorLabel.Click += SongSelect.SelectSong;
+                chartPicture.Click += SongSelect.SelectSong;
+                chartBPM.Click += SongSelect.SelectSong;
+            }
+            else
+            {
+                chartPanel.Click += EditorOpenChart.SelectSong;
+                chartTitle.Click += EditorOpenChart.SelectSong;
+                authorLabel.Click += EditorOpenChart.SelectSong;
+                chartPicture.Click += EditorOpenChart.SelectSong;
+                chartBPM.Click += EditorOpenChart.SelectSong;
+            }
 
             // 
             // chartPanel
@@ -150,7 +168,6 @@ namespace Coursework.GUI
             chartPanel.Name = "chart" + i.ToString();
             chartPanel.Size = new Size(509, 100);
             chartPanel.TabIndex = 20;
-            chartPanel.Click += SongSelect.SelectSong;
             // 
             // chartTitle
             // 
@@ -161,7 +178,7 @@ namespace Coursework.GUI
             chartTitle.Size = new Size(330, 30);
             chartTitle.TabIndex = 17;
             chartTitle.TextAlign = ContentAlignment.MiddleLeft;
-            chartTitle.Click += SongSelect.SelectSong;
+            
             // 
             // songAuthor
             // 
@@ -172,7 +189,7 @@ namespace Coursework.GUI
             authorLabel.Size = new Size(156, 25);
             authorLabel.TabIndex = 19;
             authorLabel.TextAlign = ContentAlignment.MiddleLeft;
-            authorLabel.Click += SongSelect.SelectSong;
+            
             // 
             // songPicture
             // 
@@ -182,7 +199,7 @@ namespace Coursework.GUI
             chartPicture.TabIndex = 0;
             chartPicture.TabStop = false;
             chartPicture.SizeMode = PictureBoxSizeMode.Zoom;
-            chartPicture.Click += SongSelect.SelectSong;
+            
             // 
             // songBPM
             // 
@@ -193,7 +210,7 @@ namespace Coursework.GUI
             chartBPM.Size = new Size(156, 25);
             chartBPM.TabIndex = 18;
             chartBPM.TextAlign = ContentAlignment.MiddleLeft;
-            chartBPM.Click += SongSelect.SelectSong;
+            
 
             return chartPanel;
         }
