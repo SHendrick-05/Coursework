@@ -85,7 +85,7 @@ namespace Coursework.GUI
 
         private void songEditorButton_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms["SongEditor"] as SongEditor == null) return;
+            if (Application.OpenForms["SongEditor"] as SongEditor == null)
             {
                 SongEditor editor = new SongEditor();
                 editor.Show();

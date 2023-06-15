@@ -40,8 +40,14 @@
             this.titleLabel = new System.Windows.Forms.Label();
             this.createSong = new System.Windows.Forms.Button();
             this.difficultyBox = new System.Windows.Forms.ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.mineBar = new System.Windows.Forms.TrackBar();
+            this.label2 = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mineBar)).BeginInit();
             this.SuspendLayout();
             // 
             // topPanel
@@ -85,7 +91,7 @@
             this.noteCreator.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.noteCreator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.noteCreator.ForeColor = System.Drawing.SystemColors.Control;
-            this.noteCreator.Location = new System.Drawing.Point(420, 149);
+            this.noteCreator.Location = new System.Drawing.Point(55, 33);
             this.noteCreator.Name = "noteCreator";
             this.noteCreator.Size = new System.Drawing.Size(105, 42);
             this.noteCreator.TabIndex = 13;
@@ -97,7 +103,7 @@
             // 
             this.generationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.generationLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.generationLabel.Location = new System.Drawing.Point(172, 278);
+            this.generationLabel.Location = new System.Drawing.Point(20, 0);
             this.generationLabel.Name = "generationLabel";
             this.generationLabel.Size = new System.Drawing.Size(140, 30);
             this.generationLabel.TabIndex = 10;
@@ -120,7 +126,7 @@
             this.saveButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.saveButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.saveButton.Location = new System.Drawing.Point(420, 197);
+            this.saveButton.Location = new System.Drawing.Point(55, 81);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(105, 42);
             this.saveButton.TabIndex = 15;
@@ -135,7 +141,7 @@
             this.bpmBox.DecimalPlaces = 2;
             this.bpmBox.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.bpmBox.ForeColor = System.Drawing.SystemColors.Control;
-            this.bpmBox.Location = new System.Drawing.Point(595, 203);
+            this.bpmBox.Location = new System.Drawing.Point(234, 92);
             this.bpmBox.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -149,7 +155,7 @@
             // 
             this.label1.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(595, 170);
+            this.label1.Location = new System.Drawing.Point(234, 59);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(120, 30);
             this.label1.TabIndex = 22;
@@ -172,7 +178,7 @@
             this.createSong.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.createSong.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.createSong.ForeColor = System.Drawing.SystemColors.Control;
-            this.createSong.Location = new System.Drawing.Point(242, 149);
+            this.createSong.Location = new System.Drawing.Point(94, 107);
             this.createSong.Name = "createSong";
             this.createSong.Size = new System.Drawing.Size(105, 42);
             this.createSong.TabIndex = 24;
@@ -188,10 +194,55 @@
             "Easy",
             "Medium",
             "Hard"});
-            this.difficultyBox.Location = new System.Drawing.Point(458, 285);
+            this.difficultyBox.Location = new System.Drawing.Point(233, 33);
             this.difficultyBox.Name = "difficultyBox";
             this.difficultyBox.Size = new System.Drawing.Size(121, 23);
             this.difficultyBox.TabIndex = 25;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.mineBar);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.noteCreator);
+            this.panel1.Controls.Add(this.difficultyBox);
+            this.panel1.Controls.Add(this.generationLabel);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.bpmBox);
+            this.panel1.Controls.Add(this.saveButton);
+            this.panel1.Location = new System.Drawing.Point(205, 149);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(400, 250);
+            this.panel1.TabIndex = 26;
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.SystemColors.Control;
+            this.label3.Location = new System.Drawing.Point(55, 160);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(299, 30);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "Mines";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mineBar
+            // 
+            this.mineBar.Location = new System.Drawing.Point(55, 193);
+            this.mineBar.Name = "mineBar";
+            this.mineBar.Size = new System.Drawing.Size(299, 45);
+            this.mineBar.TabIndex = 27;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(233, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(121, 30);
+            this.label2.TabIndex = 26;
+            this.label2.Text = "Difficulty";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SongEditor
             // 
@@ -199,22 +250,20 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.difficultyBox);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.createSong);
             this.Controls.Add(this.titleLabel);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.bpmBox);
-            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.topPanel);
-            this.Controls.Add(this.noteCreator);
-            this.Controls.Add(this.generationLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SongEditor";
             this.Text = "songEditor";
             this.Load += new System.EventHandler(this.SongEditor_Load);
             this.topPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mineBar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -233,5 +282,9 @@
         private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.Button createSong;
         private System.Windows.Forms.ComboBox difficultyBox;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TrackBar mineBar;
+        private System.Windows.Forms.Label label2;
     }
 }

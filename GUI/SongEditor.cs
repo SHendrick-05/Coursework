@@ -38,13 +38,47 @@ namespace Coursework.GUI
         {
             var audioFile = TagLib.File.Create(audioPath);
             double length = audioFile.Properties.Duration.TotalMinutes;
-            double measures = 4.0 * length * editingChart.BPM;
-
-            Random rnd = new Random();
-            for (int i = 0; i < Math.Floor(measures); i++)
+            int measures = (int)Math.Floor(0.25 * length * editingChart.BPM);
+            int notes;
+            int minePct = mineBar.Value;
+            Difficulty diff;
+            
+            if (difficultyBox.Text == "Easy")
             {
-                Dictionary<int, songNoteType>[] measure = generateMeasure(Difficulty.MEDIUM);
+                diff = Difficulty.EASY;
+                notes = 8 * measures;
+            }
+            else if (difficultyBox.Text == "Medium")
+            {
+                diff = Difficulty.MEDIUM;
+                notes = 16 * measures;
+            }
+            else
+            {
+                diff = Difficulty.HARD;
+                notes = 24 * measures;
+            }
+            Random rnd = new Random();
+
+            // Generate notes
+            for (int i = 0; i < measures; i++)
+            {
+                Dictionary<int, songNoteType>[] measure = generateMeasure(diff);
                 editingChart.measures.Add(measure);
+            }
+
+            // Generate mines
+            for (int i = 0; i < Math.Floor(notes * minePct / 100f); i++)
+            {
+                int meas = rnd.Next(editingChart.measures.Count);
+                int col = rnd.Next(4);
+                int div;
+                do
+                {
+                    div = rnd.Next(32);
+                }
+                while (editingChart.measures[meas][col].ContainsKey(div * 30));
+                editingChart.measures[meas][col][div * 30] = songNoteType.MINE;
             }
             generationLabel.Visible = true;
         }
@@ -73,7 +107,7 @@ namespace Coursework.GUI
                     for(int i = 0; i < 8; i++)
                     {
                         int gen = rnd.Next(4);
-                        measure[gen].Add(i * 120, rnd.Next(4) != 1 ? songNoteType.HIT : songNoteType.MINE);
+                        measure[gen].Add(i * 120, songNoteType.HIT);
                     }
                     return measure;
                 // 1/4 streams
@@ -81,7 +115,7 @@ namespace Coursework.GUI
                     for (int i = 0; i < 16; i++)
                     {
                         int gen = rnd.Next(4);
-                        measure[gen].Add(i * 60, rnd.Next(4) != 1 ? songNoteType.HIT : songNoteType.MINE);
+                        measure[gen].Add(i * 60, songNoteType.HIT);
                     }
                     return measure;
                 // 1/8 JS
@@ -97,6 +131,7 @@ namespace Coursework.GUI
         {
             SongEditorPopup popup = new SongEditorPopup();
             popup.ShowDialog();
+            titleLabel.Text = "Currently editing: " + editingChart.title;
         }
 
         /// <summary>
@@ -153,7 +188,14 @@ namespace Coursework.GUI
                 editingChart.BPM = 110;
                 bpmBox.Value = 110;
                 audioPath = ofd.FileName;
+                titleLabel.Text = "Currently editing: " + editingChart.title;
             }
+        }
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            (Application.OpenForms["Main"] as Main).Show();
+            Close();
         }
 
         /// <summary>
@@ -167,11 +209,5 @@ namespace Coursework.GUI
         }
         [DllImport("shell32", CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = false)]
         private static extern string SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, nint hToken = 0);
-
-        private void closeButton_Click(object sender, EventArgs e)
-        {
-            (Application.OpenForms["Main"] as Main).Show();
-            Close();
-        }
     }
 }
