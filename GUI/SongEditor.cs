@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using NAudio.Wave;
 
 namespace Coursework.GUI
 {
@@ -36,8 +37,8 @@ namespace Coursework.GUI
 
         private void songEditorButton_Click(object sender, EventArgs e)
         {
-            var audioFile = TagLib.File.Create(audioPath);
-            double length = audioFile.Properties.Duration.TotalMinutes;
+            Mp3FileReader reader = new(audioPath);
+            double length = reader.TotalTime.TotalMinutes;
             int measures = (int)Math.Floor(0.25 * length * editingChart.BPM);
             int notes;
             int minePct = mineBar.Value;
@@ -67,17 +68,14 @@ namespace Coursework.GUI
                 editingChart.measures.Add(measure);
             }
 
+
+
             // Generate mines
             for (int i = 0; i < Math.Floor(notes * minePct / 100f); i++)
             {
                 int meas = rnd.Next(editingChart.measures.Count);
                 int col = rnd.Next(4);
-                int div;
-                do
-                {
-                    div = rnd.Next(32);
-                }
-                while (editingChart.measures[meas][col].ContainsKey(div * 30));
+                int div = rnd.Next(32);
                 editingChart.measures[meas][col][div * 30] = songNoteType.MINE;
             }
             generationLabel.Visible = true;

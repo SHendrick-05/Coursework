@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Coursework.Gameplay
 {
@@ -93,6 +94,18 @@ namespace Coursework.Gameplay
             _height = _graphics.PreferredBackBufferHeight;
             isPlaying = false;
             resultsScreen = false;
+            gameOverFrames = 0;
+            GameHandler.variations.Clear();
+            GameHandler.score = 0;
+            GameHandler.HP = 100;
+            GameHandler.speed = 800;
+            isPlaying = false;
+
+            Array.Clear(GameHandler.judgements);
+            for (int i = 0; i < 4; i++)
+            {
+                GameHandler.arrows[i].Clear();
+            }
 
 
             // Initialise the list
