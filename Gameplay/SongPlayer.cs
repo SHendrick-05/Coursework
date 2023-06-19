@@ -41,8 +41,25 @@ namespace Coursework.Gameplay
         internal static string chartFolder;
         internal static int _height;
         internal static bool resultsScreen;
-        
 
+        internal Color[] colors = new Color[6]
+{
+                Color.DarkTurquoise,
+                Color.Goldenrod,
+                Color.Green,
+                Color.Blue,
+                Color.HotPink,
+                Color.DarkRed
+};
+        internal string[] strings = new string[6]
+        {
+                "Perfect",
+                "Great",
+                "Good",
+                "OK",
+                "Bad",
+                "Miss"
+        };
 
         // Judgement label
         private static string judgeText;
@@ -91,7 +108,7 @@ namespace Coursework.Gameplay
 
             // Reset all variables
             labelFrames = 0;
-            _height = _graphics.PreferredBackBufferHeight;
+            GameHandler.bounds = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             isPlaying = false;
             resultsScreen = false;
             gameOverFrames = 0;
@@ -136,9 +153,10 @@ namespace Coursework.Gameplay
             for(int i = 0; i < 4; i++)
             {
                 Receptor rcp = new Receptor(GameHandler.arrowColumns[i],
-                                        _height - 200,
+                                        GameHandler.bounds.Y - 200,
                                         (Dir)i,
                                         new Point(0, 0));
+                GameHandler.receptors[i] = rcp;
             }
 
             GameHandler.loadSong(chartFolder);
@@ -226,42 +244,38 @@ namespace Coursework.Gameplay
 
             int rectWidth = (int)middle - 100;
 
+            // Variable calculations for the drawing
+            int numJudges = GameHandler.judgements.Sum();
+
+            float pctWidth = centuryGothic.MeasureString("(00.00%)").X;
+
+            float judgeCountX = 80 + rectWidth - pctWidth;
+            float pctX = 90 + rectWidth - pctWidth;
+            int textY = 25 - (int)(resultsFont.MeasureString("Test").Y / 2);
+
+
             // Chart title
             _spriteBatch.DrawString(resultsFont, GameHandler.currentChart.title, new Vector2(titleX, 50), Color.White);
 
-            // Draw the base for the note count
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 200, rectWidth, 50), Color.DarkTurquoise * 0.5f);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 300, rectWidth, 50), Color.Goldenrod * 0.5f);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 400, rectWidth, 50), Color.Green * 0.5f);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 500, rectWidth, 50), Color.Blue * 0.5f);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 600, rectWidth, 50), Color.HotPink * 0.5f);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 700, rectWidth, 50), Color.DarkRed * 0.5f);
 
-            // Draw the note count itself
-            int numJudges = GameHandler.judgements.Sum();
-            int perfectBound = GameHandler.judgements[0] * rectWidth / numJudges;
-            int greatBound = GameHandler.judgements[1] * rectWidth / numJudges;
-            int goodBound = GameHandler.judgements[2] * rectWidth / numJudges;
-            int okBound = GameHandler.judgements[3] * rectWidth / numJudges;
-            int badBound = GameHandler.judgements[4] * rectWidth / numJudges;
-            int missBound = GameHandler.judgements[5] * rectWidth / numJudges;
+            // Create a rectangle for each judgement.
+            for (int i = 0; i < 6; i++)
+            {
+                int baseY = 100 + 100 * i;
+                int bound = GameHandler.judgements[i] * rectWidth / numJudges;
+                string percent = String.Format("({0:0.00}%)", 100 * GameHandler.judgements[i] / (float)numJudges);
 
-            // Draw the note count rectangles
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 200, perfectBound, 50), Color.DarkTurquoise);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 300, greatBound, 50), Color.Goldenrod);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 400, goodBound, 50), Color.Green);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 500, okBound, 50), Color.Blue);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 600, badBound, 50), Color.HotPink);
-            _spriteBatch.Draw(rectangle, new Rectangle(100, 700, missBound, 50), Color.DarkRed);
-
-            // Draw the judgement text
-            int textY = 25 - (int)(resultsFont.MeasureString("Test").Y / 2);
-            _spriteBatch.DrawString(resultsFont, "Perfect", new Vector2(110, 200 + textY), Color.White);
-            _spriteBatch.DrawString(resultsFont, "Great", new Vector2(110, 300 + textY), Color.White);
-            _spriteBatch.DrawString(resultsFont, "Good", new Vector2(110, 400 + textY), Color.White);
-            _spriteBatch.DrawString(resultsFont, "OK", new Vector2(110, 500 + textY), Color.White);
-            _spriteBatch.DrawString(resultsFont, "Bad", new Vector2(110, 600 + textY), Color.White);
-            _spriteBatch.DrawString(resultsFont, "Miss", new Vector2(110, 700 + textY), Color.White);
+                // Draw the base rectangle
+                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, rectWidth, 50), colors[i] * 0.5f);
+                // Fill it in with the appropriate percentage
+                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, bound, 50), colors[i]);
+                // Draw judgement text
+                _spriteBatch.DrawString(resultsFont, strings[i], new Vector2(110, baseY + textY), Color.White);
+                // Draw the judgement count
+                _spriteBatch.DrawString(resultsFont, GameHandler.judgements[i].ToString(), new Vector2(judgeCountX - resultsFont.MeasureString(GameHandler.judgements[i].ToString()).X, baseY + textY), Color.White);
+                // Draw the percentage
+                _spriteBatch.DrawString(centuryGothic, percent, new Vector2(pctX, baseY + textY), Color.White);
+            }
 
             // Drawing is finished.
             _spriteBatch.End();

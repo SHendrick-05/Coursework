@@ -24,18 +24,19 @@ namespace Coursework.Gameplay
         // Timing windows for judgement boundaries
         internal static double[] timeWindows = new double[6]
         {
-            0.022, // Perfect
-            0.045, // Great
-            0.090, // Good
-            0.135, // OK
-            0.180,  // Bad
-            0.200
+            0.011, // Perfect
+            0.0225, // Great
+            0.045, // Good
+            0.0675, // OK
+            0.090,  // Bad
+            0.100 // Miss
         };
         // An array of lists, divided by column
         internal static List<Arrow>[] arrows = new List<Arrow>[4]
         {
             new List<Arrow>(), new List<Arrow>(), new List<Arrow>(), new List<Arrow>()
         };
+        internal static Receptor[] receptors = new Receptor[4];
         /// <summary>
         /// How many pixels the notes should fall each second.
         /// </summary>
@@ -54,7 +55,8 @@ namespace Coursework.Gameplay
         internal static List<double> variations = new List<double>();
         // A list of the amount of judgements of each type
         internal static int[] judgements = new int[6];
-
+        // The bounds of the window
+        internal static Point bounds;
         /// <summary>
         /// Creates an arrow and adds it to the list
         /// </summary>
@@ -118,7 +120,7 @@ namespace Coursework.Gameplay
             // Add this judgement to the lists.
             variations.Add(time);
             judgements[judgement]++;
-            // Award the points
+            // Award the relevant points
             switch (judgement)
             {
                 case 0: // Perfect
@@ -189,7 +191,7 @@ namespace Coursework.Gameplay
 
             // The position of the receptor is height - 200, so the first note will hit 2 seconds after.
             double offsetPixels = chart.offset * 0.001 * speed;
-            int baseY = (int)Math.Round(SongPlayer._height - 200 - timeDelay * speed - offsetPixels);
+            int baseY = (int)Math.Round(bounds.Y - 200 - (timeDelay * speed) - offsetPixels);
             bool[] holds = new bool[4];
             // Loop over the measures in the song
             foreach (Dictionary<int, songNoteType>[] measure in chart.measures)

@@ -33,8 +33,10 @@ namespace Coursework.Gameplay
             double distance = gameTime.ElapsedGameTime.TotalSeconds * GameHandler.speed;
             posY += (int)Math.Round(distance);
             MineUpdate();
+            HitUpdate();
         }
         internal virtual void MineUpdate() { }
+        internal virtual void HitUpdate() { }
         internal override void Deprecate()
         {
             GameHandler.arrows[(int)dir].Remove(this);
@@ -47,6 +49,17 @@ namespace Coursework.Gameplay
         internal Hit(int posY, Dir dir, Point spriteCrop) : base(posY, dir, spriteCrop)
         {
             texture = SongPlayer.arrowTexture;
+        }
+        internal override void HitUpdate()
+        {
+            // Check if the note can no longer be hit and is offscreen.
+            double positionDiff = posY - GameHandler.receptors[(int)dir].position.Y;
+            double timeDiff = positionDiff / GameHandler.speed;
+            if (posY > GameHandler.bounds.Y && timeDiff > GameHandler.timeWindows[5])
+            {
+                // Award a miss
+                GameHandler.ArrowHit(this, (float)positionDiff);
+            }
         }
     }
 
@@ -69,6 +82,14 @@ namespace Coursework.Gameplay
                 if (spriteCrop.X++ == frames-1)
                     spriteCrop.X = 0;
                 frame = 0;
+            }
+            // Check if the note is offscreen and cannot be hit
+            double positionDiff = posY - GameHandler.receptors[(int)dir].position.Y;
+            double timeDiff = positionDiff / GameHandler.speed;
+            if (posY > GameHandler.bounds.Y && timeDiff > GameHandler.timeWindows[5])
+            {
+                // Remove the mine.
+                Deprecate();
             }
         }
     }
