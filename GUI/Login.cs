@@ -62,6 +62,7 @@ namespace Coursework.GUI
                 case 0:
                     logError.Visible = false;
                     Users.loggedInUser = Database.getUser(username);
+                    (Application.OpenForms["Main"] as Main).Show();
                     Close();
                     break;
                 case 1:

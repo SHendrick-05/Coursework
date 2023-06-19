@@ -263,7 +263,7 @@ namespace Coursework.Gameplay
             {
                 int baseY = 100 + 100 * i;
                 int bound = GameHandler.judgements[i] * rectWidth / numJudges;
-                string percent = String.Format("({0:0.00}%)", 100 * GameHandler.judgements[i] / (float)numJudges);
+                string percent = string.Format("({0:0.00}%)", 100 * GameHandler.judgements[i] / (float)numJudges);
 
                 // Draw the base rectangle
                 _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, rectWidth, 50), colors[i] * 0.5f);
@@ -329,9 +329,12 @@ namespace Coursework.Gameplay
             _spriteBatch.Draw(rectangle, new Rectangle(50, 50, 5*GameHandler.HP, 50), hpColor);
             // Mean
             if (GameHandler.variations.Count != 0)
-            _spriteBatch.DrawString(centuryGothic, (GameHandler.variations.Average() * 1000).ToString(), new Vector2(rightX, 200), Color.White);
-            // Score
-            _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
+            {
+                string mean = string.Format("{0:0.00} ms", GameHandler.variations.Average() * 1000);
+                _spriteBatch.DrawString(centuryGothic, mean, new Vector2(rightX, 200), Color.White);
+            }
+                // Score
+                _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
             // Judgements
             _spriteBatch.DrawString(centuryGothic, "Perfects: " + GameHandler.judgements[0], new Vector2(rightX, 400), Color.White);
             _spriteBatch.DrawString(centuryGothic, "Greats: " + GameHandler.judgements[1], new Vector2(rightX, 400 + judgeDiv), Color.White);

@@ -144,6 +144,7 @@ namespace Coursework.GUI
                 string path = @$"Songs\{editingChart.title}";
                 editingChart.folderPath = path;
                 editingChart.BPM = (double)bpmBox.Value;
+                editingChart.author = Users.loggedInUser.username;
                 // Creates the folder if it does not already exist.
                 if (!Directory.Exists(path))
                 {
@@ -187,6 +188,7 @@ namespace Coursework.GUI
                 bpmBox.Value = 110;
                 audioPath = ofd.FileName;
                 titleLabel.Text = "Currently editing: " + editingChart.title;
+                creationPanel.Visible = true;
             }
         }
 

@@ -63,6 +63,7 @@ namespace Coursework.GUI
             Users.loggedInUser = null;
             signOutButton.Visible = false;
             settingsButton.Visible = false;
+            songEditorButton.Visible = false;
             registerButton.Visible = true;
         }
 
@@ -79,6 +80,7 @@ namespace Coursework.GUI
                 registerButton.Visible = false;
                 settingsButton.Visible = true;
                 signOutButton.Visible = true;
+                songEditorButton.Visible = true;
             }
             currentUserLabel.Text = $"Logged in as: {user}";
         }

@@ -40,13 +40,13 @@
             this.titleLabel = new System.Windows.Forms.Label();
             this.createSong = new System.Windows.Forms.Button();
             this.difficultyBox = new System.Windows.Forms.ComboBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.creationPanel = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.mineBar = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.creationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mineBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -199,21 +199,22 @@
             this.difficultyBox.Size = new System.Drawing.Size(121, 23);
             this.difficultyBox.TabIndex = 25;
             // 
-            // panel1
+            // creationPanel
             // 
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.mineBar);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.noteCreator);
-            this.panel1.Controls.Add(this.difficultyBox);
-            this.panel1.Controls.Add(this.generationLabel);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.bpmBox);
-            this.panel1.Controls.Add(this.saveButton);
-            this.panel1.Location = new System.Drawing.Point(205, 149);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 250);
-            this.panel1.TabIndex = 26;
+            this.creationPanel.Controls.Add(this.label3);
+            this.creationPanel.Controls.Add(this.mineBar);
+            this.creationPanel.Controls.Add(this.label2);
+            this.creationPanel.Controls.Add(this.noteCreator);
+            this.creationPanel.Controls.Add(this.difficultyBox);
+            this.creationPanel.Controls.Add(this.generationLabel);
+            this.creationPanel.Controls.Add(this.label1);
+            this.creationPanel.Controls.Add(this.bpmBox);
+            this.creationPanel.Controls.Add(this.saveButton);
+            this.creationPanel.Location = new System.Drawing.Point(205, 149);
+            this.creationPanel.Name = "creationPanel";
+            this.creationPanel.Size = new System.Drawing.Size(400, 250);
+            this.creationPanel.TabIndex = 26;
+            this.creationPanel.Visible = false;
             // 
             // label3
             // 
@@ -250,7 +251,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.creationPanel);
             this.Controls.Add(this.createSong);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.settingsButton);
@@ -261,8 +262,8 @@
             this.Load += new System.EventHandler(this.SongEditor_Load);
             this.topPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.creationPanel.ResumeLayout(false);
+            this.creationPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mineBar)).EndInit();
             this.ResumeLayout(false);
 
@@ -282,7 +283,7 @@
         private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.Button createSong;
         private System.Windows.Forms.ComboBox difficultyBox;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel creationPanel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TrackBar mineBar;
         private System.Windows.Forms.Label label2;

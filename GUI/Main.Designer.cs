@@ -88,7 +88,6 @@
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Game";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.titleText.MouseMove += Drag;
             // 
             // closeButton
             // 
@@ -153,6 +152,7 @@
             this.songEditorButton.TabIndex = 6;
             this.songEditorButton.Text = "Create a song";
             this.songEditorButton.UseVisualStyleBackColor = true;
+            this.songEditorButton.Visible = false;
             this.songEditorButton.Click += new System.EventHandler(this.songEditorButton_Click);
             // 
             // Main
