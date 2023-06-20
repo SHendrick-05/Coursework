@@ -23,7 +23,7 @@ namespace Coursework.Gameplay
             this.posY = posY;
             this.dir = dir;
             this.spriteCrop = spriteCrop;
-            size = new Point(64, 64);
+            size = GameHandler.arrowSize;
             posX = GameHandler.arrowColumns[(int)dir];
             rotation = rotations[(int)dir];
         }
@@ -131,12 +131,13 @@ namespace Coursework.Gameplay
                 {
                     // Get all the possible arrows of that column
                     List<Arrow> candidates = GameHandler.arrows[(int)dir];
+
                     Dictionary<Arrow, float> timings
                         = candidates.ToDictionary(x => x,
                         x => position.Y - x.position.Y);
                     // Find the latest/earliest possible hit.
                     double maximum = GameHandler.timeWindows[5] * GameHandler.speed;
-                    // Find the possible ones, then filter to the earliest one.
+                    // Find the possible ones, then filter to the latest one.
                     List<Arrow> canBeHit = timings.Keys.Where(x => Math.Abs(timings[x])<= maximum).ToList();
                     // If there are any arrows that can be hit.
                     if (canBeHit.Count != 0)

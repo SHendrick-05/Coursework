@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Coursework.Gameplay
 {
+    /// <summary>
+    /// The base class for most sprites that are being drawn.
+    /// </summary>
     internal abstract class Sprite
     {
         internal static float[] rotations = new float[4]
@@ -17,14 +20,25 @@ namespace Coursework.Gameplay
             (float)Math.PI,
             (float)Math.PI * -0.5f
         };
-
+        /// <summary>
+        /// The (full) texture of the sprite
+        /// </summary>
         protected Texture2D texture;
+        
         protected int posX;
         protected int posY;
-
         internal bool isDeprecated;
-        internal Point size;
+        /// <summary>
+        /// The rotation of the sprite, in clockwise radians.
+        /// </summary>
         internal float rotation;
+        /// <summary>
+        /// The width and height of the sprite.
+        /// </summary>
+        internal Point size;
+        /// <summary>
+        /// How the sprite should be cropped.
+        /// </summary>
         internal Point spriteCrop;
 
         /// <summary>
@@ -46,6 +60,9 @@ namespace Coursework.Gameplay
             }
         }
 
+        /// <summary>
+        /// The centre of rotation. Returns the middle of the sprite bounds.
+        /// </summary>
         internal Vector2 origin
         {
             get
@@ -54,6 +71,9 @@ namespace Coursework.Gameplay
             }
         }
 
+        /// <summary>
+        /// The public property representing the position.
+        /// </summary>
         internal Vector2 position
         {
             get
@@ -62,19 +82,63 @@ namespace Coursework.Gameplay
             }
         }
 
+        /// <summary>
+        /// This abstract feature will be implemented in inherited classes to perform specific tasks.
+        /// </summary>
         internal abstract void Update(GameTime gameTime);
         internal Texture2D Texture { get { return texture; } }
 
+        /// <summary>
+        /// Removes this sprite from being visible or from having calculations performed.
+        /// </summary>
         internal virtual void Deprecate()
         {
             isDeprecated = true;
         }
 
+        /// <summary>
+        /// The base constructor function for all sprites.
+        /// </summary>
         internal Sprite()
         {
             rotation = 0f;
             SongPlayer.addSprite(this);
             isDeprecated = false;
+        }
+    }
+
+    /// <summary>
+    /// A marker to show up for each judgement as a form of user feedback.
+    /// </summary>
+    internal class Tag
+    {
+        internal Rectangle bounds;
+        internal int frames;
+        internal float opacity;
+        internal bool isDeprecated;
+        internal Color color;
+        /// <summary>
+        /// Initialise a tag to display on-screen
+        /// </summary>
+        /// <param name="pos">The X and Y coordinates of the tag</param>
+        /// <param name="size">The width and height of the tag</param>
+        /// <param name="frames">How many frames the tag should last for before being deprecated</param>
+        internal Tag(Point pos, Point size, int frames, Color color)
+        {
+            bounds = new Rectangle(pos, size);
+            this.frames = frames;
+            this.color = color;
+        }
+        internal void Update()
+        {
+            frames--;
+            // This effect for the tag becoming more transparent.
+            opacity = Math.Min(1f, frames / 60f);
+            if (frames <= 0)
+            {
+                // The tag should no longer be displayed after this point.
+                isDeprecated = true;
+            }
         }
     }
 }

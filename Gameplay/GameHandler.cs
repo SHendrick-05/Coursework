@@ -10,55 +10,166 @@ namespace Coursework.Gameplay
 {
     internal static class GameHandler
     {
+        /// <summary>
+        /// The chart that is currently being played.
+        /// </summary>
         internal static Chart currentChart;
-        // The X positions of each arrow on the screen.
+
+        /// <summary>
+        /// The X positions of each column on the screen, from left to right.
+        /// </summary>
         internal static int[] arrowColumns = new int[4]
         {
             600, 700, 800, 900
         };
-        // The keys the user has to press to hit arrows.
+
+        /// <summary>
+        /// The keys the user has to hit for each column, from left to right.
+        /// </summary>
         internal static Keys[] hitKeys = new Keys[4]
         {
             Keys.A, Keys.S, Keys.L, Keys.OemSemicolon
         };
-        // Timing windows for judgement boundaries
+
+        /// <summary>
+        /// The timing window boundaries, in seconds, for each type of judgement.
+        /// </summary>
         internal static double[] timeWindows = new double[6]
         {
-            0.011, // Perfect
+            0.011,  // Perfect
             0.0225, // Great
-            0.045, // Good
+            0.045,  // Good
             0.0675, // OK
             0.090,  // Bad
-            0.100 // Miss
+            0.100   // Miss
         };
-        // An array of lists, divided by column
+
+        /// <summary>
+        /// The colour to be associated with each judgement type.
+        /// </summary>
+        internal static Color[] judgeColors = new Color[6]
+        {
+                Color.DarkTurquoise,// Perfect
+                Color.Goldenrod,    // Great
+                Color.Green,        // Good
+                Color.Blue,         // OK
+                Color.HotPink,      // Bad
+                Color.DarkRed       // Miss
+        };
+
+        /// <summary>
+        /// The text to be associated with each judgement type.
+        /// </summary>
+        internal static string[] judgeStrings = new string[6]
+        {
+                "Perfect",  // Perfect
+                "Great",    // Great
+                "Good",     // Good
+                "OK",       // OK
+                "Bad",      // Bad
+                "Miss"      // Miss
+        };
+
+        /// <summary>
+        /// The amount of points to be awarded for each judgement type.
+        /// </summary>
+        internal static int[] judgePoints = new int[6]
+        {
+            300,    // Perfect
+            200,    // Great
+            150,    // Good
+            100,    // OK
+            50,     // Bad
+            0       // Miss
+        };
+
+        /// <summary>
+        /// The size of an arrow.
+        /// </summary>
+        internal static Point arrowSize = new Point(64, 64);
+
+        /// <summary>
+        /// Every note/mine/hold that has been loaded will be in this array. Separated by column.
+        /// </summary>
         internal static List<Arrow>[] arrows = new List<Arrow>[4]
         {
             new List<Arrow>(), new List<Arrow>(), new List<Arrow>(), new List<Arrow>()
         };
+
+        
+
+        /// <summary>
+        /// The four receptors, from left to right.
+        /// </summary>
         internal static Receptor[] receptors = new Receptor[4];
+
+        /// <summary>
+        /// The width and height of each judgement feedback tag.
+        /// </summary>
+        internal static Point tagSize = new Point(5, 20);
+
+        /// <summary>
+        /// The Y position of every judgement feedback tag.
+        /// </summary>
+        internal static int tagY = 500;
+
+        /// <summary>
+        /// The Y position of the judgement label.
+        /// </summary>
+        internal static int judgeLabelY = 600;
+
+        /// <summary>
+        /// How long each judgement feedback tag should be displayed for, in frames.
+        /// </summary>
+        internal static int tagFrames = 120;
+
         /// <summary>
         /// How many pixels the notes should fall each second.
         /// </summary>
         internal static double speed = 800;
+
+        /// <summary>
+        /// The height of each measure, in pixels.
+        /// </summary>
         internal static double pixelsPerMeasure;
-        // How finely a measure is divided into notes
+
+        /// <summary>
+        /// How many sub-divisions are possible for each measure.
+        /// </summary>
         internal static int measureDivions = 960;
+
+        /// <summary>
+        /// The time, in seconds, of delay between the application starting and the song starting.
+        /// </summary>
         internal static float timeDelay = 3;
-        // The score of the user
+
+        /// <summary>
+        /// How many points the user has scored.
+        /// </summary>
         internal static int score;
-        // The health of the user
+
+        /// <summary>
+        /// The health points of the user, from 0 to 100. If this hits 0, the user has failed.
+        /// </summary>
         internal static int HP = 100;
+
         /// <summary>
         /// A list of all hit notes, given by the time difference from the actual note time.
         /// </summary>
         internal static List<double> variations = new List<double>();
-        // A list of the amount of judgements of each type
-        internal static int[] judgements = new int[6];
-        // The bounds of the window
-        internal static Point bounds;
+
         /// <summary>
-        /// Creates an arrow and adds it to the list
+        /// The amount of each class of judgement the user has scored during gameplay.
+        /// </summary>
+        internal static int[] judgements = new int[6];
+
+        /// <summary>
+        /// The width and height of the application bounds.
+        /// </summary>
+        internal static Point bounds;
+
+        /// <summary>
+        /// Creates a hit arrow and adds it to the list
         /// </summary>
         internal static void loadArrow(int Y, Dir dir, Point spriteCrop)
         {
@@ -75,6 +186,9 @@ namespace Coursework.Gameplay
             arrows[(int)dir].Add(mine);
         }
 
+        /// <summary>
+        /// Creates a hold note. Not done yet.
+        /// </summary>
         internal static void loadHold(int Y, Dir dir, Point spriteCrop)
         {
             throw new NotImplementedException();
@@ -97,21 +211,22 @@ namespace Coursework.Gameplay
                 MineHit(arrow as Mine);
 
         }
+
         /// <summary>
         /// A function that handles when an note is hit, and awards an appropriate score
         /// </summary>  
         /// <param name="arrow">The arrow class that has been hit</param>
         /// <param name="distance">The pixel distance from the receptor</param>
-        /// <exception cref="Exception">Invalid judgement</exception>
         internal static void HitNote(Hit arrow, float distance)
         {
-            // Get the time taken
+            // Get the time taken, in seconds.
             double time = distance / speed;
             // Find the appropriate judgement window
             int judgement = 5;
             for(int i = 0; i < 5; i++)
             {
-                if (timeWindows[i] >= time)
+                // Use the absolute value, so late and early judgements are treated equally.
+                if (timeWindows[i] >= Math.Abs(time))
                 {
                     judgement = i;
                     break;
@@ -120,36 +235,24 @@ namespace Coursework.Gameplay
             // Add this judgement to the lists.
             variations.Add(time);
             judgements[judgement]++;
-            // Award the relevant points
-            switch (judgement)
-            {
-                case 0: // Perfect
-                    HP += 20;
-                    SongPlayer.updateJudge(Color.Turquoise, "Perfect");
-                    score += 300;
-                    break;
-                case 1: // Great
-                    SongPlayer.updateJudge(Color.Goldenrod, "Great");
-                    score += 200;
-                    break;
-                case 2: // Good
-                    SongPlayer.updateJudge(Color.Green, "Good");
-                    score += 150;
-                    break;
-                case 3: // OK
-                    SongPlayer.updateJudge(Color.Blue, "OK");
-                    score += 100;
-                    break;
-                case 4: // Bad
-                    score += 50;
-                    SongPlayer.updateJudge(Color.HotPink, "Bad");
-                    break;
-                case 5: // Miss
-                    SongPlayer.updateJudge(Color.DarkRed, "Miss");
-                    break;
-                default:
-                    throw new Exception();
-            }
+            
+            // If a perfect was hit, restore HP.
+            if (judgement == 0)
+                HP += 20;
+            // If a note was missed, the player loses HP.
+            else if (judgement == 5)
+                HP -= 10;
+
+            // Award the appropriate amount of points.
+            score += judgePoints[judgement];
+
+            // Display the judgement visually.
+            Color judgeColor = judgeColors[judgement];
+            SongPlayer.updateJudge(judgeColor, judgeStrings[judgement]);
+            double offset = time * 1000;
+            showTag(judgeColor, (int)Math.Round(offset));
+            
+            
             // Remove the arrow.
             arrow.Deprecate();
         }
@@ -168,6 +271,17 @@ namespace Coursework.Gameplay
             mine.Deprecate();
         }
 
+        /// <summary>
+        /// Creates a judgement feedback tag, and displays it on screen.
+        /// </summary>
+        /// <param name="color">The judgement color of the tag.</param>
+        /// <param name="offset">How many pixels from the centre the tag should be displayed.</param>
+        internal static void showTag(Color color, int offset)
+        {
+            int baseX = (arrowColumns[1] + arrowColumns[2] + arrowSize.X) / 2;
+            Tag tag = new Tag(new Point(baseX + offset, tagY), tagSize, tagFrames, color);
+            SongPlayer.addTag(tag);
+        }
 
         /// <summary>
         /// Loads a chart from a folder path, playing the song and inserting the arrows.

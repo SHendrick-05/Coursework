@@ -18,6 +18,7 @@ namespace Coursework.Gameplay
         /// A list of sprites, which is used in drawing.
         /// </summary>
         private static List<Sprite> sprites;
+        private static List<Tag> tags;
         // Textures
         internal static Texture2D arrowTexture;
         internal static Texture2D mineTexture;
@@ -42,24 +43,7 @@ namespace Coursework.Gameplay
         internal static int _height;
         internal static bool resultsScreen;
 
-        internal Color[] colors = new Color[6]
-{
-                Color.DarkTurquoise,
-                Color.Goldenrod,
-                Color.Green,
-                Color.Blue,
-                Color.HotPink,
-                Color.DarkRed
-};
-        internal string[] strings = new string[6]
-        {
-                "Perfect",
-                "Great",
-                "Good",
-                "OK",
-                "Bad",
-                "Miss"
-        };
+
 
         // Judgement label
         private static string judgeText;
@@ -82,8 +66,13 @@ namespace Coursework.Gameplay
 
         internal static void removeSprite(Sprite spr)
             => sprites.Remove(spr);
-        
 
+        internal static void addTag(Tag tag)
+            => tags.Add(tag);
+
+        internal static void removeTag(Tag tag)
+            => tags.Remove(tag);
+        
         internal SongPlayer(string folder)
         {
             chartFolder = folder;
@@ -127,7 +116,7 @@ namespace Coursework.Gameplay
 
             // Initialise the list
             sprites = new List<Sprite>();
-            
+            tags = new List<Tag>();
             base.Initialize();
         }
 
@@ -174,17 +163,29 @@ namespace Coursework.Gameplay
                 Exit();
             if (Input.kbState.IsKeyDown(Keys.Space))
                 GameHandler.HP = 0;
-            // Update sprites
+            // Update sprites and tags
             if (gameOverFrames == 0)
             {
-                List<Sprite> toRemove = new List<Sprite>();
+                // Lists of the ones to remove
+                List<Sprite> spritesToRemove = new List<Sprite>();
+                List<Tag> tagsToRemove = new List<Tag>();
+
+                // Update each sprite
                 foreach (Sprite spr in sprites)
                 {
                     spr.Update(gameTime);
-                    if (spr.isDeprecated) toRemove.Add(spr);
+                    if (spr.isDeprecated) spritesToRemove.Add(spr);
                 }
-                // Remove the deprecated sprites
-                sprites = sprites.Except(toRemove).ToList();
+                // Update each tag
+                foreach(Tag tag in tags)
+                {
+                    tag.Update();
+                    if (tag.isDeprecated) tagsToRemove.Add(tag);
+                }
+
+                // Remove the deprecated sprites and tags
+                sprites = sprites.Except(spritesToRemove).ToList();
+                tags = tags.Except(tagsToRemove).ToList();
             }
             else
             {
@@ -193,6 +194,8 @@ namespace Coursework.Gameplay
                     // Move on to the results screen
                     resultsScreen = true;
             }
+
+            
 
             if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay && !isPlaying)
             {
@@ -266,11 +269,11 @@ namespace Coursework.Gameplay
                 string percent = string.Format("({0:0.00}%)", 100 * GameHandler.judgements[i] / (float)numJudges);
 
                 // Draw the base rectangle
-                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, rectWidth, 50), colors[i] * 0.5f);
+                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, rectWidth, 50), GameHandler.judgeColors[i] * 0.5f);
                 // Fill it in with the appropriate percentage
-                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, bound, 50), colors[i]);
+                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, bound, 50), GameHandler.judgeColors[i]);
                 // Draw judgement text
-                _spriteBatch.DrawString(resultsFont, strings[i], new Vector2(110, baseY + textY), Color.White);
+                _spriteBatch.DrawString(resultsFont, GameHandler.judgeStrings[i], new Vector2(110, baseY + textY), Color.White);
                 // Draw the judgement count
                 _spriteBatch.DrawString(resultsFont, GameHandler.judgements[i].ToString(), new Vector2(judgeCountX - resultsFont.MeasureString(GameHandler.judgements[i].ToString()).X, baseY + textY), Color.White);
                 // Draw the percentage
@@ -290,6 +293,7 @@ namespace Coursework.Gameplay
             // Open the sprite drawer.
             _spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
+            // Draw sprites
             float ord = 1;
             foreach (Sprite spr in sprites)
             {
@@ -308,6 +312,15 @@ namespace Coursework.Gameplay
                 ord++;
             }
 
+            // Draw tags
+            foreach(Tag tag in tags)
+            {
+                _spriteBatch.Draw(
+                    rectangle,
+                    tag.bounds,
+                    tag.color * tag.opacity);
+            }
+
             // Judgement
             if (labelFrames > 0)
             {
@@ -315,7 +328,7 @@ namespace Coursework.Gameplay
                 Vector2 bound = centuryGothic.MeasureString(judgeText);
                 float width = bound.X;
 
-                _spriteBatch.DrawString(centuryGothic, judgeText, new Vector2(centerX - (width / 2f), 500), judgeColor);
+                _spriteBatch.DrawString(centuryGothic, judgeText, new Vector2(centerX - (width / 2f), GameHandler.judgeLabelY), judgeColor);
             }
 
             int rightX = GameHandler.arrowColumns[3] + 100;

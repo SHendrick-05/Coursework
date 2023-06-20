@@ -14,6 +14,9 @@ namespace Coursework.Gameplay
 
         internal static KeyboardState kbState;
         internal static KeyboardState lastkbState;
+        /// <summary>
+        /// Gets the latest mouse and keyboard states.
+        /// </summary>
         internal static void Update()
         {
             lastMouseState = mouseState;
