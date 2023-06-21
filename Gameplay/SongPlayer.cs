@@ -29,7 +29,9 @@ namespace Coursework.Gameplay
         internal static SpriteFont centuryGothic;
         internal static SpriteFont resultsFont;
 
-        // Sound handling
+        /// <summary>
+        /// The sound effect that should be played when a mine is hit.
+        /// </summary>
         internal static SoundEffect mineHit;
         internal static Song audio;
 
@@ -37,15 +39,30 @@ namespace Coursework.Gameplay
         /// How many more frames the judgement label should be displayed for.
         /// </summary>
         internal static int labelFrames;
+
+        /// <summary>
+        /// Respresents if the user is currently in gameplay
+        /// </summary>
         internal static bool isPlaying;
+
+        /// <summary>
+        /// The amount of frames until the results screen should be displayed. Only applicable when isPlaying is false.
+        /// </summary>
         internal static int gameOverFrames;
+
+        /// <summary>
+        /// An absolute path to the folder that the chart is contained in.
+        /// </summary>
         internal static string chartFolder;
-        internal static int _height;
+
+        /// <summary>
+        /// Whether the results screen should be displayed instead of gameplay.
+        /// </summary>
         internal static bool resultsScreen;
 
 
 
-        // Judgement label
+        
         private static string judgeText;
         private static Color judgeColor;
 
@@ -340,21 +357,31 @@ namespace Coursework.Gameplay
             // Health
             Color hpColor = GameHandler.HP > 40 ? Color.Green : Color.Red;
             _spriteBatch.Draw(rectangle, new Rectangle(50, 50, 5*GameHandler.HP, 50), hpColor);
+
             // Mean
             if (GameHandler.variations.Count != 0)
             {
                 string mean = string.Format("{0:0.00} ms", GameHandler.variations.Average() * 1000);
                 _spriteBatch.DrawString(centuryGothic, mean, new Vector2(rightX, 200), Color.White);
             }
-                // Score
-                _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
-            // Judgements
+
+            // Score
+            _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
+            
+            // Judgement labels
             _spriteBatch.DrawString(centuryGothic, "Perfects: " + GameHandler.judgements[0], new Vector2(rightX, 400), Color.White);
             _spriteBatch.DrawString(centuryGothic, "Greats: " + GameHandler.judgements[1], new Vector2(rightX, 400 + judgeDiv), Color.White);
             _spriteBatch.DrawString(centuryGothic, "Goods: " + GameHandler.judgements[2], new Vector2(rightX, 400 + 2 * judgeDiv), Color.White);
             _spriteBatch.DrawString(centuryGothic, "OKs: " + GameHandler.judgements[3], new Vector2(rightX, 400 + 3 * judgeDiv), Color.White);
             _spriteBatch.DrawString(centuryGothic, "Bads: " + GameHandler.judgements[4], new Vector2(rightX, 400 + 4 * judgeDiv), Color.White);
             _spriteBatch.DrawString(centuryGothic, "Misses: " + GameHandler.judgements[5], new Vector2(rightX, 400 + 5 * judgeDiv), Color.White);
+            
+
+            // Tag centre
+            int baseX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2] + GameHandler.arrowSize.X) / 2;
+            _spriteBatch.Draw(rectangle, new Rectangle(baseX, GameHandler.tagY, 2, GameHandler.tagSize.Y), Color.White);
+
+            // End drawing
             _spriteBatch.End();
         }
     }
