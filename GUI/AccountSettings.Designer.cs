@@ -45,9 +45,17 @@
             this.updatePasswordPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.deleteAccountPanel = new System.Windows.Forms.Panel();
+            this.scrollSpeedPanel = new System.Windows.Forms.Panel();
+            this.scrollSpeedBox = new System.Windows.Forms.NumericUpDown();
+            this.scrollSpeedLabel = new System.Windows.Forms.Label();
+            this.sSpeedLabel = new System.Windows.Forms.Label();
+            this.updateScrollSpeedButton = new System.Windows.Forms.Button();
+            this.ssErrorLabel = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             this.updatePasswordPanel.SuspendLayout();
             this.deleteAccountPanel.SuspendLayout();
+            this.scrollSpeedPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scrollSpeedBox)).BeginInit();
             this.SuspendLayout();
             // 
             // userLabel
@@ -119,7 +127,6 @@
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Game";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.titleText.MouseMove += Drag;
             // 
             // topPanel
             // 
@@ -242,10 +249,96 @@
             this.deleteAccountPanel.Controls.Add(this.deleteWarning);
             this.deleteAccountPanel.Controls.Add(this.deleteY);
             this.deleteAccountPanel.Controls.Add(this.deleteN);
-            this.deleteAccountPanel.Location = new System.Drawing.Point(413, 133);
+            this.deleteAccountPanel.Location = new System.Drawing.Point(478, 297);
             this.deleteAccountPanel.Name = "deleteAccountPanel";
             this.deleteAccountPanel.Size = new System.Drawing.Size(200, 141);
             this.deleteAccountPanel.TabIndex = 14;
+            // 
+            // scrollSpeedPanel
+            // 
+            this.scrollSpeedPanel.Controls.Add(this.ssErrorLabel);
+            this.scrollSpeedPanel.Controls.Add(this.scrollSpeedBox);
+            this.scrollSpeedPanel.Controls.Add(this.scrollSpeedLabel);
+            this.scrollSpeedPanel.Controls.Add(this.sSpeedLabel);
+            this.scrollSpeedPanel.Controls.Add(this.updateScrollSpeedButton);
+            this.scrollSpeedPanel.Location = new System.Drawing.Point(413, 133);
+            this.scrollSpeedPanel.Name = "scrollSpeedPanel";
+            this.scrollSpeedPanel.Size = new System.Drawing.Size(312, 158);
+            this.scrollSpeedPanel.TabIndex = 15;
+            // 
+            // scrollSpeedBox
+            // 
+            this.scrollSpeedBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
+            this.scrollSpeedBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.scrollSpeedBox.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.scrollSpeedBox.ForeColor = System.Drawing.SystemColors.Control;
+            this.scrollSpeedBox.Location = new System.Drawing.Point(145, 35);
+            this.scrollSpeedBox.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.scrollSpeedBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.scrollSpeedBox.Name = "scrollSpeedBox";
+            this.scrollSpeedBox.Size = new System.Drawing.Size(120, 31);
+            this.scrollSpeedBox.TabIndex = 22;
+            this.scrollSpeedBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // scrollSpeedLabel
+            // 
+            this.scrollSpeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.scrollSpeedLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.scrollSpeedLabel.Location = new System.Drawing.Point(3, 0);
+            this.scrollSpeedLabel.Name = "scrollSpeedLabel";
+            this.scrollSpeedLabel.Size = new System.Drawing.Size(306, 32);
+            this.scrollSpeedLabel.TabIndex = 14;
+            this.scrollSpeedLabel.Text = "Update scroll speed";
+            this.scrollSpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // sSpeedLabel
+            // 
+            this.sSpeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.sSpeedLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.sSpeedLabel.Location = new System.Drawing.Point(3, 35);
+            this.sSpeedLabel.Name = "sSpeedLabel";
+            this.sSpeedLabel.Size = new System.Drawing.Size(136, 25);
+            this.sSpeedLabel.TabIndex = 8;
+            this.sSpeedLabel.Text = "Scroll speed";
+            this.sSpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // updateScrollSpeedButton
+            // 
+            this.updateScrollSpeedButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
+            this.updateScrollSpeedButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.updateScrollSpeedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.updateScrollSpeedButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.updateScrollSpeedButton.Location = new System.Drawing.Point(100, 112);
+            this.updateScrollSpeedButton.Name = "updateScrollSpeedButton";
+            this.updateScrollSpeedButton.Size = new System.Drawing.Size(134, 43);
+            this.updateScrollSpeedButton.TabIndex = 11;
+            this.updateScrollSpeedButton.Text = "Update";
+            this.updateScrollSpeedButton.UseVisualStyleBackColor = true;
+            this.updateScrollSpeedButton.Click += new System.EventHandler(this.updateScrollSpeedButton_Click);
+            // 
+            // ssErrorLabel
+            // 
+            this.ssErrorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ssErrorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
+            this.ssErrorLabel.Location = new System.Drawing.Point(3, 84);
+            this.ssErrorLabel.Name = "ssErrorLabel";
+            this.ssErrorLabel.Size = new System.Drawing.Size(306, 25);
+            this.ssErrorLabel.TabIndex = 23;
+            this.ssErrorLabel.Text = "Error updating scroll speed.";
+            this.ssErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ssErrorLabel.Visible = false;
             // 
             // AccountSettings
             // 
@@ -253,6 +346,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.scrollSpeedPanel);
             this.Controls.Add(this.deleteAccountPanel);
             this.Controls.Add(this.updatePasswordPanel);
             this.Controls.Add(this.topPanel);
@@ -265,6 +359,8 @@
             this.updatePasswordPanel.ResumeLayout(false);
             this.updatePasswordPanel.PerformLayout();
             this.deleteAccountPanel.ResumeLayout(false);
+            this.scrollSpeedPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.scrollSpeedBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -288,5 +384,11 @@
         private System.Windows.Forms.Panel updatePasswordPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel deleteAccountPanel;
+        private System.Windows.Forms.Panel scrollSpeedPanel;
+        private System.Windows.Forms.Label scrollSpeedLabel;
+        private System.Windows.Forms.Label sSpeedLabel;
+        private System.Windows.Forms.Button updateScrollSpeedButton;
+        private System.Windows.Forms.NumericUpDown scrollSpeedBox;
+        private System.Windows.Forms.Label ssErrorLabel;
     }
 }

@@ -171,7 +171,7 @@ namespace Coursework.Gameplay
         /// <summary>
         /// Creates a hit arrow and adds it to the list
         /// </summary>
-        internal static void loadArrow(int Y, Dir dir, Point spriteCrop)
+        internal static void LoadArrow(int Y, Dir dir, Point spriteCrop)
         {
             Hit arrow = new(Y, dir, spriteCrop);
             arrows[(int)dir].Add(arrow);
@@ -180,7 +180,7 @@ namespace Coursework.Gameplay
         /// <summary>
         /// Creates a mine and adds it to the list.
         /// </summary>
-        internal static void loadMine(int Y, Dir dir, Point spriteCrop)
+        internal static void LoadMine(int Y, Dir dir, Point spriteCrop)
         {
             Mine mine = new(Y, dir, spriteCrop);
             arrows[(int)dir].Add(mine);
@@ -189,7 +189,7 @@ namespace Coursework.Gameplay
         /// <summary>
         /// Creates a hold note. Not done yet.
         /// </summary>
-        internal static void loadHold(int Y, Dir dir, Point spriteCrop)
+        internal static void LoadHold(int Y, Dir dir, Point spriteCrop)
         {
             throw new NotImplementedException();
             // TODO: Add hold notes.
@@ -250,7 +250,7 @@ namespace Coursework.Gameplay
             Color judgeColor = judgeColors[judgement];
             SongPlayer.updateJudge(judgeColor, judgeStrings[judgement]);
             double offset = time * 1000;
-            showTag(judgeColor, (int)Math.Round(offset));
+            ShowTag(judgeColor, (int)Math.Round(offset));
             
             
             // Remove the arrow.
@@ -276,7 +276,7 @@ namespace Coursework.Gameplay
         /// </summary>
         /// <param name="color">The judgement color of the tag.</param>
         /// <param name="offset">How many pixels from the centre the tag should be displayed.</param>
-        internal static void showTag(Color color, int offset)
+        internal static void ShowTag(Color color, int offset)
         {
             int baseX = (arrowColumns[1] + arrowColumns[2] + arrowSize.X) / 2;
             Tag tag = new Tag(new Point(baseX + offset, tagY), tagSize, tagFrames, color);
@@ -287,7 +287,7 @@ namespace Coursework.Gameplay
         /// Loads a chart from a folder path, playing the song and inserting the arrows.
         /// </summary>
         /// <param name="path">The folder of the chart.</param>
-        internal static void loadSong(string path)
+        internal static void LoadSong(string path)
         {
             // Load the audio
             var uri = new Uri(path+@"\audio.mp3", UriKind.Relative);
@@ -332,11 +332,11 @@ namespace Coursework.Gameplay
                                 else if (note.Key % 30 == 0) colourCrop = 5; // 1/8 beat
                                 else if (note.Key % 20 == 0) colourCrop = 6; // 1/12 beat
                                 else colourCrop = 7; // Other interval
-                                loadArrow(noteY, (Dir)i, new Point(0, colourCrop));
+                                LoadArrow(noteY, (Dir)i, new Point(0, colourCrop));
                                 break;
                             // Load a mine
                             case songNoteType.MINE:
-                                loadMine(noteY, (Dir)i, new Point(0, 0));
+                                LoadMine(noteY, (Dir)i, new Point(0, 0));
                                 break;
                             // Begin a LN
                             case songNoteType.HOLDSTART:
@@ -355,6 +355,30 @@ namespace Coursework.Gameplay
 
                 // Set the base to the start of the next measure.
                 baseY -= (int)Math.Round(pixelsPerMeasure);
+            }
+        }
+
+
+        internal static void InitVariables()
+        {
+            // Set variables to initial values.
+            HP = 100;
+            score = 0;
+            variations.Clear();
+            currentChart = null;
+            judgements = new int[6];
+
+            // Get the user's preferred speed. If the player is not logged in, use the default speed of 800.
+            if (Users.loggedInUser != null)
+            {
+                speed = Users.loggedInUser.Speed;
+            }
+            else speed = 800;
+
+            // Clear all arrows.
+            for (int i = 0; i < 4; i++)
+            {
+                arrows[i].Clear();
             }
         }
     }

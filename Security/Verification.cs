@@ -65,7 +65,7 @@ namespace Coursework.Security
         }
 
         /// <summary>
-        /// 
+        /// Updates the password of an existing account.
         /// </summary>
         /// <param name="username">The username of the account to update</param>
         /// <param name="password">The new password, used to overwrite the old one</param>
@@ -93,10 +93,30 @@ namespace Coursework.Security
             byte[] yTransformed = bitwiseXOR(hashKey, yByteArray);
             BigInteger yTransformedInt = new BigInteger(yTransformed);
             BigInteger Z = BigInteger.Multiply(X, Y);
-            Database.updateAccount(username, Z.ToString(), yTransformedInt.ToString(), salt);
+            Database.updateAccount(username, Z.ToString(), yTransformedInt.ToString(), salt, Users.loggedInUser.Speed);
             // Success
             return 0;
+        }
 
+        /// <summary>
+        /// Updates a user account with a new scroll speed
+        /// </summary>
+        /// <param name="username">The username of the account to update.</param>
+        /// <param name="speed">The desired scroll speed to update to.</param>
+        /// <returns>Integer success code. [0 = Success, 1 = Field empty]</returns>
+        internal static int attemptUpdate(string username, int speed)
+        {
+            // If an invalid speed is given, or the username is empty.
+            if (string.IsNullOrWhiteSpace(username) || speed <= 0)
+            {
+                return 1;
+            }
+            // Update the current user object.
+            Users.loggedInUser.Speed = speed;
+            // Push the new speed to DB.
+            Database.updateAccount(username, Users.loggedInUser.zValue, Users.loggedInUser.yShifted, Users.loggedInUser.Salt, speed);
+            // Success
+            return 0;
         }
 
         /// <summary>

@@ -88,7 +88,25 @@ namespace Coursework.GUI
 
         private void closeButton_Click_1(object sender, EventArgs e)
         {
+            (Application.OpenForms["Main"] as Main).Show();
             Close();
+        }
+
+        private void updateScrollSpeedButton_Click(object sender, EventArgs e)
+        {
+            int newSpeed = (int)Math.Round(scrollSpeedBox.Value);
+            int result = Security.Verification.attemptUpdate(Users.loggedInUser.username, newSpeed);
+            ssErrorLabel.Visible = true;
+            if (result == 0)
+            {
+                ssErrorLabel.ForeColor = Color.FromArgb(44, 192, 51);
+                ssErrorLabel.Text = "Scroll speed updated!";
+            }
+            else
+            {
+                ssErrorLabel.ForeColor = Color.FromArgb(192, 44, 51);
+                ssErrorLabel.Text = "Error updating scroll speed.";
+            }
         }
     }
 }

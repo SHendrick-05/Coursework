@@ -18,13 +18,32 @@ namespace Coursework.Gameplay
         /// A list of sprites, which is used in drawing.
         /// </summary>
         private static List<Sprite> sprites;
+
+        /// <summary>
+        /// A list of all judgement feedback tags currently being displayed.
+        /// </summary>
         private static List<Tag> tags;
-        // Textures
+
+        /// <summary>
+        /// The full texture of a hit arrow. Facing downwards by default.
+        /// </summary>
         internal static Texture2D arrowTexture;
+        
+        /// <summary>
+        /// The full texture of a mine. 
+        /// </summary>
         internal static Texture2D mineTexture;
-        internal static Texture2D rectangle;
+
+        /// <summary>
+        /// The full texture for a receptor. Facing downwards by default.
+        /// </summary>
         internal static Texture2D recepTexture;
 
+        /// <summary>
+        /// A 1x1 rectangle used for drawing rectangular shapes. Can be resized and coloured.
+        /// </summary>
+        internal static Texture2D rectangle;
+        
         // Fonts
         internal static SpriteFont centuryGothic;
         internal static SpriteFont resultsFont;
@@ -60,10 +79,14 @@ namespace Coursework.Gameplay
         /// </summary>
         internal static bool resultsScreen;
 
-
-
-        
+        /// <summary>
+        /// The text that is currently being displayed as judgement feedback
+        /// </summary>
         private static string judgeText;
+
+        /// <summary>
+        /// The colour associated with the judgement feedback being displayed.
+        /// </summary>
         private static Color judgeColor;
 
         /// <summary>
@@ -78,17 +101,21 @@ namespace Coursework.Gameplay
             judgeColor = color;
         }
 
+        /// <summary>
+        /// Adds a sprite to the list of sprites. Used when creating new sprites.
+        /// </summary>
+        /// <param name="spr">The sprite to add</param>
         internal static void addSprite(Sprite spr)
             => sprites.Add(spr);
-
-        internal static void removeSprite(Sprite spr)
-            => sprites.Remove(spr);
-
+        
+        
+        /// <summary>
+        /// Adds a judgement feedback tag to the appropriate list. Accessed from GameHandler when a note is hit.
+        /// </summary>
+        /// <param name="tag">The tag to display</param>
         internal static void addTag(Tag tag)
             => tags.Add(tag);
 
-        internal static void removeTag(Tag tag)
-            => tags.Remove(tag);
         
         internal SongPlayer(string folder)
         {
@@ -112,16 +139,14 @@ namespace Coursework.Gameplay
             _graphics.HardwareModeSwitch = false;
             _graphics.ApplyChanges();
 
-            // Reset all variables
-            labelFrames = 0;
+            // Clear the GameHandler variables.
             GameHandler.bounds = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            GameHandler.InitVariables();
+
+            labelFrames = 0;
             isPlaying = false;
             resultsScreen = false;
             gameOverFrames = 0;
-            GameHandler.variations.Clear();
-            GameHandler.score = 0;
-            GameHandler.HP = 100;
-            GameHandler.speed = 800;
             isPlaying = false;
 
             Array.Clear(GameHandler.judgements);
@@ -165,7 +190,7 @@ namespace Coursework.Gameplay
                 GameHandler.receptors[i] = rcp;
             }
 
-            GameHandler.loadSong(chartFolder);
+            GameHandler.LoadSong(chartFolder);
         }
 
 

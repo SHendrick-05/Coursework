@@ -23,14 +23,18 @@ namespace Coursework
         internal string zValue { get; set; }
         internal string yShifted { get; set; }
         internal string Salt { get; set; }
+        /// <summary>
+        /// The user's preferred note speed, measured in pixels per second.
+        /// </summary>
         internal int Speed { get; set; }
         internal List<Score> scores { get; set; }
-        internal User(string UN, string ZP, string YS, string salt)
+        internal User(string UN, string ZP, string YS, string salt, int speed)
         {
             username = UN;
             zValue = ZP;
             yShifted = YS;
             Salt = salt;
+            Speed = speed;
         }
     }
 }

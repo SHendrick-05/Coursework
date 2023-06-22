@@ -23,7 +23,8 @@ namespace Coursework
                             Username TEXT NOT NULL,
                             zValue TEXT NOT NULL,
                             yShift TEXT NOT NULL,
-                            Salt TEXT NOT NULL)";
+                            Salt TEXT NOT NULL,
+                            Speed INTEGER NOT NULL)";
 
                 command.ExecuteNonQuery();
             }
@@ -35,7 +36,7 @@ namespace Coursework
         /// Creates a new account and inserts it into the database.
         /// </summary>
         /// <param name="username">The username of the account</param>
-        /// <param name="zValue">The "Z" prime obtained by X * Y</param>
+        /// <param name="zValue">The "Z" integer obtained by X * Y</param>
         /// <param name="yShift">The circular-shifted Y' value.</param>
         /// <param name="salt">The salt to go along with the password</param>
         internal static void addAccount(string username, string zValue, string yShift, string salt)
@@ -48,13 +49,14 @@ namespace Coursework
                 var command = conn.CreateCommand();
                 command.CommandText =
                     @"INSERT INTO Users
-                        VALUES (NULL,$user,$zVal,$ySh,$sal)";
+                        VALUES (NULL,$user,$zVal,$ySh,$sal,$speed)";
 
                 // Add parameters separately (to prevent SQL injection)
                 command.Parameters.AddWithValue("$user", username);
                 command.Parameters.AddWithValue("$zVal", zValue);
                 command.Parameters.AddWithValue("$ySh", yShift);
                 command.Parameters.AddWithValue("$sal", salt);
+                command.Parameters.AddWithValue("$speed", 800); // 800 will be the default speed.
 
                 // Run the command
                 command.ExecuteNonQuery();
@@ -68,7 +70,7 @@ namespace Coursework
         /// <param name="zValue">The "Z" prime obtained by X * Y</param>
         /// <param name="yShift">The circular-shifted Y' value.</param>
         /// <param name="salt">The salt to go along with the password</param>
-        internal static void updateAccount(string username, string zValue, string yShift, string salt)
+        internal static void updateAccount(string username, string zValue, string yShift, string salt, int speed)
         {
             using (var conn = new SqliteConnection($"Data Source={dbPath}"))
             {
@@ -78,7 +80,7 @@ namespace Coursework
                 var command = conn.CreateCommand();
                 command.CommandText =
                     @"UPDATE Users
-                        SET zValue = $zVal, yShift = $ySh, Salt = $sal
+                        SET zValue = $zVal, yShift = $ySh, Salt = $sal, Speed = $speed
                         WHERE Username = $user";
 
                 // Add the parameters
@@ -86,6 +88,7 @@ namespace Coursework
                 command.Parameters.AddWithValue("$zVal", zValue);
                 command.Parameters.AddWithValue("$ySh", yShift);
                 command.Parameters.AddWithValue("$sal", salt);
+                command.Parameters.AddWithValue("$speed", speed);
 
                 // Run the command
                 command.ExecuteNonQuery();
@@ -124,9 +127,10 @@ namespace Coursework
                         string zValue = reader.GetValue(2).ToString();
                         string yShift = reader.GetValue(3).ToString();
                         string salt = reader.GetValue(4).ToString();
+                        int speed = (int)reader.GetValue(5);
 
                         // Set up an object and return it
-                        User result = new User(uName, zValue, yShift, salt);
+                        User result = new User(uName, zValue, yShift, salt, speed);
                         return result;
 
                     }
