@@ -278,7 +278,7 @@ namespace Coursework.Gameplay
         /// <param name="offset">How many pixels from the centre the tag should be displayed.</param>
         internal static void ShowTag(Color color, int offset)
         {
-            int baseX = (arrowColumns[1] + arrowColumns[2] + arrowSize.X) / 2;
+            int baseX = (arrowColumns[1] + arrowColumns[2]) / 2;
             Tag tag = new Tag(new Point(baseX + offset, tagY), tagSize, tagFrames, color);
             SongPlayer.addTag(tag);
         }
@@ -359,6 +359,9 @@ namespace Coursework.Gameplay
         }
 
 
+        /// <summary>
+        /// Initialises gameplay variables to their default values.
+        /// </summary>
         internal static void InitVariables()
         {
             // Set variables to initial values.

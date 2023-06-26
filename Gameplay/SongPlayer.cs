@@ -116,7 +116,10 @@ namespace Coursework.Gameplay
         internal static void addTag(Tag tag)
             => tags.Add(tag);
 
-        
+        /// <summary>
+        /// Constructor method for the song player
+        /// </summary>
+        /// <param name="folder">The absolute path of the folder containing the chart to be played</param>
         internal SongPlayer(string folder)
         {
             chartFolder = folder;
@@ -304,22 +307,49 @@ namespace Coursework.Gameplay
 
 
             // Create a rectangle for each judgement.
+
+            // Variables to make rectangle size relative to screen size.
+            float boundsY = (_graphics.PreferredBackBufferHeight / 2f) - 100;
+            float rectBoundsY = boundsY / 6f;
+            float rectSize = (3 * rectBoundsY) / 4;
             for (int i = 0; i < 6; i++)
             {
-                int baseY = 100 + 100 * i;
+                int baseY = 100 + (int)rectBoundsY * i;
                 int bound = GameHandler.judgements[i] * rectWidth / numJudges;
                 string percent = string.Format("({0:0.00}%)", 100 * GameHandler.judgements[i] / (float)numJudges);
 
                 // Draw the base rectangle
-                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, rectWidth, 50), GameHandler.judgeColors[i] * 0.5f);
+                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, rectWidth, (int)rectSize), GameHandler.judgeColors[i] * 0.5f);
                 // Fill it in with the appropriate percentage
-                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, bound, 50), GameHandler.judgeColors[i]);
+                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, bound, (int)rectSize), GameHandler.judgeColors[i]);
                 // Draw judgement text
                 _spriteBatch.DrawString(resultsFont, GameHandler.judgeStrings[i], new Vector2(110, baseY + textY), Color.White);
                 // Draw the judgement count
                 _spriteBatch.DrawString(resultsFont, GameHandler.judgements[i].ToString(), new Vector2(judgeCountX - resultsFont.MeasureString(GameHandler.judgements[i].ToString()).X, baseY + textY), Color.White);
                 // Draw the percentage
                 _spriteBatch.DrawString(centuryGothic, percent, new Vector2(pctX, baseY + textY), Color.White);
+            }
+
+            // Draw the judgement list.
+            Rectangle judgeBox = new Rectangle
+                (100, _graphics.PreferredBackBufferHeight / 2, // Position
+                _graphics.PreferredBackBufferWidth - 200, (_graphics.PreferredBackBufferHeight / 2) - 100); // Size
+
+            int judgeMiddle = judgeBox.Height / 2;
+
+
+            _spriteBatch.Draw(rectangle, judgeBox, Color.Black);
+            _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle, judgeBox.Width, 2), GameHandler.judgeColors[0] * 0.5f);
+            for (int i = 1; i < 6; i++)
+            {
+                double maxTiming = 0.150f;
+                double percentage = GameHandler.timeWindows[i] / maxTiming;
+                int offset = (int)(percentage * judgeBox.Height / 2);
+                // Get the color of the judgement line
+                Color judgeLineColor = GameHandler.judgeColors[i];
+
+                _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle + offset, judgeBox.Width, 2), judgeLineColor * 0.5f);
+                _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle - offset, judgeBox.Width, 2), judgeLineColor * 0.5f);
             }
 
             // Drawing is finished.
@@ -400,11 +430,11 @@ namespace Coursework.Gameplay
             _spriteBatch.DrawString(centuryGothic, "OKs: " + GameHandler.judgements[3], new Vector2(rightX, 400 + 3 * judgeDiv), Color.White);
             _spriteBatch.DrawString(centuryGothic, "Bads: " + GameHandler.judgements[4], new Vector2(rightX, 400 + 4 * judgeDiv), Color.White);
             _spriteBatch.DrawString(centuryGothic, "Misses: " + GameHandler.judgements[5], new Vector2(rightX, 400 + 5 * judgeDiv), Color.White);
-            
+
 
             // Tag centre
-            int baseX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2] + GameHandler.arrowSize.X) / 2;
-            _spriteBatch.Draw(rectangle, new Rectangle(baseX, GameHandler.tagY, 2, GameHandler.tagSize.Y), Color.White);
+            int baseX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2]) / 2;
+            _spriteBatch.Draw(rectangle, new Rectangle(baseX - 1, GameHandler.tagY, 2, GameHandler.tagSize.Y), Color.White);
 
             // End drawing
             _spriteBatch.End();
