@@ -127,7 +127,7 @@ namespace Coursework
                         string zValue = reader.GetValue(2).ToString();
                         string yShift = reader.GetValue(3).ToString();
                         string salt = reader.GetValue(4).ToString();
-                        int speed = (int)reader.GetValue(5);
+                        int speed = Convert.ToInt32(reader.GetValue(5));
 
                         // Set up an object and return it
                         User result = new User(uName, zValue, yShift, salt, speed);

@@ -11,17 +11,22 @@ namespace Coursework.Gameplay
     {
         internal Random rnd = new Random();
         internal Dir dir;
+        internal int measureDiv;
+        internal int measure;
+
         /// <summary>
         /// Constructor for the arrow class
         /// </summary>
         /// <param name="posY">The Y-position of the arrow (position of the top of the arrow)</param>
         /// <param name="dir">The directional enum of the arrow</param>
         /// <param name="spriteCrop">The point at which to crop the main sprite</param>
-        internal Arrow(int posY, Dir dir, Point spriteCrop) : base()
+        internal Arrow(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base()
         {
             // Set the variables
             this.posY = posY;
             this.dir = dir;
+            this.measure = measure;
+            this.measureDiv = measureDiv;
             this.spriteCrop = spriteCrop;
             size = GameHandler.arrowSize;
             posX = GameHandler.arrowColumns[(int)dir];
@@ -46,7 +51,7 @@ namespace Coursework.Gameplay
 
     internal class Hit : Arrow
     {
-        internal Hit(int posY, Dir dir, Point spriteCrop) : base(posY, dir, spriteCrop)
+        internal Hit(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base(posY, dir, spriteCrop, measureDiv, measure)
         {
             texture = SongPlayer.arrowTexture;
         }
@@ -68,7 +73,7 @@ namespace Coursework.Gameplay
         int framesPerUpdate;
         int frame;
         int frames;
-        internal Mine(int posY, Dir dir, Point spriteCrop) : base(posY, dir, spriteCrop)
+        internal Mine(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base(posY, dir, spriteCrop, measureDiv, measure)
         {
             texture = SongPlayer.mineTexture;
             framesPerUpdate = 10;

@@ -36,13 +36,18 @@ namespace Coursework.Gameplay
         /// </summary>
         internal static double[] timeWindows = new double[6]
         {
-            0.011,  // Perfect
-            0.0225, // Great
-            0.045,  // Good
-            0.0675, // OK
-            0.090,  // Bad
-            0.100   // Miss
+            0.0225,  // Perfect
+            0.045, // Great
+            0.090,  // Good
+            0.135, // OK
+            0.180,  // Bad
+            0.200   // Miss
         };
+
+        /// <summary>
+        /// The universal time window for hitting a mine.
+        /// </summary>
+        internal static double mineWindow = 0.075;
 
         /// <summary>
         /// The colour to be associated with each judgement type.
@@ -154,9 +159,9 @@ namespace Coursework.Gameplay
         internal static int HP = 100;
 
         /// <summary>
-        /// A list of all hit notes, given by the time difference from the actual note time.
+        /// A list of all hit notes, given by the time difference from the actual note time. Given as a list of tuples (time in song, time offset hit).
         /// </summary>
-        internal static List<double> variations = new List<double>();
+        internal static List<(double, double)> variations = new List<(double, double)>();
 
         /// <summary>
         /// The amount of each class of judgement the user has scored during gameplay.
@@ -171,18 +176,18 @@ namespace Coursework.Gameplay
         /// <summary>
         /// Creates a hit arrow and adds it to the list
         /// </summary>
-        internal static void LoadArrow(int Y, Dir dir, Point spriteCrop)
+        internal static void LoadArrow(int Y, Dir dir, Point spriteCrop, int measureDiv, int measure)
         {
-            Hit arrow = new(Y, dir, spriteCrop);
+            Hit arrow = new(Y, dir, spriteCrop, measureDiv, measure);
             arrows[(int)dir].Add(arrow);
         }
 
         /// <summary>
         /// Creates a mine and adds it to the list.
         /// </summary>
-        internal static void LoadMine(int Y, Dir dir, Point spriteCrop)
+        internal static void LoadMine(int Y, Dir dir, Point spriteCrop, int measureDiv, int measure)
         {
-            Mine mine = new(Y, dir, spriteCrop);
+            Mine mine = new(Y, dir, spriteCrop, measureDiv, measure);
             arrows[(int)dir].Add(mine);
         }
 
@@ -208,8 +213,10 @@ namespace Coursework.Gameplay
                 HitNote(arrow as Hit, distance);
             // Mine hit
             else if (arrowType == typeof(Mine))
-                MineHit(arrow as Mine);
-
+            {
+                if (Math.Abs(distance / speed) < mineWindow)
+                    MineHit(arrow as Mine);
+            }
         }
 
         /// <summary>
@@ -233,7 +240,7 @@ namespace Coursework.Gameplay
                 }
             }
             // Add this judgement to the lists.
-            variations.Add(time);
+            variations.Add((arrow.measure * measureDivions + arrow.measureDiv, time));
             judgements[judgement]++;
             
             // If a perfect was hit, restore HP.
@@ -308,8 +315,9 @@ namespace Coursework.Gameplay
             int baseY = (int)Math.Round(bounds.Y - 200 - (timeDelay * speed) - offsetPixels);
             bool[] holds = new bool[4];
             // Loop over the measures in the song
-            foreach (Dictionary<int, songNoteType>[] measure in chart.measures)
+            for(int j = 0; j < chart.measures.Count; j++)
             {
+                Dictionary<int, songNoteType>[] measure = chart.measures[j]; ;
                 // Loop over every column
                 for(int i = 0; i < 4; i++)
                 {
@@ -332,11 +340,11 @@ namespace Coursework.Gameplay
                                 else if (note.Key % 30 == 0) colourCrop = 5; // 1/8 beat
                                 else if (note.Key % 20 == 0) colourCrop = 6; // 1/12 beat
                                 else colourCrop = 7; // Other interval
-                                LoadArrow(noteY, (Dir)i, new Point(0, colourCrop));
+                                LoadArrow(noteY, (Dir)i, new Point(0, colourCrop), note.Key, j);
                                 break;
                             // Load a mine
                             case songNoteType.MINE:
-                                LoadMine(noteY, (Dir)i, new Point(0, 0));
+                                LoadMine(noteY, (Dir)i, new Point(0, 0), note.Key, j);
                                 break;
                             // Begin a LN
                             case songNoteType.HOLDSTART:

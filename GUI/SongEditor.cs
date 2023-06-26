@@ -116,9 +116,23 @@ namespace Coursework.GUI
                         measure[gen].Add(i * 60, songNoteType.HIT);
                     }
                     return measure;
-                // 1/8 JS
+                // 1/4 JS
                 case Difficulty.HARD:
-                    
+                    for (int i = 0; i < 16; i++)
+                    {
+                        int gen = rnd.Next(4);
+                        measure[gen].Add(i * 60, songNoteType.HIT);
+                        if (i % 4 == 0)
+                        {
+                            int gen2;
+                            do
+                            {
+                                gen2 = rnd.Next(4);
+                            }
+                            while (gen2 == gen);
+                            measure[gen2].Add(i * 60, songNoteType.HIT);
+                        }
+                    }
                     return measure;
                 default:
                     throw new Exception("Invalid difficulty");

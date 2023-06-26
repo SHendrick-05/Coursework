@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Coursework
 {
+    /// <summary>
+    /// Static class for handling charts.
+    /// </summary>
     internal static class Charts
     {
         internal static List<Chart> charts;

@@ -336,20 +336,46 @@ namespace Coursework.Gameplay
                 _graphics.PreferredBackBufferWidth - 200, (_graphics.PreferredBackBufferHeight / 2) - 100); // Size
 
             int judgeMiddle = judgeBox.Height / 2;
-
+            // The judgement box will cover all judgements up to Bad.
+            double maxTiming = GameHandler.timeWindows[4];
 
             _spriteBatch.Draw(rectangle, judgeBox, Color.Black);
             _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle, judgeBox.Width, 2), GameHandler.judgeColors[0] * 0.5f);
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i < 5; i++)
             {
-                double maxTiming = 0.150f;
-                double percentage = GameHandler.timeWindows[i] / maxTiming;
+                
+                double percentage = GameHandler.timeWindows[i - 1] / maxTiming;
                 int offset = (int)(percentage * judgeBox.Height / 2);
                 // Get the color of the judgement line
                 Color judgeLineColor = GameHandler.judgeColors[i];
 
                 _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle + offset, judgeBox.Width, 2), judgeLineColor * 0.5f);
                 _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle - offset, judgeBox.Width, 2), judgeLineColor * 0.5f);
+            }
+            int max = GameHandler.measureDivions * GameHandler.currentChart.measures.Count();
+            foreach((double, double) noteHit in GameHandler.variations)
+            {
+                double progressInSong = noteHit.Item1 / max;
+                double Yoffset = noteHit.Item2 / maxTiming;
+                Color judgeColor = GameHandler.judgeColors[5];
+                for(int i = 0; i < 6; i++)
+                {
+                    if (Math.Abs(noteHit.Item2) <= GameHandler.timeWindows[i])
+                    {
+                        judgeColor = GameHandler.judgeColors[i];
+                        break;
+                    }
+                }
+
+                Point position = new Point(
+                    judgeBox.X + (int)(judgeBox.Width * progressInSong),
+                    judgeBox.Y + judgeMiddle + (int)(judgeBox.Height * Yoffset / 2));
+
+                if (position.Y < judgeBox.Y) position.Y = judgeBox.Y;
+                else if (position.Y > judgeBox.Y + judgeBox.Height) position.Y = judgeBox.Y + judgeBox.Height - 2;
+
+                Rectangle judgeDotBox = new Rectangle(position, new Point(2, 2));
+                _spriteBatch.Draw(rectangle, judgeDotBox, judgeColor);
             }
 
             // Drawing is finished.
@@ -416,7 +442,7 @@ namespace Coursework.Gameplay
             // Mean
             if (GameHandler.variations.Count != 0)
             {
-                string mean = string.Format("{0:0.00} ms", GameHandler.variations.Average() * 1000);
+                string mean = string.Format("{0:0.00} ms", GameHandler.variations.Select(x => x.Item2).Average() * 1000);
                 _spriteBatch.DrawString(centuryGothic, mean, new Vector2(rightX, 200), Color.White);
             }
 
