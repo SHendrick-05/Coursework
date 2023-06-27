@@ -377,7 +377,8 @@ namespace Coursework.Gameplay
             score = 0;
             variations.Clear();
             currentChart = null;
-            judgements = new int[6];
+            judgements = new int[6] {0, 0, 0, 0, 0, 0};
+
 
             // Get the user's preferred speed. If the player is not logged in, use the default speed of 800.
             if (Users.loggedInUser != null)

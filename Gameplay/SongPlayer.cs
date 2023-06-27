@@ -11,7 +11,14 @@ namespace Coursework.Gameplay
 {
     internal class SongPlayer : Game
     {
+        /// <summary>
+        /// Used for finding boundaries and various other things.
+        /// </summary>
         private GraphicsDeviceManager _graphics;
+
+        /// <summary>
+        /// The game's sprite batch. Used for drawing strings and textures.
+        /// </summary>
         private SpriteBatch _spriteBatch;
 
         /// <summary>
@@ -90,6 +97,11 @@ namespace Coursework.Gameplay
         private static Color judgeColor;
 
         /// <summary>
+        /// The number of notes per each sample for the average line, in the results screen.
+        /// </summary>
+        private static int notesPerSample;
+
+        /// <summary>
         /// Updates the judgement label on a note hit.
         /// </summary>
         /// <param name="color">The color of the label</param>
@@ -146,22 +158,23 @@ namespace Coursework.Gameplay
             GameHandler.bounds = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             GameHandler.InitVariables();
 
+            // Clear the variables here.
             labelFrames = 0;
+            gameOverFrames = 0;
+            notesPerSample = 10;
             isPlaying = false;
             resultsScreen = false;
-            gameOverFrames = 0;
-            isPlaying = false;
 
-            Array.Clear(GameHandler.judgements);
             for (int i = 0; i < 4; i++)
             {
                 GameHandler.arrows[i].Clear();
             }
 
-
-            // Initialise the list
+            // Initialise the lists
             sprites = new List<Sprite>();
             tags = new List<Tag>();
+
+            // Default init function.
             base.Initialize();
         }
 
@@ -170,19 +183,23 @@ namespace Coursework.Gameplay
         /// </summary>
         protected override void LoadContent()
         {
-            // Get textures
+            // Load the textures from content file.
             arrowTexture = Content.Load<Texture2D>("downTap");
             mineTexture = Content.Load<Texture2D>("downMine");
             recepTexture = Content.Load<Texture2D>("downReceptor");
             mineHit = Content.Load<SoundEffect>("explosion");
-            //Fonts
+
+            // Load fonts from the content file.
             centuryGothic = Content.Load<SpriteFont>("centuryGothic16");
             resultsFont = Content.Load<SpriteFont>("resultsFont");
 
+            // Get the 1x1 white rectangle texture.
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
             rectangle.SetData(new[] { Color.White });
 
+            // Initialise spriteBatch.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
             // Load receptors
             for(int i = 0; i < 4; i++)
             {
@@ -193,6 +210,7 @@ namespace Coursework.Gameplay
                 GameHandler.receptors[i] = rcp;
             }
 
+            // Load the chart.
             GameHandler.LoadSong(chartFolder);
         }
 
@@ -204,10 +222,14 @@ namespace Coursework.Gameplay
         /// <param name="gameTime">The running time of the game.</param>
         protected override void Update(GameTime gameTime)
         {
+            // Exit condition.
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            // Remove this when done debugging. This is for testing purposes.
             if (Input.kbState.IsKeyDown(Keys.Space))
                 GameHandler.HP = 0;
+
             // Update sprites and tags
             if (gameOverFrames == 0)
             {
@@ -240,13 +262,13 @@ namespace Coursework.Gameplay
                     resultsScreen = true;
             }
 
-            
-
+            // The delay is over. Start playing the audio.
             if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay && !isPlaying)
             {
                     isPlaying = true;
                     MediaPlayer.Play(audio);
             }
+
             // Update input
             Input.Update();
             labelFrames--;
@@ -283,14 +305,13 @@ namespace Coursework.Gameplay
         {
             // Clear the screen
             GraphicsDevice.Clear(Color.DarkSlateGray);
+
             // Open the sprite drawer
             _spriteBatch.Begin();
 
             // Get coordinates to use in drawing
             float middle = _graphics.PreferredBackBufferWidth / 2f;
-            float titleX = middle - centuryGothic.MeasureString(GameHandler.currentChart.title).X;
-
-            int rectWidth = (int)middle - 100;
+            int rectWidth = (int)middle - 120;
 
             // Variable calculations for the drawing
             int numJudges = GameHandler.judgements.Sum();
@@ -302,33 +323,51 @@ namespace Coursework.Gameplay
             int textY = 25 - (int)(resultsFont.MeasureString("Test").Y / 2);
 
 
-            // Chart title
-            _spriteBatch.DrawString(resultsFont, GameHandler.currentChart.title, new Vector2(titleX, 50), Color.White);
-
-
-            // Create a rectangle for each judgement.
+            //                                      //
+            //  Draw the judgement counts and bars  //
+            //                                      //
 
             // Variables to make rectangle size relative to screen size.
-            float boundsY = (_graphics.PreferredBackBufferHeight / 2f) - 100;
+            float boundsY = (_graphics.PreferredBackBufferHeight / 2f) - 120;
             float rectBoundsY = boundsY / 6f;
             float rectSize = (3 * rectBoundsY) / 4;
+
+            // Draw a bounding box.
+            Rectangle statsBounds = new Rectangle(100, 100, _graphics.PreferredBackBufferWidth - 200, (int)boundsY);
+            _spriteBatch.Draw(rectangle, statsBounds, Color.Black * 0.5f);
+
+            // Draw the rectangle for each judgement type.
             for (int i = 0; i < 6; i++)
             {
-                int baseY = 100 + (int)rectBoundsY * i;
+                int baseY = 110 + (int)rectBoundsY * i;
                 int bound = GameHandler.judgements[i] * rectWidth / numJudges;
                 string percent = string.Format("({0:0.00}%)", 100 * GameHandler.judgements[i] / (float)numJudges);
 
                 // Draw the base rectangle
-                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, rectWidth, (int)rectSize), GameHandler.judgeColors[i] * 0.5f);
+                _spriteBatch.Draw(rectangle, new Rectangle(110, baseY, rectWidth, (int)rectSize), GameHandler.judgeColors[i] * 0.5f);
                 // Fill it in with the appropriate percentage
-                _spriteBatch.Draw(rectangle, new Rectangle(100, baseY, bound, (int)rectSize), GameHandler.judgeColors[i]);
+                _spriteBatch.Draw(rectangle, new Rectangle(110, baseY, bound, (int)rectSize), GameHandler.judgeColors[i]);
                 // Draw judgement text
-                _spriteBatch.DrawString(resultsFont, GameHandler.judgeStrings[i], new Vector2(110, baseY + textY), Color.White);
+                _spriteBatch.DrawString(resultsFont, GameHandler.judgeStrings[i], new Vector2(120, baseY + textY), Color.White);
                 // Draw the judgement count
                 _spriteBatch.DrawString(resultsFont, GameHandler.judgements[i].ToString(), new Vector2(judgeCountX - resultsFont.MeasureString(GameHandler.judgements[i].ToString()).X, baseY + textY), Color.White);
                 // Draw the percentage
                 _spriteBatch.DrawString(centuryGothic, percent, new Vector2(pctX, baseY + textY), Color.White);
             }
+
+            //                              //
+            // Draw chart and player stats  //
+            //                              //
+
+            Vector2 statsBase = new Vector2((_graphics.PreferredBackBufferWidth * 0.5f) + 10, 110);
+
+            float titleX = middle - centuryGothic.MeasureString(GameHandler.currentChart.title).X;
+            _spriteBatch.DrawString(resultsFont, GameHandler.currentChart.title, statsBase, Color.White);
+            
+
+            //                      //
+            // Draw the note graph  //
+            //                      //
 
             // Draw the judgement list.
             Rectangle judgeBox = new Rectangle
@@ -352,17 +391,28 @@ namespace Coursework.Gameplay
                 _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle + offset, judgeBox.Width, 2), judgeLineColor * 0.5f);
                 _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle - offset, judgeBox.Width, 2), judgeLineColor * 0.5f);
             }
+
+
+            // A variable for seeing how many divisions are in the entire chart.
+
             int max = GameHandler.measureDivions * GameHandler.currentChart.measures.Count();
-            foreach((double, double) noteHit in GameHandler.variations)
+            Vector2 prevPoint = Vector2.Zero;
+
+            // Variables for taking averages of notes.
+            int samplePoint = notesPerSample;
+            List<int> noteSlice = new List<int>();
+
+            for(int i = 0; i < GameHandler.variations.Count; i++)
             {
+                (double, double) noteHit = GameHandler.variations[i];
                 double progressInSong = noteHit.Item1 / max;
                 double Yoffset = noteHit.Item2 / maxTiming;
                 Color judgeColor = GameHandler.judgeColors[5];
-                for(int i = 0; i < 6; i++)
+                for(int j = 0; j < 6; j++)
                 {
-                    if (Math.Abs(noteHit.Item2) <= GameHandler.timeWindows[i])
+                    if (Math.Abs(noteHit.Item2) <= GameHandler.timeWindows[j])
                     {
-                        judgeColor = GameHandler.judgeColors[i];
+                        judgeColor = GameHandler.judgeColors[j];
                         break;
                     }
                 }
@@ -370,12 +420,38 @@ namespace Coursework.Gameplay
                 Point position = new Point(
                     judgeBox.X + (int)(judgeBox.Width * progressInSong),
                     judgeBox.Y + judgeMiddle + (int)(judgeBox.Height * Yoffset / 2));
+               
 
                 if (position.Y < judgeBox.Y) position.Y = judgeBox.Y;
                 else if (position.Y > judgeBox.Y + judgeBox.Height) position.Y = judgeBox.Y + judgeBox.Height - 2;
+                
 
                 Rectangle judgeDotBox = new Rectangle(position, new Point(2, 2));
                 _spriteBatch.Draw(rectangle, judgeDotBox, judgeColor);
+
+
+                // Take averages of the notes, to draw an average line.
+                if (i != 0)
+                {
+                    
+                    if (--samplePoint == 0)
+                    {
+                        // At this point, add a new point for the average line.
+                        position.Y = (int)noteSlice.Average();
+                        DrawLine(prevPoint, position.ToVector2());
+                        prevPoint = position.ToVector2();
+                        samplePoint = notesPerSample;
+                        noteSlice.Clear();
+                    }
+                    else
+                    {
+                        // Add the note to the sample.
+                        noteSlice.Add(position.Y);
+                    }
+                }
+                else prevPoint = position.ToVector2();
+
+                
             }
 
             // Drawing is finished.
@@ -432,8 +508,8 @@ namespace Coursework.Gameplay
             int rightX = GameHandler.arrowColumns[3] + 100;
             float judgeDiv = centuryGothic.MeasureString("test").Y + 20;
 
-
-            _spriteBatch.DrawString(resultsFont, (1 / gameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(0, 0), Color.White);
+            string fpsString = string.Format("{0:00.0} FPS", 1 / gameTime.ElapsedGameTime.TotalSeconds);
+            _spriteBatch.DrawString(resultsFont, fpsString, new Vector2(0, 0), Color.White);
 
             // Health
             Color hpColor = GameHandler.HP > 40 ? Color.Green : Color.Red;
@@ -464,6 +540,25 @@ namespace Coursework.Gameplay
 
             // End drawing
             _spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Draws a straight white line, 1 pixel thick, between two points.
+        /// </summary>
+        /// <param name="start">The point that the line should start at</param>
+        /// <param name="end">The point that the line should finish at.</param>
+        internal void DrawLine(Vector2 start, Vector2 end)
+        {
+            _spriteBatch.Draw(
+                rectangle,
+                start,
+                null,
+                Color.White,
+                (float)Math.Atan2(end.Y - start.Y, end.X - start.X), // Get the gradient of the line.
+                new Vector2(0f, (float)rectangle.Height / 2),        // Rotate around the centre of the line.
+                new Vector2(Vector2.Distance(start, end), 1f),       // Scale the line to the distance between the two points.
+                SpriteEffects.None,
+                0f);
         }
     }
 }

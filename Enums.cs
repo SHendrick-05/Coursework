@@ -16,6 +16,7 @@ namespace Coursework
         UP,
         RIGHT
     }
+
     /// <summary>
     /// Differential enum used for loading and saving charts.
     /// </summary>
@@ -27,6 +28,7 @@ namespace Coursework
         HOLDSTART,
         HOLDEND
     }
+
     /// <summary>
     /// Reprenting the difficulty of the chart
     /// </summary>

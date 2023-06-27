@@ -86,6 +86,10 @@ namespace Coursework.Gameplay
         /// This abstract feature will be implemented in inherited classes to perform specific tasks.
         /// </summary>
         internal abstract void Update(GameTime gameTime);
+        
+        /// <summary>
+        /// The property for the sprite's texture.
+        /// </summary>
         internal Texture2D Texture { get { return texture; } }
 
         /// <summary>
@@ -112,11 +116,31 @@ namespace Coursework.Gameplay
     /// </summary>
     internal class Tag
     {
+        /// <summary>
+        /// A rectangle representing the size that the tag should occupy.
+        /// </summary>
         internal Rectangle bounds;
+
+        /// <summary>
+        /// The number of frames the tag should be displayed for.
+        /// </summary>
         internal int frames;
+
+        /// <summary>
+        /// A float from 0 to 1 representing how opaque or transparent the tag should be. 0 is transparent, 1 is opaque.
+        /// </summary>
         internal float opacity;
+
+        /// <summary>
+        /// A boolean value representing whether this tag should be displayed any further or not.
+        /// </summary>
         internal bool isDeprecated;
+
+        /// <summary>
+        /// The colour of the tag.
+        /// </summary>
         internal Color color;
+
         /// <summary>
         /// Initialise a tag to display on-screen
         /// </summary>
@@ -129,11 +153,14 @@ namespace Coursework.Gameplay
             this.frames = frames;
             this.color = color;
         }
+
+        /// <summary>
+        /// The update function, called each frame.
+        /// </summary>
         internal void Update()
         {
-            frames--;
             // This effect for the tag becoming more transparent.
-            opacity = Math.Min(1f, frames / 60f);
+            opacity = Math.Min(1f, --frames / 60f);
             if (frames <= 0)
             {
                 // The tag should no longer be displayed after this point.
