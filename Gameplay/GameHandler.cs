@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Coursework.Gameplay
 {
@@ -152,6 +153,15 @@ namespace Coursework.Gameplay
         /// How many points the user has scored.
         /// </summary>
         internal static int score;
+
+        /// <summary>
+        /// The accuracy of gameplay. 100% is perfect.
+        /// </summary>
+        internal static double accuracy { get
+            {
+                var sum = judgePoints.Zip(judgements, (points, count) => points * count).Sum();
+                return sum / (judgePoints[0] * judgements.Sum());
+            } }
 
         /// <summary>
         /// The health points of the user, from 0 to 100. If this hits 0, the user has failed.

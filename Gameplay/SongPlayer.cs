@@ -359,10 +359,16 @@ namespace Coursework.Gameplay
             // Draw chart and player stats  //
             //                              //
 
-            Vector2 statsBase = new Vector2((_graphics.PreferredBackBufferWidth * 0.5f) + 10, 110);
+            Vector2 textBase = new Vector2((_graphics.PreferredBackBufferWidth * 0.5f) + 10, 110 + textY);
+            Vector2 textDivision = new Vector2(0, rectBoundsY);
 
-            float titleX = middle - centuryGothic.MeasureString(GameHandler.currentChart.title).X;
-            _spriteBatch.DrawString(resultsFont, GameHandler.currentChart.title, statsBase, Color.White);
+            float textHeight = resultsFont.MeasureString("Test").Y;
+
+            _spriteBatch.DrawString(resultsFont, GameHandler.currentChart.title, textBase, Color.White);
+            _spriteBatch.DrawString(resultsFont, "Charted by " + GameHandler.currentChart.author, textBase + textDivision, Color.White);
+            
+            // Draw percentage.
+
             
 
             //                      //
@@ -378,8 +384,13 @@ namespace Coursework.Gameplay
             // The judgement box will cover all judgements up to Bad.
             double maxTiming = GameHandler.timeWindows[4];
 
+            // Draw the base.
             _spriteBatch.Draw(rectangle, judgeBox, Color.Black);
+
+            // Draw the perfect line.
             _spriteBatch.Draw(rectangle, new Rectangle(judgeBox.X, judgeBox.Y + judgeMiddle, judgeBox.Width, 2), GameHandler.judgeColors[0] * 0.5f);
+
+            // Draw other judgement lines.
             for (int i = 1; i < 5; i++)
             {
                 
@@ -402,11 +413,15 @@ namespace Coursework.Gameplay
             int samplePoint = notesPerSample;
             List<int> noteSlice = new List<int>();
 
+            // Draw every note.
             for(int i = 0; i < GameHandler.variations.Count; i++)
             {
+                // Timing things.
                 (double, double) noteHit = GameHandler.variations[i];
                 double progressInSong = noteHit.Item1 / max;
                 double Yoffset = noteHit.Item2 / maxTiming;
+
+                // Get the judgement colour of the note
                 Color judgeColor = GameHandler.judgeColors[5];
                 for(int j = 0; j < 6; j++)
                 {
@@ -417,29 +432,36 @@ namespace Coursework.Gameplay
                     }
                 }
 
+                // Get the position of the note
                 Point position = new Point(
                     judgeBox.X + (int)(judgeBox.Width * progressInSong),
                     judgeBox.Y + judgeMiddle + (int)(judgeBox.Height * Yoffset / 2));
                
 
+                // If the note is too high or too low, place it on the edge.
                 if (position.Y < judgeBox.Y) position.Y = judgeBox.Y;
                 else if (position.Y > judgeBox.Y + judgeBox.Height) position.Y = judgeBox.Y + judgeBox.Height - 2;
                 
-
+                // 2x2 rectangle size.
                 Rectangle judgeDotBox = new Rectangle(position, new Point(2, 2));
+
+                // Draw the note.
                 _spriteBatch.Draw(rectangle, judgeDotBox, judgeColor);
 
 
                 // Take averages of the notes, to draw an average line.
                 if (i != 0)
                 {
-                    
                     if (--samplePoint == 0)
                     {
                         // At this point, add a new point for the average line.
                         position.Y = (int)noteSlice.Average();
+
+                        // Connect it to the line.
                         DrawLine(prevPoint, position.ToVector2());
                         prevPoint = position.ToVector2();
+
+                        // Reset the variable and clear the sample.
                         samplePoint = notesPerSample;
                         noteSlice.Clear();
                     }
@@ -450,8 +472,6 @@ namespace Coursework.Gameplay
                     }
                 }
                 else prevPoint = position.ToVector2();
-
-                
             }
 
             // Drawing is finished.
