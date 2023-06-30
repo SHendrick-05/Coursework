@@ -82,7 +82,7 @@ namespace Coursework.Gameplay
         internal static int[] judgePoints = new int[6]
         {
             300,    // Perfect
-            200,    // Great
+            250,    // Great
             150,    // Good
             100,    // OK
             50,     // Bad
@@ -155,12 +155,18 @@ namespace Coursework.Gameplay
         internal static int score;
 
         /// <summary>
-        /// The accuracy of gameplay. 100% is perfect.
+        /// The accuracy of gameplay, as a proportion, between 0 and 1, where 1 is perfect.
         /// </summary>
         internal static double accuracy { get
             {
-                var sum = judgePoints.Zip(judgements, (points, count) => points * count).Sum();
-                return sum / (judgePoints[0] * judgements.Sum());
+                // If there are notes to base an accuracy off, then perform the calculation.
+                if (judgements.Sum() > 0)
+                {
+                    // Divides by the maximum possible points
+                    return (double)score/ (judgePoints[0] * judgements.Sum());
+                }
+                // No notes have been hit yet, just return 100%.
+                else return 1;
             } }
 
         /// <summary>

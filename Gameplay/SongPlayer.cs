@@ -542,6 +542,10 @@ namespace Coursework.Gameplay
                 _spriteBatch.DrawString(centuryGothic, mean, new Vector2(rightX, 200), Color.White);
             }
 
+            // Draw the accuracy.
+            string accuracy = string.Format("{0:00.00}%", 100 * GameHandler.accuracy);
+            _spriteBatch.DrawString(centuryGothic, accuracy, new Vector2(rightX, 250), Color.White);
+
             // Score
             _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
             

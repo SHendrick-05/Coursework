@@ -8,6 +8,10 @@ using NAudio.Wave;
 
 namespace Coursework.GUI
 {
+
+    /// <summary>
+    /// A form where users can create and edit their own charts.
+    /// </summary>
     public partial class SongEditor : Form
     {
         private void Drag(object sender, MouseEventArgs e)
@@ -24,14 +28,12 @@ namespace Coursework.GUI
         internal static Chart editingChart;
 
 
+        /// <summary>
+        /// The constructor function for the form.
+        /// </summary>
         public SongEditor()
         {
             InitializeComponent();
-        }
-
-        private void SongEditor_Load(object sender, EventArgs e)
-        {
-            
         }
 
 

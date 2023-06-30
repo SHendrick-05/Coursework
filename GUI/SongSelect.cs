@@ -131,6 +131,7 @@ namespace Coursework.GUI
         /// Gets an empty template panel to create a chart panel from
         /// </summary>
         /// <param name="i">The order of the panel to appear</param>
+        /// <param name="select">Whether this template is for song selection for gameplay or editing. True = gameplay, False = editing.</param>
         /// <returns>A template panel to be filled in.</returns>
         private static Panel getTemplate(int i, bool select)
         {

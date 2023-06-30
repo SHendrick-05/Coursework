@@ -70,6 +70,7 @@ namespace Coursework
         /// <param name="zValue">The "Z" prime obtained by X * Y</param>
         /// <param name="yShift">The circular-shifted Y' value.</param>
         /// <param name="salt">The salt to go along with the password</param>
+        /// <param name="speed">The user's preferred scroll speed, in pixels per second.</param>
         internal static void updateAccount(string username, string zValue, string yShift, string salt, int speed)
         {
             using (var conn = new SqliteConnection($"Data Source={dbPath}"))

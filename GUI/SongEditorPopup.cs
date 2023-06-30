@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace Coursework.GUI
 {
+    /// <summary>
+    /// A pop-up form to adjust the settings of a form, where images and audio can be selected.
+    /// </summary>
     public partial class SongEditorPopup : Form
     {
         private void Drag(object sender, MouseEventArgs e)
@@ -14,6 +17,9 @@ namespace Coursework.GUI
             }
         }
 
+        /// <summary>
+        /// The default constructor function.
+        /// </summary>
         public SongEditorPopup()
         {
             InitializeComponent();

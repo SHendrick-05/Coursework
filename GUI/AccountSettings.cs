@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace Coursework.GUI
 {
+    /// <summary>
+    /// The form where users can change settings about their account, or delete it.
+    /// </summary>
     public partial class AccountSettings : Form
     {
         private void Drag(object sender, MouseEventArgs e)
@@ -16,6 +19,10 @@ namespace Coursework.GUI
         }
 
         internal static bool debounce = false;
+
+        /// <summary>
+        /// The base constructor function for the form.
+        /// </summary>
         public AccountSettings()
         {
             InitializeComponent();

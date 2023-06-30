@@ -48,10 +48,6 @@ namespace Coursework.Gameplay
         {
             get
             {
-                if (spriteCrop == null)
-                {
-                    return Texture.Bounds;
-                }
                 Point location = new Point(
                     spriteCrop.X * size.X,
                     spriteCrop.Y * size.Y);
@@ -147,6 +143,7 @@ namespace Coursework.Gameplay
         /// <param name="pos">The X and Y coordinates of the tag</param>
         /// <param name="size">The width and height of the tag</param>
         /// <param name="frames">How many frames the tag should last for before being deprecated</param>
+        /// <param name="color">The colour of the tag, which will be the colour associated with the judgement that the tag is feeding back on.</param>
         internal Tag(Point pos, Point size, int frames, Color color)
         {
             bounds = new Rectangle(pos, size);

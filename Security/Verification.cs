@@ -12,7 +12,9 @@ namespace Coursework.Security
 {
     internal static class Verification
     {
-        // Cannot store this on the database, as salts are stored there. Stored in-code for security in case of a db-only leak.
+        /// <summary>
+        /// A secure string to be appended to passwords before hashing. Stored in-code for security reasons, as it cannot be stored with salts in the database.
+        /// </summary>
         private const string pepper = "2QKKq9QbuBj927YmKMcn";
 
         /// <summary>
@@ -111,10 +113,13 @@ namespace Coursework.Security
             {
                 return 1;
             }
+
             // Update the current user object.
             Users.loggedInUser.Speed = speed;
+
             // Push the new speed to DB.
             Database.updateAccount(username, Users.loggedInUser.zValue, Users.loggedInUser.yShifted, Users.loggedInUser.Salt, speed);
+
             // Success
             return 0;
         }
@@ -155,6 +160,7 @@ namespace Coursework.Security
             // Convert Y to an integer, and use a modulo test
             BigInteger Y = new BigInteger(yArray);
             BigInteger result = Z % Y;
+
             // If the result of the modulus is zero, that means the Y is the initial Y used, meaning the HK' was correct, owing to the valid password being entered.
             if (result.IsZero)
             {
@@ -176,14 +182,18 @@ namespace Coursework.Security
         {
             // We are using SHA512, due to it being a secure hashing algorithm.
             SHA512 hashAlgo = SHA512.Create();
+
             // Get the string to hash, and hash it
             string toHash = password + salt + pepper;
             byte[] hash512Array = hashAlgo.ComputeHash(Encoding.Default.GetBytes(toHash));
+
             // Concaternate the hash with itself to get a 1024-bit hash.
             byte[] hashArray = hash512Array.Concat(hash512Array).ToArray();
+
             // Circular shift by passwordlength*4 bits, using hex.
             string hexHash = Convert.ToHexString(hashArray);
             string shiftedHex = hexHash.Substring(hexHash.Length - password.Length) + hexHash.Substring(0, hexHash.Length - password.Length);
+
             // Convert back and return the result
             byte[] shiftedArray = Convert.FromHexString(shiftedHex);
             return shiftedArray;

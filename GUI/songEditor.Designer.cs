@@ -259,7 +259,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SongEditor";
             this.Text = "songEditor";
-            this.Load += new System.EventHandler(this.SongEditor_Load);
             this.topPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).EndInit();
             this.creationPanel.ResumeLayout(false);

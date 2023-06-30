@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace Coursework.GUI
 {
+    /// <summary>
+    /// A pop-up form for selecting a song to edit.
+    /// </summary>
     public partial class EditorOpenChart : Form
     {
         private static string selectedFolder;
         private static Label selectLabel;
 
+        /// <summary>
+        /// The constructor function for the form.
+        /// </summary>
         public EditorOpenChart()
         {
             InitializeComponent();

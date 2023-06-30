@@ -20,6 +20,8 @@ namespace Coursework.Gameplay
         /// <param name="posY">The Y-position of the arrow (position of the top of the arrow)</param>
         /// <param name="dir">The directional enum of the arrow</param>
         /// <param name="spriteCrop">The point at which to crop the main sprite</param>
+        /// <param name="measureDiv">What position in the measure this arrow is at.</param>
+        /// <param name="measure">What measure in the song this arrow is a part of</param>
         internal Arrow(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base()
         {
             // Set the variables
@@ -148,6 +150,7 @@ namespace Coursework.Gameplay
                     if (canBeHit.Count != 0)
                     {
                         Arrow closest = canBeHit.MinBy(x => timings[x]);
+
                         // This is the hit arrow. Pass it on.
                         GameHandler.ArrowHit(closest, timings[closest]);
                     }
