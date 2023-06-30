@@ -24,7 +24,7 @@ namespace Coursework.Gameplay
         /// <param name="measure">What measure in the song this arrow is a part of</param>
         internal Arrow(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base()
         {
-            // Set the variables
+            // Set the variables to their default values.
             this.posY = posY;
             this.dir = dir;
             this.measure = measure;
@@ -102,7 +102,9 @@ namespace Coursework.Gameplay
     }
 
 
-
+    /// <summary>
+    /// The receptor class, which will be the points that the arrows must be hit at.
+    /// </summary>
     internal class Receptor : Sprite
     {
         internal Dir dir;
@@ -114,6 +116,9 @@ namespace Coursework.Gameplay
             }
         }
 
+        /// <summary>
+        /// The constuctor function of the receptors.
+        /// </summary>
         internal Receptor(int X, int Y, Dir dir, Point spriteCrop) : base()
         {
             posX = X;

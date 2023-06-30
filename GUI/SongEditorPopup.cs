@@ -57,17 +57,24 @@ namespace Coursework.GUI
 
         private void SongEditorPopup_Load(object sender, EventArgs e)
         {
-
+            if (!string.IsNullOrWhiteSpace(SongEditor.audioPath))
+                audioPath.Text = SongEditor.audioPath;
+            if (!string.IsNullOrWhiteSpace(SongEditor.imagePath))
+                imagePath.Text = SongEditor.imagePath;
         }
 
         private void browseImage_Click(object sender, EventArgs e)
         {
+            // Prepare a dialog.
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.InitialDirectory = SongEditor.getDownloadsFolder();
-            ofd.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif";
+
+            // Get all the possible file extensions.
+            ofd.Filter = "Images|*" + string.Join(";*", SongEditor.imageExtensions);
             ofd.FilterIndex = 0;
             ofd.RestoreDirectory = true;
 
+            // If a file was successfully selected.
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 imagePath.Text = ofd.FileName;

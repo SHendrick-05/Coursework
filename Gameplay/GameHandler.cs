@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Newtonsoft.Json;
@@ -9,6 +10,9 @@ using System.Linq;
 
 namespace Coursework.Gameplay
 {
+    /// <summary>
+    /// The static class for handling most gameplay operations and calculations.
+    /// </summary>
     internal static class GameHandler
     {
         /// <summary>
@@ -68,10 +72,10 @@ namespace Coursework.Gameplay
         /// </summary>
         internal static string[] judgeStrings = new string[6]
         {
-                "Perfect",  // Perfect
-                "Great",    // Great
-                "Good",     // Good
-                "OK",       // OK
+                "Marvellous",  // Perfect
+                "Perfect",    // Great
+                "Great",     // Good
+                "Good",       // OK
                 "Bad",      // Bad
                 "Miss"      // Miss
         };
@@ -81,11 +85,11 @@ namespace Coursework.Gameplay
         /// </summary>
         internal static int[] judgePoints = new int[6]
         {
-            300,    // Perfect
-            250,    // Great
-            150,    // Good
-            100,    // OK
-            50,     // Bad
+            400,    // Perfect
+            380,    // Great
+            300,    // Good
+            200,    // OK
+            100,     // Bad
             0       // Miss
         };
 
@@ -102,17 +106,17 @@ namespace Coursework.Gameplay
             new List<Arrow>(), new List<Arrow>(), new List<Arrow>(), new List<Arrow>()
         };
 
-        
 
-        /// <summary>
-        /// The four receptors, from left to right.
-        /// </summary>
-        internal static Receptor[] receptors = new Receptor[4];
 
         /// <summary>
         /// The width and height of each judgement feedback tag.
         /// </summary>
         internal static Point tagSize = new Point(5, 20);
+
+        /// <summary>
+        /// The four receptors, from left to right.
+        /// </summary>
+        internal static Receptor[] receptors = new Receptor[4];
 
         /// <summary>
         /// The Y position of every judgement feedback tag.
@@ -315,6 +319,7 @@ namespace Coursework.Gameplay
             // Load the audio
             var uri = new Uri(path+@"\audio.mp3", UriKind.Relative);
             SongPlayer.audio = Song.FromUri(path + @"\audio.mp3", uri);
+           
 
             // Load the chart
             string chartText = File.ReadAllText(path + @"\chart.json");

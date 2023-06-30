@@ -5,10 +5,14 @@ namespace Coursework
 {
     internal static class Database
     {
-        // We can assume the Storage folder already exists, due to being instantiated in Program.cs
+        /// <summary>
+        /// The relative path of the database. The storage folder has been instantiated in the Program entry point.
+        /// </summary>
         public static string dbPath = @"Storage\database.db";
 
-        // Static constructor to create the database, and initialise a table for user accounts.
+        /// <summary>
+        /// A static constructor which creates the database, and a table for user accounts.
+        /// </summary>
         static Database()
         {
             // Creates the table, the file is automatically created if it does not exist.

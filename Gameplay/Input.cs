@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coursework.Gameplay
 {
@@ -28,7 +23,6 @@ namespace Coursework.Gameplay
         /// The state of the keyboard in the previous frame
         /// </summary>
         internal static KeyboardState lastkbState;
-
 
         /// <summary>
         /// Gets the latest mouse and keyboard states.

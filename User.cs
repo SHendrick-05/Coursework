@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Coursework
 {
@@ -23,6 +19,7 @@ namespace Coursework
         internal string zValue { get; set; }
         internal string yShifted { get; set; }
         internal string Salt { get; set; }
+
         /// <summary>
         /// The user's preferred note speed, measured in pixels per second.
         /// </summary>

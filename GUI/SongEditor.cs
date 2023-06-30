@@ -23,8 +23,31 @@ namespace Coursework.GUI
             }
         }
 
+        /// <summary>
+        /// An array of all the image extensions supported.
+        /// </summary>
+        internal static string[] imageExtensions = new string[]
+        {
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".gif",
+            ".bmp"
+        };
+
+        /// <summary>
+        /// The path of the .mp3 file representing the audio.
+        /// </summary>
         internal static string audioPath;
+
+        /// <summary>
+        /// The path of the .png or .jpg file representing the image.
+        /// </summary>
         internal static string imagePath;
+
+        /// <summary>
+        /// The chart that is currently being edited.
+        /// </summary>
         internal static Chart editingChart;
 
 
@@ -36,7 +59,9 @@ namespace Coursework.GUI
             InitializeComponent();
         }
 
-
+        /// <summary>
+        /// Generates a song from a speicfied audio file, BPM, and difficulty.
+        /// </summary>
         private void songEditorButton_Click(object sender, EventArgs e)
         {
             Mp3FileReader reader = new(audioPath);
@@ -110,7 +135,7 @@ namespace Coursework.GUI
                         measure[gen].Add(i * 120, songNoteType.HIT);
                     }
                     return measure;
-                // 1/4 streams
+                // Medium = 1/4 streams
                 case Difficulty.MEDIUM:
                     for (int i = 0; i < 16; i++)
                     {
@@ -118,7 +143,7 @@ namespace Coursework.GUI
                         measure[gen].Add(i * 60, songNoteType.HIT);
                     }
                     return measure;
-                // 1/4 JS
+                // Hard = 1/4 JS
                 case Difficulty.HARD:
                     for (int i = 0; i < 16; i++)
                     {
@@ -149,7 +174,7 @@ namespace Coursework.GUI
         }
 
         /// <summary>
-        /// Saves a song to the appropriate folder.
+        /// Saves a chart to the appropriate folder.
         /// </summary>
         private void saveButton_Click(object sender, EventArgs e)
         {
@@ -185,9 +210,59 @@ namespace Coursework.GUI
                 // Serialize and save the chart.
                 string chart = JsonConvert.SerializeObject(editingChart);
                 File.WriteAllText(path + @"\chart.json", chart);
+
+                // Exit.
+                (Application.OpenForms["Main"] as Main).Show();
+                Close();
+            }
+
+            
+        }
+
+        /// <summary>
+        /// Prepares the editing of an existing chart.
+        /// </summary>
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            editErrorLabel.Visible = false;
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.InitialDirectory = @"Songs\";
+            
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                string path = fbd.SelectedPath;
+
+                // Ensure the chart folder is valid.
+                if (!File.Exists(path + @"\chart.json")
+                 || !File.Exists(path + @"\audio.mp3"))
+                {
+                    editErrorLabel.Visible = true;
+                    return;
+                }
+                
+                // Load the audio and image (if it exists) in.
+                audioPath = path + @"\audio.mp3";
+                foreach(string ext in imageExtensions)
+                {
+                    if (File.Exists(path + $@"\image{ext}"))
+                    {
+                        imagePath = path + $@"\image{ext}";
+                        break;
+                    }
+                }
+
+                // Load the chart.
+                string chartText = File.ReadAllText(path + @"\chart.json");
+                editingChart = JsonConvert.DeserializeObject<Chart>(chartText);
+
+                titleLabel.Text = "Currently editing: " + editingChart.title;
+                bpmBox.Value = (decimal)editingChart.BPM;
             }
         }
 
+        /// <summary>
+        /// Prepares the creation of a new chart.
+        /// </summary>
         private void createSong_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -225,5 +300,7 @@ namespace Coursework.GUI
         }
         [DllImport("shell32", CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = false)]
         private static extern string SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, nint hToken = 0);
+
+
     }
 }

@@ -31,6 +31,9 @@ namespace Coursework.Gameplay
         /// </summary>
         private static List<Tag> tags;
 
+        internal static string songPathLol;
+        internal static Uri songLOL;
+
         /// <summary>
         /// The full texture of a hit arrow. Facing downwards by default.
         /// </summary>
@@ -59,6 +62,10 @@ namespace Coursework.Gameplay
         /// The sound effect that should be played when a mine is hit.
         /// </summary>
         internal static SoundEffect mineHit;
+
+        /// <summary>
+        /// The audio of the chart that is being played.
+        /// </summary>
         internal static Song audio;
 
         /// <summary>
@@ -70,6 +77,8 @@ namespace Coursework.Gameplay
         /// Respresents if the user is currently in gameplay
         /// </summary>
         internal static bool isPlaying;
+
+        internal static bool gameOver;
 
         /// <summary>
         /// The amount of frames until the results screen should be displayed. Only applicable when isPlaying is false.
@@ -163,7 +172,10 @@ namespace Coursework.Gameplay
             gameOverFrames = 0;
             notesPerSample = 10;
             isPlaying = false;
+            gameOver = false;
             resultsScreen = false;
+
+            
 
             for (int i = 0; i < 4; i++)
             {
@@ -224,7 +236,10 @@ namespace Coursework.Gameplay
         {
             // Exit condition.
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                MediaPlayer.Stop();
                 Exit();
+            }
 
             // Remove this when done debugging. This is for testing purposes.
             if (Input.kbState.IsKeyDown(Keys.Space))
@@ -263,10 +278,10 @@ namespace Coursework.Gameplay
             }
 
             // The delay is over. Start playing the audio.
-            if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay && !isPlaying)
+            if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay && !isPlaying && !gameOver)
             {
-                    isPlaying = true;
-                    MediaPlayer.Play(audio);
+                MediaPlayer.Play(audio);
+                isPlaying = true;
             }
 
             // Update input
@@ -274,11 +289,13 @@ namespace Coursework.Gameplay
             labelFrames--;
 
             // Check HP
-            if (GameHandler.HP <= 0 && gameOverFrames == 0)
+            if (GameHandler.HP <= 0 && gameOverFrames == 0 && isPlaying)
             {
                 GameHandler.HP = 0;
                 GameHandler.speed = 0;
                 gameOverFrames = 120;
+                isPlaying = false;
+                gameOver = true;
                 MediaPlayer.Stop();
             }
             else if (GameHandler.HP > 100)
@@ -507,7 +524,7 @@ namespace Coursework.Gameplay
             }
 
             // Draw tags
-            foreach(Tag tag in tags)
+            foreach (Tag tag in tags)
             {
                 _spriteBatch.Draw(
                     rectangle,
@@ -550,13 +567,13 @@ namespace Coursework.Gameplay
             _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
             
             // Judgement labels
-            _spriteBatch.DrawString(centuryGothic, "Perfects: " + GameHandler.judgements[0], new Vector2(rightX, 400), Color.White);
-            _spriteBatch.DrawString(centuryGothic, "Greats: " + GameHandler.judgements[1], new Vector2(rightX, 400 + judgeDiv), Color.White);
-            _spriteBatch.DrawString(centuryGothic, "Goods: " + GameHandler.judgements[2], new Vector2(rightX, 400 + 2 * judgeDiv), Color.White);
-            _spriteBatch.DrawString(centuryGothic, "OKs: " + GameHandler.judgements[3], new Vector2(rightX, 400 + 3 * judgeDiv), Color.White);
-            _spriteBatch.DrawString(centuryGothic, "Bads: " + GameHandler.judgements[4], new Vector2(rightX, 400 + 4 * judgeDiv), Color.White);
-            _spriteBatch.DrawString(centuryGothic, "Misses: " + GameHandler.judgements[5], new Vector2(rightX, 400 + 5 * judgeDiv), Color.White);
-
+            for (int i = 0; i < 6; i++)
+            {
+                _spriteBatch.DrawString(centuryGothic,
+                    GameHandler.judgeStrings[i] + ": " + GameHandler.judgements[i],
+                    new Vector2(rightX, 400 + i * judgeDiv),
+                    Color.White);
+            }
 
             // Tag centre
             int baseX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2]) / 2;

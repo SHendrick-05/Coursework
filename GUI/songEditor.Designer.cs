@@ -44,6 +44,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.mineBar = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
+            this.editButton = new System.Windows.Forms.Button();
+            this.editErrorLabel = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).BeginInit();
             this.creationPanel.SuspendLayout();
@@ -178,7 +180,7 @@
             this.createSong.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.createSong.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.createSong.ForeColor = System.Drawing.SystemColors.Control;
-            this.createSong.Location = new System.Drawing.Point(94, 107);
+            this.createSong.Location = new System.Drawing.Point(205, 78);
             this.createSong.Name = "createSong";
             this.createSong.Size = new System.Drawing.Size(105, 42);
             this.createSong.TabIndex = 24;
@@ -245,12 +247,39 @@
             this.label2.Text = "Difficulty";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // editButton
+            // 
+            this.editButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
+            this.editButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.editButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.editButton.Location = new System.Drawing.Point(316, 78);
+            this.editButton.Name = "editButton";
+            this.editButton.Size = new System.Drawing.Size(115, 42);
+            this.editButton.TabIndex = 27;
+            this.editButton.Text = "Edit existing song";
+            this.editButton.UseVisualStyleBackColor = true;
+            this.editButton.Click += new System.EventHandler(this.editButton_Click);
+            // 
+            // editErrorLabel
+            // 
+            this.editErrorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.editErrorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(41)))), ((int)(((byte)(44)))));
+            this.editErrorLabel.Location = new System.Drawing.Point(439, 78);
+            this.editErrorLabel.Name = "editErrorLabel";
+            this.editErrorLabel.Size = new System.Drawing.Size(166, 42);
+            this.editErrorLabel.TabIndex = 28;
+            this.editErrorLabel.Text = "Invalid folder selected!";
+            this.editErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.editErrorLabel.Visible = false;
+            // 
             // SongEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.editErrorLabel);
+            this.Controls.Add(this.editButton);
             this.Controls.Add(this.creationPanel);
             this.Controls.Add(this.createSong);
             this.Controls.Add(this.titleLabel);
@@ -286,5 +315,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TrackBar mineBar;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button editButton;
+        private System.Windows.Forms.Label editErrorLabel;
     }
 }
