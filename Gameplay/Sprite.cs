@@ -102,7 +102,7 @@ namespace Coursework.Gameplay
         internal Sprite()
         {
             rotation = 0f;
-            SongPlayer.addSprite(this);
+            songPlayer.addSprite(this);
             isDeprecated = false;
         }
     }

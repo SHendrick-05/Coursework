@@ -55,7 +55,7 @@ namespace Coursework.Gameplay
     {
         internal Hit(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base(posY, dir, spriteCrop, measureDiv, measure)
         {
-            texture = SongPlayer.arrowTexture;
+            texture = songPlayer.arrowTexture;
         }
         internal override void HitUpdate()
         {
@@ -77,7 +77,7 @@ namespace Coursework.Gameplay
         int frames;
         internal Mine(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base(posY, dir, spriteCrop, measureDiv, measure)
         {
-            texture = SongPlayer.mineTexture;
+            texture = songPlayer.mineTexture;
             framesPerUpdate = 10;
             frame = 0;
             frames = 8;
@@ -126,7 +126,7 @@ namespace Coursework.Gameplay
             size = new Point(64, 64);
             this.spriteCrop = spriteCrop;
             this.dir = dir;
-            texture = SongPlayer.recepTexture;
+            texture = songPlayer.recepTexture;
             rotation = rotations[(int)dir];
         }
 

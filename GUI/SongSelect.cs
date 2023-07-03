@@ -40,7 +40,7 @@ namespace Coursework.GUI
         // A wrapper function to run the game on a separate thread.
         internal void startGame()
         {
-            using (var game = new Gameplay.SongPlayer(selectedFolder))
+            using (var game = new Gameplay.songPlayer(selectedFolder))
             {
                 game.Run();
             }

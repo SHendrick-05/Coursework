@@ -6,10 +6,11 @@ using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using NAudio.Wave;
 
 namespace Coursework.Gameplay
 {
-    internal class SongPlayer : Game
+    internal class songPlayer : Game
     {
         /// <summary>
         /// Used for finding boundaries and various other things.
@@ -66,7 +67,12 @@ namespace Coursework.Gameplay
         /// <summary>
         /// The audio of the chart that is being played.
         /// </summary>
-        internal static Song audio;
+        internal static Mp3FileReader audio;
+
+        /// <summary>
+        /// The NAudio Song player that will be used for playing songs.
+        /// </summary>
+        internal static WaveOut audioPlayer;
 
         /// <summary>
         /// How many more frames the judgement label should be displayed for.
@@ -77,8 +83,6 @@ namespace Coursework.Gameplay
         /// Respresents if the user is currently in gameplay
         /// </summary>
         internal static bool isPlaying;
-
-        internal static bool gameOver;
 
         /// <summary>
         /// The amount of frames until the results screen should be displayed. Only applicable when isPlaying is false.
@@ -141,7 +145,7 @@ namespace Coursework.Gameplay
         /// Constructor method for the song player
         /// </summary>
         /// <param name="folder">The absolute path of the folder containing the chart to be played</param>
-        internal SongPlayer(string folder)
+        internal songPlayer(string folder)
         {
             chartFolder = folder;
             _graphics = new GraphicsDeviceManager(this);
@@ -168,14 +172,12 @@ namespace Coursework.Gameplay
             GameHandler.InitVariables();
 
             // Clear the variables here.
+            audioPlayer = new WaveOut();
             labelFrames = 0;
             gameOverFrames = 0;
             notesPerSample = 10;
             isPlaying = false;
-            gameOver = false;
             resultsScreen = false;
-
-            
 
             for (int i = 0; i < 4; i++)
             {
@@ -224,6 +226,8 @@ namespace Coursework.Gameplay
 
             // Load the chart.
             GameHandler.LoadSong(chartFolder);
+
+            isPlaying = true;
         }
 
 
@@ -237,7 +241,9 @@ namespace Coursework.Gameplay
             // Exit condition.
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                MediaPlayer.Stop();
+                // Stop and dispose the audio player.
+                audioPlayer.Stop();
+                audioPlayer.Dispose();
                 Exit();
             }
 
@@ -246,7 +252,7 @@ namespace Coursework.Gameplay
                 GameHandler.HP = 0;
 
             // Update sprites and tags
-            if (gameOverFrames == 0)
+            if (isPlaying)
             {
                 // Lists of the ones to remove
                 List<Sprite> spritesToRemove = new List<Sprite>();
@@ -272,16 +278,26 @@ namespace Coursework.Gameplay
             else
             {
                 gameOverFrames--;
-                if (gameOverFrames == 0)
+                // Enough time has passed, move on.
+                if (gameOverFrames <= 0)
                     // Move on to the results screen
                     resultsScreen = true;
             }
 
             // The delay is over. Start playing the audio.
-            if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay && !isPlaying && !gameOver)
+            if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay 
+                && audioPlayer.PlaybackState == PlaybackState.Stopped && isPlaying) // Ensures that this does not happen every frame.
             {
-                MediaPlayer.Play(audio);
-                isPlaying = true;
+                audioPlayer.Init(audio);
+                audioPlayer.Play();
+            }
+
+            // Once the song has ended, wait for an equivalent delay before ending gameplay.
+            if (gameTime.TotalGameTime.TotalSeconds >= audio.TotalTime.TotalSeconds + 2 * GameHandler.timeDelay)
+            {
+                isPlaying = false;
+                resultsScreen = true;
+                GameHandler.speed = 0;
             }
 
             // Update input
@@ -289,14 +305,13 @@ namespace Coursework.Gameplay
             labelFrames--;
 
             // Check HP
-            if (GameHandler.HP <= 0 && gameOverFrames == 0 && isPlaying)
+            if (GameHandler.HP <= 0 && isPlaying)
             {
+                // Game over, end the game.
                 GameHandler.HP = 0;
-                GameHandler.speed = 0;
-                gameOverFrames = 120;
+                gameOverFrames = (int)(GameHandler.timeDelay * 60);
                 isPlaying = false;
-                gameOver = true;
-                MediaPlayer.Stop();
+                audioPlayer.Stop();
             }
             else if (GameHandler.HP > 100)
                 GameHandler.HP = 100;

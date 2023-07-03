@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NAudio.Wave;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Coursework.Gameplay
 {
@@ -149,9 +151,9 @@ namespace Coursework.Gameplay
         internal static int measureDivions = 960;
 
         /// <summary>
-        /// The time, in seconds, of delay between the application starting and the song starting.
+        /// The time, in seconds, of delay before the song starts, and before results screen after either failure or the song ends.
         /// </summary>
-        internal static float timeDelay = 3;
+        internal static float timeDelay = 2;
 
         /// <summary>
         /// How many points the user has scored.
@@ -275,7 +277,7 @@ namespace Coursework.Gameplay
 
             // Display the judgement visually.
             Color judgeColor = judgeColors[judgement];
-            SongPlayer.updateJudge(judgeColor, judgeStrings[judgement]);
+            songPlayer.updateJudge(judgeColor, judgeStrings[judgement]);
             double offset = time * 1000;
             ShowTag(judgeColor, (int)Math.Round(offset));
             
@@ -292,8 +294,7 @@ namespace Coursework.Gameplay
         {
             HP -= 20;
             // Play the SFX
-            var boom = SongPlayer.mineHit.CreateInstance();
-            boom.Play();
+            songPlayer.mineHit.Play();
             // Remove the mine
             mine.Deprecate();
         }
@@ -307,7 +308,7 @@ namespace Coursework.Gameplay
         {
             int baseX = (arrowColumns[1] + arrowColumns[2]) / 2;
             Tag tag = new Tag(new Point(baseX + offset, tagY), tagSize, tagFrames, color);
-            SongPlayer.addTag(tag);
+            songPlayer.addTag(tag);
         }
 
         /// <summary>
@@ -317,9 +318,7 @@ namespace Coursework.Gameplay
         internal static void LoadSong(string path)
         {
             // Load the audio
-            var uri = new Uri(path+@"\audio.mp3", UriKind.Relative);
-            SongPlayer.audio = Song.FromUri(path + @"\audio.mp3", uri);
-           
+            songPlayer.audio = new Mp3FileReader(path + @"\audio.mp3");
 
             // Load the chart
             string chartText = File.ReadAllText(path + @"\chart.json");
