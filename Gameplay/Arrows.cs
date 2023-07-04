@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ namespace Coursework.Gameplay
 
     internal class Arrow : Sprite
     {
-        internal Random rnd = new Random();
         internal Dir dir;
         internal int measureDiv;
         internal int measure;
@@ -41,9 +41,11 @@ namespace Coursework.Gameplay
             posY += (int)Math.Round(distance);
             MineUpdate();
             HitUpdate();
+            HoldUpdate();
         }
         internal virtual void MineUpdate() { }
         internal virtual void HitUpdate() { }
+        internal virtual void HoldUpdate() { }
         internal override void Deprecate()
         {
             GameHandler.arrows[(int)dir].Remove(this);
@@ -101,12 +103,50 @@ namespace Coursework.Gameplay
         }
     }
 
+    internal class Hold : Arrow
+    {
+        internal int endMeasure;
+        internal int endMeasureDivision;
+        internal int endY;
+        internal Point bodySize
+        {
+            get
+            {
+                return new Point(GameHandler.arrowSize.X, endY - posY);
+            }
+        }
+        internal Hold(int startY, int endY, Dir dir, Point spriteCrop, int startMeasureDiv, int startMeasure, int endMeasureDiv, int endMeasure) : base(startY, dir, spriteCrop, startMeasureDiv, startMeasure)
+        {
+            texture = songPlayer.arrowTexture;
+            this.endMeasure = endMeasure;
+            endMeasureDivision = endMeasureDiv;
+            this.endY = endY;
+        }
+
+        internal override void HoldUpdate()
+        {
+            // Check if the note can no longer be hit and is offscreen.
+            double positionDiff = posY - GameHandler.receptors[(int)dir].position.Y;
+            double timeDiff = positionDiff / GameHandler.speed;
+            if (posY > GameHandler.bounds.Y && timeDiff > GameHandler.timeWindows[5])
+            {
+                // Award a miss
+                GameHandler.ArrowHit(this, (float)positionDiff);
+            }
+        }
+    }
+
 
     /// <summary>
     /// The receptor class, which will be the points that the arrows must be hit at.
     /// </summary>
     internal class Receptor : Sprite
     {
+        /// <summary>
+        /// A boolean value to represent whether this receptor is currently holding down a LN.
+        /// </summary>
+        internal bool isHoldNote;
+
         internal Dir dir;
         internal Keys hitKey
         {
@@ -128,12 +168,17 @@ namespace Coursework.Gameplay
             this.dir = dir;
             texture = songPlayer.recepTexture;
             rotation = rotations[(int)dir];
+            isHoldNote = false;
         }
 
+        /// <summary>
+        /// The frame-by-frame update function for receptors. Handles notes being hit.
+        /// </summary>
         internal override void Update(GameTime gameTime)
         {
             KeyboardState kState = Input.kbState;
             KeyboardState lastKstate = Input.lastkbState;
+
             // If the corresponding key is pressed
             if (kState.IsKeyDown(hitKey))
             {
@@ -163,6 +208,7 @@ namespace Coursework.Gameplay
             }
             else
             {
+
                 spriteCrop.X = 0;
             }
         }

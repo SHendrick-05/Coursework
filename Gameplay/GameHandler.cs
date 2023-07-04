@@ -214,12 +214,12 @@ namespace Coursework.Gameplay
         }
 
         /// <summary>
-        /// Creates a hold note. Not done yet.
+        /// Creates a hold note.
         /// </summary>
-        internal static void LoadHold(int Y, Dir dir, Point spriteCrop)
+        internal static void LoadHold(int startY, int endY, Dir dir, Point spriteCrop, int sMeasureDiv, int sMeasure, int eMeasureDiv, int eMeasure)
         {
-            throw new NotImplementedException();
-            // TODO: Add hold notes.
+            Hold hold = new(startY, endY, dir, spriteCrop, sMeasureDiv, sMeasure, eMeasureDiv, eMeasure);
+            arrows[(int)dir].Add(hold);
         }
 
         /// <summary>
@@ -333,7 +333,10 @@ namespace Coursework.Gameplay
             // The position of the receptor is height - 200, so the first note will hit 2 seconds after.
             double offsetPixels = chart.offset * 0.001 * speed;
             int baseY = (int)Math.Round(bounds.Y - 200 - (timeDelay * speed) - offsetPixels);
+
             bool[] holds = new bool[4];
+            (int, int, int)[] startMeasures = new (int, int, int)[4];
+
             // Loop over the measures in the song
             for(int j = 0; j < chart.measures.Count; j++)
             {
@@ -345,34 +348,40 @@ namespace Coursework.Gameplay
                     {
                         // Get the Y position of the note
                         int noteY = baseY - (int)Math.Round(note.Key * jumpGap);
-                        
-                        switch(note.Value)
+
+                        // Get the correct colour
+                        int colourCrop;
+                        if (note.Key % 240 == 0) colourCrop = 0; // 1 beat
+                        else if (note.Key % 120 == 0) colourCrop = 1; // 1/2 beat
+                        else if (note.Key % 80 == 0) colourCrop = 2; // 1/3 beat
+                        else if (note.Key % 60 == 0) colourCrop = 3; // 1/4 beat
+                        else if (note.Key % 40 == 0) colourCrop = 4; // 1/6 beat
+                        else if (note.Key % 30 == 0) colourCrop = 5; // 1/8 beat
+                        else if (note.Key % 20 == 0) colourCrop = 6; // 1/12 beat
+                        else colourCrop = 7; // Other interval
+
+                        switch (note.Value)
                         {
                             // Load a hit arrow
                             case songNoteType.HIT:
-                                // Get the correct colour
-                                int colourCrop;
-                                if (note.Key % 240 == 0) colourCrop = 0; // 1 beat
-                                else if (note.Key % 120 == 0) colourCrop = 1; // 1/2 beat
-                                else if (note.Key % 80 == 0) colourCrop = 2; // 1/3 beat
-                                else if (note.Key % 60 == 0) colourCrop = 3; // 1/4 beat
-                                else if (note.Key % 40 == 0) colourCrop = 4; // 1/6 beat
-                                else if (note.Key % 30 == 0) colourCrop = 5; // 1/8 beat
-                                else if (note.Key % 20 == 0) colourCrop = 6; // 1/12 beat
-                                else colourCrop = 7; // Other interval
                                 LoadArrow(noteY, (Dir)i, new Point(0, colourCrop), note.Key, j);
                                 break;
+
                             // Load a mine
                             case songNoteType.MINE:
                                 LoadMine(noteY, (Dir)i, new Point(0, 0), note.Key, j);
                                 break;
+
                             // Begin a LN
                             case songNoteType.HOLDSTART:
                                 holds[i] = true;
+                                startMeasures[i] = new(noteY, note.Key, j);
                                 break;
+
                             // End a LN
                             case songNoteType.HOLDEND:
                                 holds[i] = false;
+                                LoadHold(startMeasures[i].Item1, noteY, (Dir)i, new Point(0, colourCrop), startMeasures[i].Item2, startMeasures[i].Item3, note.Key, j);
                                 break;
                             // Nothing there.
                             default:

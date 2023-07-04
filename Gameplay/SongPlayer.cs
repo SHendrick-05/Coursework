@@ -32,9 +32,6 @@ namespace Coursework.Gameplay
         /// </summary>
         private static List<Tag> tags;
 
-        internal static string songPathLol;
-        internal static Uri songLOL;
-
         /// <summary>
         /// The full texture of a hit arrow. Facing downwards by default.
         /// </summary>
@@ -49,6 +46,11 @@ namespace Coursework.Gameplay
         /// The full texture for a receptor. Facing downwards by default.
         /// </summary>
         internal static Texture2D recepTexture;
+
+        /// <summary>
+        /// The texture for the central part of a hold note.
+        /// </summary>
+        internal static Texture2D holdBodyTexture;
 
         /// <summary>
         /// A 1x1 rectangle used for drawing rectangular shapes. Can be resized and coloured.
@@ -201,6 +203,7 @@ namespace Coursework.Gameplay
             arrowTexture = Content.Load<Texture2D>("downTap");
             mineTexture = Content.Load<Texture2D>("downMine");
             recepTexture = Content.Load<Texture2D>("downReceptor");
+            holdBodyTexture = Content.Load<Texture2D>("downHold");
             mineHit = Content.Load<SoundEffect>("explosion");
 
             // Load fonts from the content file.
@@ -241,9 +244,8 @@ namespace Coursework.Gameplay
             // Exit condition.
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                // Stop and dispose the audio player.
+                // Stop the audio player.
                 audioPlayer.Stop();
-                audioPlayer.Dispose();
                 Exit();
             }
 
@@ -521,6 +523,9 @@ namespace Coursework.Gameplay
 
             // Draw sprites
             float ord = 1;
+            // Get all the LN notes.
+            List<Sprite> holds = sprites.Where(x => x.GetType() == typeof(Hold)).ToList();
+
             foreach (Sprite spr in sprites)
             {
                 // Draw the sprite.
@@ -536,6 +541,23 @@ namespace Coursework.Gameplay
                     1 / ord
                     );
                 ord++;
+            }
+
+            // Draw the LNs
+            foreach (Hold hold in holds)
+            {
+                // Draw the body
+                int remainingY = hold.bodySize.Y;
+                // Tile as much as possible.
+                while(remainingY > holdBodyTexture.Height)
+                {
+                    Vector2 position = new Vector2(hold.position.X, hold.endY - remainingY);
+                    _spriteBatch.Draw(holdBodyTexture, position, Color.White);
+                    remainingY -= holdBodyTexture.Height;
+                }
+                // Draw the rest.
+                Rectangle remaining = new Rectangle((int)hold.position.X, hold.endY - remainingY, hold.size.X, remainingY);
+                _spriteBatch.Draw(holdBodyTexture, remaining, Color.White);
             }
 
             // Draw tags

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Coursework.Gameplay
 {
+
     /// <summary>
     /// The base class for most sprites that are being drawn.
     /// </summary>
