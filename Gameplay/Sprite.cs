@@ -14,6 +14,9 @@ namespace Coursework.Gameplay
     /// </summary>
     internal abstract class Sprite
     {
+        /// <summary>
+        /// The rotations associated with each value of dir.
+        /// </summary>
         internal static float[] rotations = new float[4]
         {
             (float)Math.PI * 0.5f,
@@ -21,22 +24,37 @@ namespace Coursework.Gameplay
             (float)Math.PI,
             (float)Math.PI * -0.5f
         };
+
         /// <summary>
         /// The (full) texture of the sprite
         /// </summary>
         protected Texture2D texture;
         
+        /// <summary>
+        /// The X position of the sprite, where 0 is the left edge.
+        /// </summary>
         protected int posX;
+
+        /// <summary>
+        /// The Y position of the sprite, where 0 is the top edge.
+        /// </summary>
         protected int posY;
+
+        /// <summary>
+        /// A boolean value representing whether this sprite should be deleted at the next tick.
+        /// </summary>
         internal bool isDeprecated;
+
         /// <summary>
         /// The rotation of the sprite, in clockwise radians.
         /// </summary>
         internal float rotation;
+
         /// <summary>
         /// The width and height of the sprite.
         /// </summary>
         internal Point size;
+
         /// <summary>
         /// How the sprite should be cropped.
         /// </summary>

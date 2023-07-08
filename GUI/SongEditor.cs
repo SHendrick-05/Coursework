@@ -84,7 +84,7 @@ namespace Coursework.GUI
             else
             {
                 diff = Difficulty.HARD;
-                notes = 24 * measures;
+                notes = 20 * measures;
             }
             Random rnd = new Random();
 
@@ -105,6 +105,7 @@ namespace Coursework.GUI
                 int div = rnd.Next(32);
                 editingChart.measures[meas][col][div * 30] = songNoteType.MINE;
             }
+            generationLabel.Text = $"{notes} notes generated!";
             generationLabel.Visible = true;
         }
 

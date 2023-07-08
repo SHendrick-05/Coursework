@@ -7,11 +7,24 @@ using System.Linq;
 
 namespace Coursework.Gameplay
 {
-
-    internal class Arrow : Sprite
+    /// <summary>
+    /// The arrow class that hits, mines and holds are inherited from.
+    /// </summary>
+    internal abstract class Arrow : Sprite
     {
+        /// <summary>
+        /// The direction that the arrow will be facing.
+        /// </summary>
         internal Dir dir;
+
+        /// <summary>
+        /// What division of the measure the arrow is in.
+        /// </summary>
         internal int measureDiv;
+
+        /// <summary>
+        /// What measure of the song the arrow is in. Starts at 0.
+        /// </summary>
         internal int measure;
 
         /// <summary>
@@ -34,6 +47,10 @@ namespace Coursework.Gameplay
             posX = GameHandler.arrowColumns[(int)dir];
             rotation = rotations[(int)dir];
         }
+
+        /// <summary>
+        /// The base update function, which ensures that the arrow moves at the appropriate note speed.
+        /// </summary>
         internal override void Update(GameTime gameTime)
         {
             // Move the arrow downwards by the appropriate amount.
@@ -53,6 +70,9 @@ namespace Coursework.Gameplay
         }
     }
 
+    /// <summary>
+    /// The basic "tap" arrow, where the user has to just press the key.
+    /// </summary>
     internal class Hit : Arrow
     {
         internal Hit(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base(posY, dir, spriteCrop, measureDiv, measure)
@@ -72,10 +92,24 @@ namespace Coursework.Gameplay
         }
     }
 
+    /// <summary>
+    /// A mine, which must be avoided in gameplay
+    /// </summary>
     internal class Mine : Arrow
     {
+        /// <summary>
+        /// How many frames it should take for the mine's texture to update.
+        /// </summary>
         int framesPerUpdate;
+
+        /// <summary>
+        /// What frame in the animation the mine is at.
+        /// </summary>
         int frame;
+
+        /// <summary>
+        /// How many frames the animation has in total.
+        /// </summary>
         int frames;
         internal Mine(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base(posY, dir, spriteCrop, measureDiv, measure)
         {
@@ -103,10 +137,24 @@ namespace Coursework.Gameplay
         }
     }
 
+    /// <summary>
+    /// A hold note, which must be held down until the end of the body.
+    /// </summary>
     internal class Hold : Arrow
     {
+        /// <summary>
+        /// The measure of the song that the note will stop being held at. Starts from 0.
+        /// </summary>
         internal int endMeasure;
+
+        /// <summary>
+        /// The division of the measure that the note will stop being held at.
+        /// </summary>
         internal int endMeasureDivision;
+
+        /// <summary>
+        /// The Y position that the note will stop being held at.
+        /// </summary>
         internal int endY;
         internal Point bodySize
         {
@@ -147,7 +195,14 @@ namespace Coursework.Gameplay
         /// </summary>
         internal bool isHoldNote;
 
+        /// <summary>
+        /// The direction that the receptor is facing.
+        /// </summary>
         internal Dir dir;
+
+        /// <summary>
+        /// The key that must be pressed to trigger this receptor. Taken from the static array in GameHandler.
+        /// </summary>
         internal Keys hitKey
         {
             get
