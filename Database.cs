@@ -20,6 +20,7 @@ namespace Coursework
             {
                 conn.Open();
 
+                // Initialises a command to create a table.
                 var command = conn.CreateCommand();
                 command.CommandText =
                     @"CREATE TABLE IF NOT EXISTS Users (
@@ -49,7 +50,7 @@ namespace Coursework
             {
                 conn.Open();
 
-                // Initialise the command
+                // Initialise the command to insert a row into the table.
                 var command = conn.CreateCommand();
                 command.CommandText =
                     @"INSERT INTO Users

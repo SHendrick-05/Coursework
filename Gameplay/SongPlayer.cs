@@ -57,9 +57,15 @@ namespace Coursework.Gameplay
         /// </summary>
         internal static Texture2D rectangle;
         
-        // Fonts
-        internal static SpriteFont centuryGothic;
-        internal static SpriteFont resultsFont;
+        /// <summary>
+        /// Century Gothic, 16 point, regular.
+        /// </summary>
+        internal static SpriteFont spriteFontRegular;
+
+        /// <summary>
+        /// Century Gothic, 18 point, bold.
+        /// </summary>
+        internal static SpriteFont spriteFontLarge;
 
         /// <summary>
         /// The sound effect that should be played when a mine is hit.
@@ -156,7 +162,7 @@ namespace Coursework.Gameplay
         }
 
         /// <summary>
-        /// Initialise variables and other things.
+        /// Initialise the variables of gameplay to their default values.
         /// </summary>
         protected override void Initialize()
         {
@@ -195,7 +201,7 @@ namespace Coursework.Gameplay
         }
 
         /// <summary>
-        /// Loads the content into the game.
+        /// Loads external content into the game.
         /// </summary>
         protected override void LoadContent()
         {
@@ -207,8 +213,8 @@ namespace Coursework.Gameplay
             mineHit = Content.Load<SoundEffect>("explosion");
 
             // Load fonts from the content file.
-            centuryGothic = Content.Load<SpriteFont>("centuryGothic16");
-            resultsFont = Content.Load<SpriteFont>("resultsFont");
+            spriteFontRegular = Content.Load<SpriteFont>("centuryGothic16");
+            spriteFontLarge = Content.Load<SpriteFont>("resultsFont");
 
             // Get the 1x1 white rectangle texture.
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
@@ -227,9 +233,8 @@ namespace Coursework.Gameplay
                 GameHandler.receptors[i] = rcp;
             }
 
-            // Load the chart.
+            // Load the chart and start gameplay.
             GameHandler.LoadSong(chartFolder);
-
             isPlaying = true;
         }
 
@@ -350,11 +355,11 @@ namespace Coursework.Gameplay
             // Variable calculations for the drawing
             int numJudges = GameHandler.judgements.Sum();
 
-            float pctWidth = centuryGothic.MeasureString("(00.00%)").X;
+            float pctWidth = spriteFontRegular.MeasureString("(00.00%)").X;
 
             float judgeCountX = 80 + rectWidth - pctWidth;
             float pctX = 90 + rectWidth - pctWidth;
-            int textY = 25 - (int)(resultsFont.MeasureString("Test").Y / 2);
+            int textY = 25 - (int)(spriteFontLarge.MeasureString("Test").Y / 2);
 
 
             //                                      //
@@ -382,11 +387,11 @@ namespace Coursework.Gameplay
                 // Fill it in with the appropriate percentage
                 _spriteBatch.Draw(rectangle, new Rectangle(110, baseY, bound, (int)rectSize), GameHandler.judgeColors[i]);
                 // Draw judgement text
-                _spriteBatch.DrawString(resultsFont, GameHandler.judgeStrings[i], new Vector2(120, baseY + textY), Color.White);
+                _spriteBatch.DrawString(spriteFontLarge, GameHandler.judgeStrings[i], new Vector2(120, baseY + textY), Color.White);
                 // Draw the judgement count
-                _spriteBatch.DrawString(resultsFont, GameHandler.judgements[i].ToString(), new Vector2(judgeCountX - resultsFont.MeasureString(GameHandler.judgements[i].ToString()).X, baseY + textY), Color.White);
+                _spriteBatch.DrawString(spriteFontLarge, GameHandler.judgements[i].ToString(), new Vector2(judgeCountX - spriteFontLarge.MeasureString(GameHandler.judgements[i].ToString()).X, baseY + textY), Color.White);
                 // Draw the percentage
-                _spriteBatch.DrawString(centuryGothic, percent, new Vector2(pctX, baseY + textY), Color.White);
+                _spriteBatch.DrawString(spriteFontRegular, percent, new Vector2(pctX, baseY + textY), Color.White);
             }
 
             //                              //
@@ -396,10 +401,10 @@ namespace Coursework.Gameplay
             Vector2 textBase = new Vector2((_graphics.PreferredBackBufferWidth * 0.5f) + 10, 110 + textY);
             Vector2 textDivision = new Vector2(0, rectBoundsY);
 
-            float textHeight = resultsFont.MeasureString("Test").Y;
+            float textHeight = spriteFontLarge.MeasureString("Test").Y;
 
-            _spriteBatch.DrawString(resultsFont, GameHandler.currentChart.title, textBase, Color.White);
-            _spriteBatch.DrawString(resultsFont, "Charted by " + GameHandler.currentChart.author, textBase + textDivision, Color.White);
+            _spriteBatch.DrawString(spriteFontLarge, GameHandler.currentChart.title, textBase, Color.White);
+            _spriteBatch.DrawString(spriteFontLarge, "Charted by " + GameHandler.currentChart.author, textBase + textDivision, Color.White);
             
             // Draw percentage.
 
@@ -573,17 +578,17 @@ namespace Coursework.Gameplay
             if (labelFrames > 0)
             {
                 float centerX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2]) / 2f;
-                Vector2 bound = centuryGothic.MeasureString(judgeText);
+                Vector2 bound = spriteFontRegular.MeasureString(judgeText);
                 float width = bound.X;
 
-                _spriteBatch.DrawString(centuryGothic, judgeText, new Vector2(centerX - (width / 2f), GameHandler.judgeLabelY), judgeColor);
+                _spriteBatch.DrawString(spriteFontRegular, judgeText, new Vector2(centerX - (width / 2f), GameHandler.judgeLabelY), judgeColor);
             }
 
             int rightX = GameHandler.arrowColumns[3] + 100;
-            float judgeDiv = centuryGothic.MeasureString("test").Y + 20;
+            float judgeDiv = spriteFontRegular.MeasureString("test").Y + 20;
 
             string fpsString = string.Format("{0:00.0} FPS", 1 / gameTime.ElapsedGameTime.TotalSeconds);
-            _spriteBatch.DrawString(resultsFont, fpsString, new Vector2(0, 0), Color.White);
+            _spriteBatch.DrawString(spriteFontLarge, fpsString, new Vector2(0, 0), Color.White);
 
             // Health
             Color hpColor = GameHandler.HP > 40 ? Color.Green : Color.Red;
@@ -593,20 +598,20 @@ namespace Coursework.Gameplay
             if (GameHandler.variations.Count != 0)
             {
                 string mean = string.Format("{0:0.00} ms", GameHandler.variations.Select(x => x.Item2).Average() * 1000);
-                _spriteBatch.DrawString(centuryGothic, mean, new Vector2(rightX, 200), Color.White);
+                _spriteBatch.DrawString(spriteFontRegular, mean, new Vector2(rightX, 200), Color.White);
             }
 
             // Draw the accuracy.
             string accuracy = string.Format("{0:00.00}%", 100 * GameHandler.accuracy);
-            _spriteBatch.DrawString(centuryGothic, accuracy, new Vector2(rightX, 250), Color.White);
+            _spriteBatch.DrawString(spriteFontRegular, accuracy, new Vector2(rightX, 250), Color.White);
 
             // Score
-            _spriteBatch.DrawString(centuryGothic, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
+            _spriteBatch.DrawString(spriteFontRegular, "Score: " + GameHandler.score, new Vector2(rightX, 300), Color.White);
             
             // Judgement labels
             for (int i = 0; i < 6; i++)
             {
-                _spriteBatch.DrawString(centuryGothic,
+                _spriteBatch.DrawString(spriteFontRegular,
                     GameHandler.judgeStrings[i] + ": " + GameHandler.judgements[i],
                     new Vector2(rightX, 400 + i * judgeDiv),
                     Color.White);

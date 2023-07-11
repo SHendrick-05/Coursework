@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -29,7 +25,7 @@ namespace Coursework.Gameplay
         /// The (full) texture of the sprite
         /// </summary>
         protected Texture2D texture;
-        
+
         /// <summary>
         /// The X position of the sprite, where 0 is the left edge.
         /// </summary>
@@ -101,7 +97,7 @@ namespace Coursework.Gameplay
         /// This abstract feature will be implemented in inherited classes to perform specific tasks.
         /// </summary>
         internal abstract void Update(GameTime gameTime);
-        
+
         /// <summary>
         /// The property for the sprite's texture.
         /// </summary>
