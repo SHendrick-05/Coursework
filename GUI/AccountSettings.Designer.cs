@@ -46,11 +46,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.deleteAccountPanel = new System.Windows.Forms.Panel();
             this.scrollSpeedPanel = new System.Windows.Forms.Panel();
+            this.ssErrorLabel = new System.Windows.Forms.Label();
             this.scrollSpeedBox = new System.Windows.Forms.NumericUpDown();
             this.scrollSpeedLabel = new System.Windows.Forms.Label();
             this.sSpeedLabel = new System.Windows.Forms.Label();
             this.updateScrollSpeedButton = new System.Windows.Forms.Button();
-            this.ssErrorLabel = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             this.updatePasswordPanel.SuspendLayout();
             this.deleteAccountPanel.SuspendLayout();
@@ -91,6 +91,7 @@
             this.deleteY.TabIndex = 3;
             this.deleteY.Text = "Yes";
             this.deleteY.UseVisualStyleBackColor = true;
+            this.deleteY.Visible = false;
             this.deleteY.Click += new System.EventHandler(this.deleteY_Click);
             // 
             // deleteN
@@ -101,6 +102,7 @@
             this.deleteN.TabIndex = 4;
             this.deleteN.Text = "No";
             this.deleteN.UseVisualStyleBackColor = true;
+            this.deleteN.Visible = false;
             this.deleteN.Click += new System.EventHandler(this.deleteN_Click);
             // 
             // closeButton
@@ -114,7 +116,7 @@
             this.closeButton.Size = new System.Drawing.Size(75, 36);
             this.closeButton.TabIndex = 0;
             this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.closeButton_Click_1);
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
             // titleText
             // 
@@ -149,6 +151,7 @@
             this.deleteWarning.TabIndex = 6;
             this.deleteWarning.Text = "Are you sure? This cannot be undone!";
             this.deleteWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.deleteWarning.Visible = false;
             // 
             // newPassLabel
             // 
@@ -266,6 +269,18 @@
             this.scrollSpeedPanel.Size = new System.Drawing.Size(312, 158);
             this.scrollSpeedPanel.TabIndex = 15;
             // 
+            // ssErrorLabel
+            // 
+            this.ssErrorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ssErrorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
+            this.ssErrorLabel.Location = new System.Drawing.Point(3, 84);
+            this.ssErrorLabel.Name = "ssErrorLabel";
+            this.ssErrorLabel.Size = new System.Drawing.Size(306, 25);
+            this.ssErrorLabel.TabIndex = 23;
+            this.ssErrorLabel.Text = "Error updating scroll speed.";
+            this.ssErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ssErrorLabel.Visible = false;
+            // 
             // scrollSpeedBox
             // 
             this.scrollSpeedBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
@@ -327,18 +342,6 @@
             this.updateScrollSpeedButton.Text = "Update";
             this.updateScrollSpeedButton.UseVisualStyleBackColor = true;
             this.updateScrollSpeedButton.Click += new System.EventHandler(this.updateScrollSpeedButton_Click);
-            // 
-            // ssErrorLabel
-            // 
-            this.ssErrorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ssErrorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.ssErrorLabel.Location = new System.Drawing.Point(3, 84);
-            this.ssErrorLabel.Name = "ssErrorLabel";
-            this.ssErrorLabel.Size = new System.Drawing.Size(306, 25);
-            this.ssErrorLabel.TabIndex = 23;
-            this.ssErrorLabel.Text = "Error updating scroll speed.";
-            this.ssErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ssErrorLabel.Visible = false;
             // 
             // AccountSettings
             // 

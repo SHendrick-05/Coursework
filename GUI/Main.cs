@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace Coursework.GUI
 {
+    /// <summary>
+    /// The main point of the GUI. Any other form being closed will lead to this instance.
+    /// </summary>
     internal partial class Main : Form
     {
         private void Drag(object sender, MouseEventArgs e)
@@ -20,6 +23,9 @@ namespace Coursework.GUI
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Opens the form to register.
+        /// </summary>
         private void registerButton_Click(object sender, EventArgs e)
         {
             if (Application.OpenForms["Login"] as Login == null)
