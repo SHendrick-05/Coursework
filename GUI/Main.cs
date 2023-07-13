@@ -24,7 +24,7 @@ namespace Coursework.GUI
         }
 
         /// <summary>
-        /// Opens the form to register.
+        /// Opens the form to register or login to an account.
         /// </summary>
         private void registerButton_Click(object sender, EventArgs e)
         {
@@ -37,6 +37,9 @@ namespace Coursework.GUI
             }
         }
 
+        /// <summary>
+        /// Opens the form to edit the account settings, or delete an account.
+        /// </summary>
         private void settingsButton_Click(object sender, EventArgs e)
         {
             if (Application.OpenForms["AccountSettings"] as AccountSettings == null)
@@ -48,6 +51,9 @@ namespace Coursework.GUI
             }
         }
 
+        /// <summary>
+        /// Opens the song select screen.
+        /// </summary>
         private void playButton_Click(object sender, EventArgs e)
         {
             if (Application.OpenForms["SongSelect"] as SongSelect == null)
@@ -58,11 +64,17 @@ namespace Coursework.GUI
             }
         }
 
+        /// <summary>
+        /// Closes the application.
+        /// </summary>
         private void closeButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// Signs out of an accout.
+        /// </summary>
         private void signOutButton_Click(object sender, EventArgs e)
         {
             currentUserLabel.Text = "Logged in as: No one!";
@@ -73,6 +85,9 @@ namespace Coursework.GUI
             registerButton.Visible = true;
         }
 
+        /// <summary>
+        /// Updates the label that displays the currently logged in user.
+        /// </summary>
         private void updateUserText(object sender, FormClosedEventArgs e)
         {
             string user;
@@ -91,6 +106,9 @@ namespace Coursework.GUI
             currentUserLabel.Text = $"Logged in as: {user}";
         }
 
+        /// <summary>
+        /// Opens the menu to edit an existing song, or create a new one.
+        /// </summary>
         private void songEditorButton_Click(object sender, EventArgs e)
         {
             if (Application.OpenForms["SongEditor"] as SongEditor == null)
