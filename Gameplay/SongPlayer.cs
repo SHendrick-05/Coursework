@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,9 @@ using NAudio.Wave;
 
 namespace Coursework.Gameplay
 {
+    /// <summary>
+    /// The monogame application. Contains all gameplay.
+    /// </summary>
     internal class songPlayer : Game
     {
         /// <summary>
@@ -401,6 +403,7 @@ namespace Coursework.Gameplay
             Vector2 textBase = new Vector2((_graphics.PreferredBackBufferWidth * 0.5f) + 10, 110 + textY);
             Vector2 textDivision = new Vector2(0, rectBoundsY);
 
+            
             float textHeight = spriteFontLarge.MeasureString("Test").Y;
 
             _spriteBatch.DrawString(spriteFontLarge, GameHandler.currentChart.title, textBase, Color.White);
@@ -526,10 +529,12 @@ namespace Coursework.Gameplay
             // Open the sprite drawer.
             _spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            // Draw sprites
-            float ord = 1;
+
             // Get all the LN notes.
             List<Sprite> holds = sprites.Where(x => x.GetType() == typeof(Hold)).ToList();
+
+            // Draw sprites
+            float ord = 1;
 
             foreach (Sprite spr in sprites)
             {
@@ -558,7 +563,7 @@ namespace Coursework.Gameplay
                 {
                     Vector2 position = new Vector2(hold.position.X, hold.endY - remainingY);
                     _spriteBatch.Draw(holdBodyTexture, position, Color.White);
-                    remainingY -= holdBodyTexture.Height;
+                    remainingY -= holdBodyTexture.Height;   
                 }
                 // Draw the rest.
                 Rectangle remaining = new Rectangle((int)hold.position.X, hold.endY - remainingY, hold.size.X, remainingY);

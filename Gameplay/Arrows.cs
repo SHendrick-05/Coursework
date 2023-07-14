@@ -60,9 +60,21 @@ namespace Coursework.Gameplay
             HitUpdate();
             HoldUpdate();
         }
+        /// <summary>
+        /// An update function specific to mine objects.
+        /// </summary>
         internal virtual void MineUpdate() { }
+
+        /// <summary>
+        /// An update function specific to hit notes.
+        /// </summary>
         internal virtual void HitUpdate() { }
+
+        /// <summary>
+        /// An update function specific to hold notes.
+        /// </summary>
         internal virtual void HoldUpdate() { }
+
         internal override void Deprecate()
         {
             GameHandler.arrows[(int)dir].Remove(this);
@@ -111,6 +123,7 @@ namespace Coursework.Gameplay
         /// How many frames the animation has in total.
         /// </summary>
         int frames;
+        
         internal Mine(int posY, Dir dir, Point spriteCrop, int measureDiv, int measure) : base(posY, dir, spriteCrop, measureDiv, measure)
         {
             texture = songPlayer.mineTexture;
@@ -118,6 +131,7 @@ namespace Coursework.Gameplay
             frame = 0;
             frames = 8;
         }
+
         internal override void MineUpdate()
         {
             if (++frame >= framesPerUpdate)
@@ -272,8 +286,8 @@ namespace Coursework.Gameplay
 
 /* 
  * Dir to rotation:
- * 0 = 90* ACW
+ * 0 = 90* ACW = PI/2
  * 1 = 0
- * 2 = 180*
- * 3 = 90* CW
+ * 2 = 180* = PI
+ * 3 = 90* CW = -PI/2
  */

@@ -5,9 +5,24 @@
     /// </summary>
     enum Dir
     {
+        /// <summary>
+        /// 0.5PI rad
+        /// </summary>
         LEFT,
+
+        /// <summary>
+        /// 0 rad
+        /// </summary>
         DOWN,
+
+        /// <summary>
+        /// PI rad
+        /// </summary>
         UP,
+
+        /// <summary>
+        /// -0.5PI rad
+        /// </summary>
         RIGHT
     }
 

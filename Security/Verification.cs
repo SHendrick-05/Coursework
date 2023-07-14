@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Coursework.Security
 {
+    /// <summary>
+    /// A class to handle attempts to access, create or update an account.
+    /// </summary>
     internal static class Verification
     {
         /// <summary>

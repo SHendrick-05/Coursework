@@ -2,6 +2,9 @@
 
 namespace Coursework.Gameplay
 {
+    /// <summary>
+    /// Handles user input and gets the state of KBM.
+    /// </summary>
     internal class Input
     {
         /// <summary>

@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Numerics;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
-using System.Xml.XPath;
 
 namespace Coursework.Security
 {
+    /// <summary>
+    /// Class for generating cryptographically secure large random numbers.
+    /// </summary>
     internal static class RandomGenerator
     {
         
         /// <summary>
-        /// A cryptographically secure random number generator.
+        /// A cryptographically secure random number generator. Used for generating large primes.
         /// </summary>
         /// <returns>A BigInteger type representing a 1024-bit random positive odd number</returns>
         internal static BigInteger Next()
@@ -21,15 +19,17 @@ namespace Coursework.Security
             // Fill an array of bytes, before making an appropriate BigInteger
             byte[] data = RandomNumberGenerator.GetBytes(128);
             BigInteger result = new BigInteger(data);
+
             // Apply a bitwise mask to make sure the MSB and the LSB are both 1.
             // This means that the result will be odd, and it will be sufficiently large.
             result |= (1 << ((int)result.GetBitLength() - 1)) | 1;
-            // Take absolute value to prevent negative numbers.
+
+            // Take the absolute value to prevent negative numbers.
             return BigInteger.Abs(result);
         }
 
         /// <summary>
-        /// A cryptographically secure random alphanumeric string generator
+        /// A cryptographically secure random alphanumeric string generator. Used for generating user salts.
         /// </summary>
         /// <param name="length">The amount of characters to be in the output</param>
         /// <returns>A string of length "length" that consists of letters and digits.</returns>
@@ -40,6 +40,10 @@ namespace Coursework.Security
             return result;
         }
     }
+
+    /// <summary>
+    /// A class for the secure generation of prime numbers.
+    /// </summary>
     internal static class Primes
     {
         /// <summary>

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.IO;
 
 namespace Coursework
 {
@@ -34,10 +32,11 @@ namespace Coursework
         internal string User { get; set; }
         internal int[] Judgements { get; set; }
         internal float Accuracy { get; set; }
-        internal Score(string user)
+        internal Score(string user, int[] judgements, float accuracy)
         {
             User = user;
-            Judgements = new int[6];
+            Judgements = judgements;
+            Accuracy = accuracy;
         }
     }
 }
