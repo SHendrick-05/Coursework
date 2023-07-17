@@ -151,6 +151,7 @@ namespace Coursework.Gameplay
         internal static void addTag(Tag tag)
             => tags.Add(tag);
 
+
         /// <summary>
         /// Constructor method for the song player
         /// </summary>
@@ -297,8 +298,8 @@ namespace Coursework.Gameplay
             if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay 
                 && audioPlayer.PlaybackState == PlaybackState.Stopped && isPlaying) // Ensures that this does not happen every frame.
             {
-                audioPlayer.Init(audio);
-                audioPlayer.Play();
+                //audioPlayer.Init(audio);
+                //audioPlayer.Play();
             }
 
             // Once the song has ended, wait for an equivalent delay before ending gameplay.
@@ -536,6 +537,7 @@ namespace Coursework.Gameplay
             // Draw sprites
             float ord = 1;
 
+            // Draw arrows, including LN starts.
             foreach (Sprite spr in sprites)
             {
                 // Draw the sprite.
@@ -553,7 +555,8 @@ namespace Coursework.Gameplay
                 ord++;
             }
 
-            // Draw the LNs
+            // Draw the LN bodies.
+            Vector2 middle = new Vector2(holdBodyTexture.Width / 2, holdBodyTexture.Height / 2);
             foreach (Hold hold in holds)
             {
                 // Draw the body
@@ -561,13 +564,16 @@ namespace Coursework.Gameplay
                 // Tile as much as possible.
                 while(remainingY > holdBodyTexture.Height)
                 {
-                    Vector2 position = new Vector2(hold.position.X, hold.endY - remainingY);
-                    _spriteBatch.Draw(holdBodyTexture, position, Color.White);
+                    Vector2 position = new Vector2(hold.position.X, hold.endY + remainingY - GameHandler.arrowSize.Y / 2);
+                    _spriteBatch.Draw(holdBodyTexture, position, null, Color.White, 0f, middle , 1f, SpriteEffects.None, 1);
                     remainingY -= holdBodyTexture.Height;   
                 }
-                // Draw the rest.
-                Rectangle remaining = new Rectangle((int)hold.position.X, hold.endY - remainingY, hold.size.X, remainingY);
-                _spriteBatch.Draw(holdBodyTexture, remaining, Color.White);
+                // Get the rectangles for drawing and cropping the sprite.
+                Rectangle remaining = new Rectangle((int)hold.position.X, hold.endY + remainingY - GameHandler.arrowSize.Y / 2, hold.size.X, remainingY);
+                Rectangle crop = new Rectangle(0, 0, hold.size.X, remainingY);
+
+                // Draw the tail.
+                _spriteBatch.Draw(holdBodyTexture, remaining, crop, Color.White, 0f, middle, SpriteEffects.None, 1);
             }
 
             // Draw tags

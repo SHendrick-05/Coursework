@@ -58,7 +58,7 @@ namespace Coursework.Gameplay
             posY += (int)Math.Round(distance);
             MineUpdate();
             HitUpdate();
-            HoldUpdate();
+            HoldUpdate(distance);
         }
         /// <summary>
         /// An update function specific to mine objects.
@@ -73,7 +73,7 @@ namespace Coursework.Gameplay
         /// <summary>
         /// An update function specific to hold notes.
         /// </summary>
-        internal virtual void HoldUpdate() { }
+        internal virtual void HoldUpdate(double distance) { }
 
         internal override void Deprecate()
         {
@@ -174,9 +174,21 @@ namespace Coursework.Gameplay
         {
             get
             {
-                return new Point(GameHandler.arrowSize.X, endY - posY);
+                return new Point(GameHandler.arrowSize.X, posY - endY);
             }
         }
+
+        /// <summary>
+        /// Constructor function
+        /// </summary>
+        /// <param name="startY">The Y position of the start of the hold</param>
+        /// <param name="endY">The Y position of the end of the hold</param>
+        /// <param name="dir">The direction/column the LN is facing</param>
+        /// <param name="spriteCrop">The point with which to crop the start</param>
+        /// <param name="startMeasureDiv">The division of the measure the LN starts at</param>
+        /// <param name="startMeasure">The measure of the chart the LN starts at</param>
+        /// <param name="endMeasureDiv">The division of the measure the LN ends at</param>
+        /// <param name="endMeasure">The measure of the chart the LN ends at</param>
         internal Hold(int startY, int endY, Dir dir, Point spriteCrop, int startMeasureDiv, int startMeasure, int endMeasureDiv, int endMeasure) : base(startY, dir, spriteCrop, startMeasureDiv, startMeasure)
         {
             texture = songPlayer.arrowTexture;
@@ -185,8 +197,11 @@ namespace Coursework.Gameplay
             this.endY = endY;
         }
 
-        internal override void HoldUpdate()
+        internal override void HoldUpdate(double distance)
         {
+            // Move the end position
+            endY += (int)Math.Round(distance);
+
             // Check if the note can no longer be hit and is offscreen.
             double positionDiff = posY - GameHandler.receptors[(int)dir].position.Y;
             double timeDiff = positionDiff / GameHandler.speed;
