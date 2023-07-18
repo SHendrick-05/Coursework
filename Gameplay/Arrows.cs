@@ -157,6 +157,11 @@ namespace Coursework.Gameplay
     internal class Hold : Arrow
     {
         /// <summary>
+        /// A boolean value reprsenting whether a receptor is holding this note right now.
+        /// </summary>
+        internal bool isHeld;
+
+        /// <summary>
         /// The measure of the song that the note will stop being held at. Starts from 0.
         /// </summary>
         internal int endMeasure;
@@ -165,6 +170,11 @@ namespace Coursework.Gameplay
         /// The division of the measure that the note will stop being held at.
         /// </summary>
         internal int endMeasureDivision;
+
+        /// <summary>
+        /// Removes the texture after the start of the LN has been hit.
+        /// </summary>
+        internal void clearTexture() => texture = null;
 
         /// <summary>
         /// The Y position that the note will stop being held at.
@@ -205,10 +215,11 @@ namespace Coursework.Gameplay
             // Check if the note can no longer be hit and is offscreen.
             double positionDiff = posY - GameHandler.receptors[(int)dir].position.Y;
             double timeDiff = positionDiff / GameHandler.speed;
-            if (posY > GameHandler.bounds.Y && timeDiff > GameHandler.timeWindows[5])
+            if (posY > GameHandler.bounds.Y && timeDiff > GameHandler.timeWindows[5] && texture != null)
             {
                 // Award a miss
                 GameHandler.ArrowHit(this, (float)positionDiff);
+                Deprecate();
             }
         }
     }
@@ -220,9 +231,9 @@ namespace Coursework.Gameplay
     internal class Receptor : Sprite
     {
         /// <summary>
-        /// A boolean value to represent whether this receptor is currently holding down a LN.
+        /// The LN object that represents the LN currently being held.
         /// </summary>
-        internal bool isHoldNote;
+        internal Hold heldNote;
 
         /// <summary>
         /// The direction that the receptor is facing.
@@ -252,7 +263,7 @@ namespace Coursework.Gameplay
             this.dir = dir;
             texture = songPlayer.recepTexture;
             rotation = rotations[(int)dir];
-            isHoldNote = false;
+            heldNote = null;
         }
 
         /// <summary>
@@ -285,15 +296,28 @@ namespace Coursework.Gameplay
                     {
                         Arrow closest = canBeHit.MinBy(x => timings[x]);
 
-                        // This is the hit arrow. Pass it on.
+                        // Pass on the arrow hit.
                         GameHandler.ArrowHit(closest, timings[closest]);
+                        // If LN, start holding.
+                        if (closest.GetType() == typeof(Hold))
+                        {
+                            heldNote = closest as Hold;
+                            (closest as Hold).isHeld = true;
+                        }
                     }
                 }
             }
             else
             {
-
                 spriteCrop.X = 0;
+                if (lastKstate.IsKeyDown(hitKey))
+                {
+                    if (heldNote != null)
+                    {
+                        GameHandler.ArrowHit(heldNote, position.Y - heldNote.endY);
+                    }
+                    heldNote = null;
+                }
             }
         }
     }

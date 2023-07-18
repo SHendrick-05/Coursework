@@ -30,6 +30,11 @@ namespace Coursework.Gameplay
         private static List<Sprite> sprites;
 
         /// <summary>
+        /// The number of pixels between the bottom of the screen and the receptor position, the "judgement line".
+        /// </summary>
+        private static int receptorGap;
+
+        /// <summary>
         /// A list of all judgement feedback tags currently being displayed.
         /// </summary>
         private static List<Tag> tags;
@@ -53,6 +58,11 @@ namespace Coursework.Gameplay
         /// The texture for the central part of a hold note.
         /// </summary>
         internal static Texture2D holdBodyTexture;
+
+        /// <summary>
+        /// The texture that is drawn when a LN is being held down.
+        /// </summary>
+        internal static Texture2D holdActiveTexture;
 
         /// <summary>
         /// A 1x1 rectangle used for drawing rectangular shapes. Can be resized and coloured.
@@ -187,6 +197,7 @@ namespace Coursework.Gameplay
             labelFrames = 0;
             gameOverFrames = 0;
             notesPerSample = 10;
+            receptorGap = 200;
             isPlaying = false;
             resultsScreen = false;
 
@@ -209,10 +220,13 @@ namespace Coursework.Gameplay
         protected override void LoadContent()
         {
             // Load the textures from content file.
+            holdActiveTexture = Content.Load<Texture2D>("downHoldActive");
+            holdBodyTexture = Content.Load<Texture2D>("downHold");
+            recepTexture = Content.Load<Texture2D>("downReceptor");
             arrowTexture = Content.Load<Texture2D>("downTap");
             mineTexture = Content.Load<Texture2D>("downMine");
-            recepTexture = Content.Load<Texture2D>("downReceptor");
-            holdBodyTexture = Content.Load<Texture2D>("downHold");
+
+            // Load the sound effect.
             mineHit = Content.Load<SoundEffect>("explosion");
 
             // Load fonts from the content file.
@@ -230,7 +244,7 @@ namespace Coursework.Gameplay
             for(int i = 0; i < 4; i++)
             {
                 Receptor rcp = new Receptor(GameHandler.arrowColumns[i],
-                                        GameHandler.bounds.Y - 200,
+                                        GameHandler.bounds.Y - receptorGap,
                                         (Dir)i,
                                         new Point(0, 0));
                 GameHandler.receptors[i] = rcp;
@@ -540,6 +554,7 @@ namespace Coursework.Gameplay
             // Draw arrows, including LN starts.
             foreach (Sprite spr in sprites)
             {
+                if (spr.Texture != null)
                 // Draw the sprite.
                 _spriteBatch.Draw(
                     spr.Texture,
@@ -555,7 +570,9 @@ namespace Coursework.Gameplay
                 ord++;
             }
 
+            //
             // Draw the LN bodies.
+            //
 
             // Centres of drawing for the body and tail.
             Vector2 bodyOrigin = new Vector2(holdBodyTexture.Width / 2, holdBodyTexture.Height);
@@ -564,6 +581,8 @@ namespace Coursework.Gameplay
             {
                 // Draw the body
                 int remainingY = hold.bodySize.Y;
+                if (hold.isHeld)
+                    remainingY = GameHandler.bounds.Y - receptorGap - hold.endY;
                 // Tile as much as possible.
                 while(remainingY > holdBodyTexture.Height)
                 {
@@ -581,7 +600,33 @@ namespace Coursework.Gameplay
                 _spriteBatch.Draw(holdBodyTexture, remaining, crop, Color.White, 0f, tailOrigin, SpriteEffects.None, 1);
             }
 
+            //
+            // Draw the LN active arrows on receptors, if they are being held.
+            //
+            for (int i = 0; i < 4; i++)
+            {
+                if (GameHandler.receptors[i].heldNote != null)
+                { 
+                    Rectangle crop = new Rectangle(new Point(0, GameHandler.receptors[i].heldNote.spriteCrop.Y * GameHandler.arrowSize.Y),
+                                                    GameHandler.arrowSize);
+                    _spriteBatch.Draw(
+                        holdActiveTexture,
+                        GameHandler.receptors[i].position,
+                        crop,
+                        Color.White,
+                        GameHandler.receptors[i].rotation,
+                        GameHandler.receptors[i].origin,
+                        1f,
+                        SpriteEffects.None,
+                        1);
+                }
+            }
+
+
+            //
             // Draw tags
+            //
+
             foreach (Tag tag in tags)
             {
                 _spriteBatch.Draw(
@@ -590,7 +635,10 @@ namespace Coursework.Gameplay
                     tag.color * tag.opacity);
             }
 
+            //
             // Judgement
+            //
+
             if (labelFrames > 0)
             {
                 float centerX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2]) / 2f;

@@ -224,7 +224,8 @@ namespace Coursework.Gameplay
         /// </summary>
         /// <param name="arrow">The arrow that has been hit</param>
         /// <param name="distance">The pixel distance from the receptor</param>
-        internal static void ArrowHit(Arrow arrow, float distance)
+        /// <param name="end">A boolean value representing whether the LN is being held or released</param>
+        internal static void ArrowHit(Arrow arrow, float distance, bool end = false)
         {
             Type arrowType = arrow.GetType();
             // Note hit
@@ -236,20 +237,47 @@ namespace Coursework.Gameplay
                 if (Math.Abs(distance / speed) < mineWindow)
                     MineHit(arrow as Mine);
             }
+            // LN hit
+            else if(arrowType == typeof(Hold))
+            {
+                LNHit(arrow as Hold, distance, end);
+            }
         }
 
         /// <summary>
-        /// A function that handles when an note is hit, and awards an appropriate score
-        /// </summary>  
-        /// <param name="arrow">The arrow class that has been hit</param>
+        /// A function that handles when LNs are hit, both the start and end.
+        /// </summary>
+        /// <param name="LN">The LN that has been held or released</param>
         /// <param name="distance">The pixel distance from the receptor</param>
-        internal static void HitNote(Hit arrow, float distance)
+        /// <param name="end">A boolean value representing whether the LN is being held or released</param>
+        internal static void LNHit(Hold LN, float distance, bool end )
+        {
+            // If end, award a judgement and deprecate the LN
+            if (end) 
+            {
+                awardJudgement(LN.endMeasure * measureDivions + LN.endMeasureDivision, distance);
+                LN.Deprecate();
+            }
+            // If start, award a judgement and hide the hit part.
+            else
+            {
+                awardJudgement(LN.measure * measureDivions + LN.measureDiv, distance);
+                LN.clearTexture();
+            }
+        }
+
+        /// <summary>
+        /// A function that takes a judgement and awards a score.
+        /// </summary>
+        /// <param name="divisionCount">How many measure divisions (including full measures) into the song the note was hit</param>
+        /// <param name="distance">The distance from the recetor the note was hit at.</param>
+        internal static void awardJudgement(int divisionCount, float distance)
         {
             // Get the time taken, in seconds.
             double time = distance / speed;
             // Find the appropriate judgement window
             int judgement = 5;
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 // Use the absolute value, so late and early judgements are treated equally.
                 if (timeWindows[i] >= Math.Abs(time))
@@ -259,9 +287,9 @@ namespace Coursework.Gameplay
                 }
             }
             // Add this judgement to the lists.
-            variations.Add((arrow.measure * measureDivions + arrow.measureDiv, time));
+            variations.Add((divisionCount, time));
             judgements[judgement]++;
-            
+
             // If a perfect was hit, restore HP.
             if (judgement == 0)
                 HP += 20;
@@ -277,7 +305,17 @@ namespace Coursework.Gameplay
             songPlayer.updateJudge(judgeColor, judgeStrings[judgement]);
             double offset = time * 1000;
             ShowTag(judgeColor, (int)Math.Round(offset));
-            
+        }
+
+        /// <summary>
+        /// A function that handles when an note is hit.
+        /// </summary>  
+        /// <param name="arrow">The arrow class that has been hit</param>
+        /// <param name="distance">The pixel distance from the receptor</param>
+        internal static void HitNote(Hit arrow, float distance)
+        {
+            // Handle the judgement.
+            awardJudgement(arrow.measure * measureDivions + arrow.measureDiv, distance);
             
             // Remove the arrow.
             arrow.Deprecate();
