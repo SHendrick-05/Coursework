@@ -556,7 +556,10 @@ namespace Coursework.Gameplay
             }
 
             // Draw the LN bodies.
-            Vector2 middle = new Vector2(holdBodyTexture.Width / 2, holdBodyTexture.Height / 2);
+
+            // Centres of drawing for the body and tail.
+            Vector2 bodyOrigin = new Vector2(holdBodyTexture.Width / 2, holdBodyTexture.Height);
+            Vector2 tailOrigin = new Vector2(holdBodyTexture.Width / 2, 0);
             foreach (Hold hold in holds)
             {
                 // Draw the body
@@ -564,16 +567,18 @@ namespace Coursework.Gameplay
                 // Tile as much as possible.
                 while(remainingY > holdBodyTexture.Height)
                 {
-                    Vector2 position = new Vector2(hold.position.X, hold.endY + remainingY - GameHandler.arrowSize.Y / 2);
-                    _spriteBatch.Draw(holdBodyTexture, position, null, Color.White, 0f, middle , 1f, SpriteEffects.None, 1);
+                    Vector2 position = new Vector2(hold.position.X, hold.endY + remainingY);
+                    
+                    _spriteBatch.Draw(holdBodyTexture, position, null, Color.White, 0f, bodyOrigin, 1f, SpriteEffects.None, 1);
                     remainingY -= holdBodyTexture.Height;   
                 }
-                // Get the rectangles for drawing and cropping the sprite.
-                Rectangle remaining = new Rectangle((int)hold.position.X, hold.endY + remainingY - GameHandler.arrowSize.Y / 2, hold.size.X, remainingY);
-                Rectangle crop = new Rectangle(0, 0, hold.size.X, remainingY);
+
+                // Get the rectangles for drawing and cropping the sprite tail.
+                Rectangle remaining = new Rectangle((int)hold.position.X, hold.endY, hold.size.X, remainingY);
+                Rectangle crop = new Rectangle(0, holdBodyTexture.Height - remainingY, hold.size.X, remainingY);
 
                 // Draw the tail.
-                _spriteBatch.Draw(holdBodyTexture, remaining, crop, Color.White, 0f, middle, SpriteEffects.None, 1);
+                _spriteBatch.Draw(holdBodyTexture, remaining, crop, Color.White, 0f, tailOrigin, SpriteEffects.None, 1);
             }
 
             // Draw tags
