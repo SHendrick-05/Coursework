@@ -286,6 +286,7 @@ namespace Coursework.Gameplay
                     break;
                 }
             }
+
             // Add this judgement to the lists.
             variations.Add((divisionCount, time));
             judgements[judgement]++;

@@ -549,7 +549,7 @@ namespace Coursework.Gameplay
             List<Sprite> holds = sprites.Where(x => x.GetType() == typeof(Hold)).ToList();
 
             // Draw sprites
-            float ord = 1;
+            float ord = 2;
 
             // Draw arrows, including LN starts.
             foreach (Sprite spr in sprites)
@@ -574,30 +574,30 @@ namespace Coursework.Gameplay
             // Draw the LN bodies.
             //
 
-            // Centres of drawing for the body and tail.
-            Vector2 bodyOrigin = new Vector2(holdBodyTexture.Width / 2, holdBodyTexture.Height);
-            Vector2 tailOrigin = new Vector2(holdBodyTexture.Width / 2, 0);
+            // Centre of drawing for the body and tail.
+            Vector2 originLN = new Vector2(holdBodyTexture.Width / 2, 0);
             foreach (Hold hold in holds)
             {
-                // Draw the body
+                // Get the bounds for drawing the body.
                 int remainingY = hold.bodySize.Y;
                 if (hold.isHeld)
                     remainingY = GameHandler.bounds.Y - receptorGap - hold.endY;
-                // Tile as much as possible.
-                while(remainingY > holdBodyTexture.Height)
+
+                // Tile the body texture as much as possible across the length.
+                while (remainingY > holdBodyTexture.Height)
                 {
-                    Vector2 position = new Vector2(hold.position.X, hold.endY + remainingY);
-                    
-                    _spriteBatch.Draw(holdBodyTexture, position, null, Color.White, 0f, bodyOrigin, 1f, SpriteEffects.None, 1);
-                    remainingY -= holdBodyTexture.Height;   
+                    Vector2 position = new(hold.position.X, hold.position.Y - remainingY);
+
+                    _spriteBatch.Draw(holdBodyTexture, position, null, Color.White, 0f, originLN, 1f, SpriteEffects.None, 0.01f);
+
+                    remainingY -= holdBodyTexture.Height;
                 }
 
-                // Get the rectangles for drawing and cropping the sprite tail.
-                Rectangle remaining = new Rectangle((int)hold.position.X, hold.endY, hold.size.X, remainingY);
-                Rectangle crop = new Rectangle(0, holdBodyTexture.Height - remainingY, hold.size.X, remainingY);
+                // Use the remaining length to draw the tail, a cropped texture of the body.
+                Rectangle remaining = new((int)hold.position.X, (int)hold.position.Y - remainingY, hold.size.X, remainingY);
+                Rectangle crop = new(0, 0, hold.size.X, remainingY);
+                _spriteBatch.Draw(holdBodyTexture, remaining, crop, Color.White, 0f, originLN, SpriteEffects.None, 0.01f);
 
-                // Draw the tail.
-                _spriteBatch.Draw(holdBodyTexture, remaining, crop, Color.White, 0f, tailOrigin, SpriteEffects.None, 1);
             }
 
             //

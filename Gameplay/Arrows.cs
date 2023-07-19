@@ -172,6 +172,14 @@ namespace Coursework.Gameplay
         internal int endMeasureDivision;
 
         /// <summary>
+        /// Gets the position of the start of the LN. Returns the receptor position if currently being held.
+        /// </summary>
+        internal new Vector2 position
+        {
+            get => isHeld ? GameHandler.receptors[(int)dir].position : new(posX, posY);
+        }
+
+        /// <summary>
         /// Removes the texture after the start of the LN has been hit.
         /// </summary>
         internal void clearTexture() => texture = null;
