@@ -52,6 +52,12 @@ namespace Coursework.GUI
 
 
         /// <summary>
+        /// An array representing whether a LN has been started in each column that needs to be closed.
+        /// </summary>
+        internal static bool[] openLNs;
+
+
+        /// <summary>
         /// The constructor function for the form.
         /// </summary>
         public SongEditor()
@@ -64,11 +70,14 @@ namespace Coursework.GUI
         /// </summary>
         private void songEditorButton_Click(object sender, EventArgs e)
         {
+            openLNs = new bool[] { false, false, false, false };
+
             Mp3FileReader reader = new(audioPath);
             double length = reader.TotalTime.TotalMinutes;
             int measures = (int)Math.Floor(0.25 * length * editingChart.BPM);
             int notes;
             int minePct = mineBar.Value;
+            int LNPct = LNBar.Value;
             Difficulty diff;
             
             if (difficultyBox.Text == "Easy")
@@ -91,17 +100,28 @@ namespace Coursework.GUI
             // Generate notes
             for (int i = 0; i < measures; i++)
             {
-                Dictionary<int, songNoteType>[] measure = generateMeasure(diff);
+                Dictionary<int, songNoteType>[] measure = generateMeasure(diff, LNPct / 100d);
                 editingChart.measures.Add(measure);
             }
 
+            // Close any open LNs.
+            for (int i = 0; i < 4; i++)
+            {
+                if (openLNs[i])
+                {
+                    editingChart.measures[measures - 1][i].Add(Gameplay.GameHandler.measureDivions - 1, songNoteType.HOLDEND);
+                }
+            }
 
 
             // Generate mines
             for (int i = 0; i < Math.Floor(notes * minePct / 100f); i++)
             {
+                // The measure of the song it is in
                 int meas = rnd.Next(editingChart.measures.Count);
+                // The column the mine is in.
                 int col = rnd.Next(4);
+                // The division of the measure the mine is in.
                 int div = rnd.Next(32);
                 editingChart.measures[meas][col][div * 30] = songNoteType.MINE;
             }
@@ -113,8 +133,9 @@ namespace Coursework.GUI
         /// Creates a randomly-generated measure for use in a chart.
         /// </summary>
         /// <param name="diff">The difficulty with which to generate the measure</param>
+        /// <param name="LnPct">The probability of a note being a LN, from 0 to 1.</param>
         /// <returns>A measure with the appropriate difficulty.</returns>
-        private Dictionary<int, songNoteType>[] generateMeasure(Difficulty diff)
+        private Dictionary<int, songNoteType>[] generateMeasure(Difficulty diff, double LnPct)
         {
             // Init a RNG for the generation.
             Random rnd = new Random();
@@ -132,33 +153,92 @@ namespace Coursework.GUI
                 case Difficulty.EASY:
                     for(int i = 0; i < 8; i++)
                     {
+                        // Generate a random column
                         int gen = rnd.Next(4);
-                        measure[gen].Add(i * 120, songNoteType.HIT);
+                        // If a LN is open there, close it.
+                        if (openLNs[gen])
+                        {
+                            measure[gen].Add(i * 120, songNoteType.HOLDEND);
+                            openLNs[gen] = false;
+                        }
+                        // Check if it should open a LN
+                        else if (rnd.NextDouble() < LnPct)
+                        {
+                            openLNs[gen] = true;
+                            measure[gen].Add(i * 120, songNoteType.HOLDSTART);
+                        }
+                        else
+                            measure[gen].Add(i * 120, songNoteType.HIT);
                     }
                     return measure;
                 // Medium = 1/4 streams
                 case Difficulty.MEDIUM:
                     for (int i = 0; i < 16; i++)
                     {
+                        // Generate a random column
                         int gen = rnd.Next(4);
-                        measure[gen].Add(i * 60, songNoteType.HIT);
+                        // If a LN is open there, close it.
+                        if (openLNs[gen])
+                        {
+                            measure[gen].Add(i * 60, songNoteType.HOLDEND);
+                            openLNs[gen] = false;
+                        }
+                        // Check if it should open a LN
+                        else if (rnd.NextDouble() < LnPct)
+                        {
+                            openLNs[gen] = true;
+                            measure[gen].Add(i * 60, songNoteType.HOLDSTART);
+                        }
+                        else
+                            measure[gen].Add(i * 60, songNoteType.HIT);
                     }
                     return measure;
                 // Hard = 1/4 JS
                 case Difficulty.HARD:
                     for (int i = 0; i < 16; i++)
                     {
+                        // Generate a random column
                         int gen = rnd.Next(4);
-                        measure[gen].Add(i * 60, songNoteType.HIT);
+
+                        // If a LN is open there, close it.
+                        if (openLNs[gen])
+                        {
+                            measure[gen].Add(i * 60, songNoteType.HOLDEND);
+                            openLNs[gen] = false;
+                        }
+                        // Check if it should open a LN
+                        else if (rnd.NextDouble() < LnPct)
+                        {
+                            openLNs[gen] = true;
+                            measure[gen].Add(i * 60, songNoteType.HOLDSTART);
+                        }
+                        else
+                            measure[gen].Add(i * 60, songNoteType.HIT);
+
+
                         if (i % 4 == 0)
                         {
+                            // Generate a second different column.
                             int gen2;
                             do
                             {
                                 gen2 = rnd.Next(4);
                             }
                             while (gen2 == gen);
-                            measure[gen2].Add(i * 60, songNoteType.HIT);
+                            // If a LN is open there, close it.
+                            if (openLNs[gen2])
+                            {
+                                measure[gen2].Add(i * 60, songNoteType.HOLDEND);
+                                openLNs[gen] = false;
+                            }
+                            // Check if it should open a LN
+                            else if (rnd.NextDouble() < LnPct)
+                            {
+                                openLNs[gen2] = true;
+                                measure[gen2].Add(i * 60, songNoteType.HOLDSTART);
+                            }
+                            else
+                                measure[gen].Add(i * 60, songNoteType.HIT);
                         }
                     }
                     return measure;

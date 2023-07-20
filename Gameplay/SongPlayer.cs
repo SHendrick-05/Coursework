@@ -316,11 +316,13 @@ namespace Coursework.Gameplay
                 //audioPlayer.Play();
             }
 
-            // Once the song has ended, wait for an equivalent delay before ending gameplay.
-            if (gameTime.TotalGameTime.TotalSeconds >= audio.TotalTime.TotalSeconds + 2 * GameHandler.timeDelay)
+            // Once the song has ended (no more arrows exist), wait for an equivalent delay before ending gameplay.
+            if (GameHandler.arrows.All(x => x.Count == 0))
             {
                 isPlaying = false;
-                resultsScreen = true;
+                gameOverFrames = (int)(GameHandler.timeDelay * 60);
+                if (audioPlayer.PlaybackState == PlaybackState.Playing)
+                    audioPlayer.Stop();
                 GameHandler.speed = 0;
             }
 
@@ -545,6 +547,7 @@ namespace Coursework.Gameplay
             _spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
 
+
             // Get all the LN notes.
             List<Sprite> holds = sprites.Where(x => x.GetType() == typeof(Hold)).ToList();
 
@@ -684,6 +687,14 @@ namespace Coursework.Gameplay
             // Tag centre
             int baseX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2]) / 2;
             _spriteBatch.Draw(rectangle, new Rectangle(baseX - 1, GameHandler.tagY, 2, GameHandler.tagSize.Y), Color.White);
+
+            // Add a fade out, if gameplay has ended.
+            if (!isPlaying)
+            {
+                float opacity = ((120f - gameOverFrames) / 120f);
+                Rectangle screenBounds = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+                _spriteBatch.Draw(rectangle, screenBounds, null, Color.Black * opacity, 0f, Vector2.Zero, SpriteEffects.None, 1);
+            }
 
             // End drawing
             _spriteBatch.End();

@@ -229,6 +229,10 @@ namespace Coursework.Gameplay
                 GameHandler.ArrowHit(this, (float)positionDiff);
                 Deprecate();
             }
+            if (endY > GameHandler.bounds.Y && timeDiff > GameHandler.timeWindows[5] && texture == null)
+            {
+                GameHandler.ArrowHit(this, (float)positionDiff, true);
+            }
         }
     }
 

@@ -41,7 +41,9 @@
             this.createSong = new System.Windows.Forms.Button();
             this.difficultyBox = new System.Windows.Forms.ComboBox();
             this.creationPanel = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.LNBarLabel = new System.Windows.Forms.Label();
+            this.LNBar = new System.Windows.Forms.TrackBar();
+            this.mineBarLabel = new System.Windows.Forms.Label();
             this.mineBar = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
             this.editButton = new System.Windows.Forms.Button();
@@ -49,6 +51,7 @@
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).BeginInit();
             this.creationPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LNBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mineBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -203,7 +206,9 @@
             // 
             // creationPanel
             // 
-            this.creationPanel.Controls.Add(this.label3);
+            this.creationPanel.Controls.Add(this.LNBarLabel);
+            this.creationPanel.Controls.Add(this.LNBar);
+            this.creationPanel.Controls.Add(this.mineBarLabel);
             this.creationPanel.Controls.Add(this.mineBar);
             this.creationPanel.Controls.Add(this.label2);
             this.creationPanel.Controls.Add(this.noteCreator);
@@ -212,26 +217,47 @@
             this.creationPanel.Controls.Add(this.label1);
             this.creationPanel.Controls.Add(this.bpmBox);
             this.creationPanel.Controls.Add(this.saveButton);
-            this.creationPanel.Location = new System.Drawing.Point(205, 149);
+            this.creationPanel.Location = new System.Drawing.Point(205, 126);
             this.creationPanel.Name = "creationPanel";
-            this.creationPanel.Size = new System.Drawing.Size(400, 250);
+            this.creationPanel.Size = new System.Drawing.Size(400, 312);
             this.creationPanel.TabIndex = 26;
             this.creationPanel.Visible = false;
             // 
-            // label3
+            // LNBarLabel
             // 
-            this.label3.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(55, 160);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(299, 30);
-            this.label3.TabIndex = 28;
-            this.label3.Text = "Mines";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LNBarLabel.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LNBarLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.LNBarLabel.Location = new System.Drawing.Point(55, 221);
+            this.LNBarLabel.Name = "LNBarLabel";
+            this.LNBarLabel.Size = new System.Drawing.Size(299, 30);
+            this.LNBarLabel.TabIndex = 30;
+            this.LNBarLabel.Text = "LNs";
+            this.LNBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LNBar
+            // 
+            this.LNBar.Location = new System.Drawing.Point(55, 254);
+            this.LNBar.Maximum = 100;
+            this.LNBar.Name = "LNBar";
+            this.LNBar.Size = new System.Drawing.Size(299, 45);
+            this.LNBar.TabIndex = 29;
+            this.LNBar.TickFrequency = 5;
+            // 
+            // mineBarLabel
+            // 
+            this.mineBarLabel.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.mineBarLabel.ForeColor = System.Drawing.SystemColors.Control;
+            this.mineBarLabel.Location = new System.Drawing.Point(55, 140);
+            this.mineBarLabel.Name = "mineBarLabel";
+            this.mineBarLabel.Size = new System.Drawing.Size(299, 30);
+            this.mineBarLabel.TabIndex = 28;
+            this.mineBarLabel.Text = "Mines";
+            this.mineBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // mineBar
             // 
-            this.mineBar.Location = new System.Drawing.Point(55, 193);
+            this.mineBar.Location = new System.Drawing.Point(55, 173);
+            this.mineBar.Maximum = 20;
             this.mineBar.Name = "mineBar";
             this.mineBar.Size = new System.Drawing.Size(299, 45);
             this.mineBar.TabIndex = 27;
@@ -292,6 +318,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bpmBox)).EndInit();
             this.creationPanel.ResumeLayout(false);
             this.creationPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LNBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mineBar)).EndInit();
             this.ResumeLayout(false);
 
@@ -312,10 +339,12 @@
         private System.Windows.Forms.Button createSong;
         private System.Windows.Forms.ComboBox difficultyBox;
         private System.Windows.Forms.Panel creationPanel;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label mineBarLabel;
         private System.Windows.Forms.TrackBar mineBar;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Label editErrorLabel;
+        private System.Windows.Forms.Label LNBarLabel;
+        private System.Windows.Forms.TrackBar LNBar;
     }
 }
