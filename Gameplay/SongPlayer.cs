@@ -684,6 +684,12 @@ namespace Coursework.Gameplay
                     Color.White);
             }
 
+            // OK
+            _spriteBatch.DrawString(spriteFontRegular, "OK: " + GameHandler.LNOK, new Vector2(rightX, 400 + 6 * judgeDiv), Color.White);
+
+            // NG
+            _spriteBatch.DrawString(spriteFontRegular, "NG: " + GameHandler.LNNG, new Vector2(rightX, 400 + 7 * judgeDiv), Color.White);
+
             // Tag centre
             int baseX = (GameHandler.arrowColumns[1] + GameHandler.arrowColumns[2]) / 2;
             _spriteBatch.Draw(rectangle, new Rectangle(baseX - 1, GameHandler.tagY, 2, GameHandler.tagSize.Y), Color.White);

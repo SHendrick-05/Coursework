@@ -49,6 +49,11 @@ namespace Coursework.Gameplay
         };
 
         /// <summary>
+        /// The timing window boundary for an LN.
+        /// </summary>
+        internal static double holdWindow = 0.250;
+
+        /// <summary>
         /// The universal time window for hitting a mine.
         /// </summary>
         internal static double mineWindow = 0.075;
@@ -188,6 +193,16 @@ namespace Coursework.Gameplay
         internal static int[] judgements = new int[6];
 
         /// <summary>
+        /// How many LN tails were hit successfully during gameplay.
+        /// </summary>
+        internal static int LNOK = 0;
+
+        /// <summary>
+        /// How many LN tails were missed during gameplay.
+        /// </summary>
+        internal static int LNNG = 0;
+
+        /// <summary>
         /// The width and height of the application bounds.
         /// </summary>
         internal static Point bounds;
@@ -255,7 +270,7 @@ namespace Coursework.Gameplay
             // If end, award a judgement and deprecate the LN
             if (end) 
             {
-                awardJudgement(LN.endMeasure * measureDivions + LN.endMeasureDivision, distance);
+                awardLNJudgement(distance);
                 LN.Deprecate();
             }
             // If start, award a judgement and hide the hit part.
@@ -264,6 +279,21 @@ namespace Coursework.Gameplay
                 awardJudgement(LN.measure * measureDivions + LN.measureDiv, distance);
                 LN.clearTexture();
             }
+        }
+
+        /// <summary>
+        /// Handles the tail hits of an LN
+        /// </summary>
+        /// <param name="distance">The pixel distance from the end.</param>
+        internal static void awardLNJudgement(float distance)
+        {
+            double time = distance / speed;
+            if (time > holdWindow)
+            {
+                LNNG++;
+            }
+            else
+                LNOK++;
         }
 
         /// <summary>
@@ -443,6 +473,8 @@ namespace Coursework.Gameplay
             variations.Clear();
             currentChart = null;
             judgements = new int[6] {0, 0, 0, 0, 0, 0};
+            LNOK = 0;
+            LNNG = 0;
 
 
             // Get the user's preferred speed. If the player is not logged in, use the default speed of 800.

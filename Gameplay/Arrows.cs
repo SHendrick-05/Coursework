@@ -247,6 +247,8 @@ namespace Coursework.Gameplay
         /// </summary>
         internal Hold heldNote;
 
+        internal bool lnDB;
+
         /// <summary>
         /// The direction that the receptor is facing.
         /// </summary>
@@ -318,15 +320,31 @@ namespace Coursework.Gameplay
                         }
                     }
                 }
+                // If held continued
+                else
+                {
+                    if (heldNote != null)
+                    {
+                        // If reached the end of an LN
+                        if (heldNote.endY > position.Y)
+                        {
+                            // Award an OK
+                            GameHandler.ArrowHit(heldNote, position.Y - heldNote.endY, true);
+                            heldNote = null;
+                        }
+                    }
+                }
             }
             else
             {
                 spriteCrop.X = 0;
+                // If the key has just been released, for LN handling.
                 if (lastKstate.IsKeyDown(hitKey))
                 {
                     if (heldNote != null)
                     {
-                        GameHandler.ArrowHit(heldNote, position.Y - heldNote.endY);
+                        // Handle LN.
+                        GameHandler.ArrowHit(heldNote, position.Y - heldNote.endY, true);
                     }
                     heldNote = null;
                 }
