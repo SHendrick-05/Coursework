@@ -85,6 +85,34 @@ namespace Coursework.Gameplay
         };
 
         /// <summary>
+        /// The text associated with each score grade.
+        /// </summary>
+        internal static string[] gradeStrings = new string[7]
+        {
+            "AAA",
+            "AA",
+            "A",
+            "B",
+            "C",
+            "D",
+            "F"
+        };
+
+        /// <summary>
+        /// The colour associated with each score grade.
+        /// </summary>
+        internal static System.Drawing.Color[] gradeColors = new System.Drawing.Color[7]
+        {
+            System.Drawing.Color.Goldenrod, // AAA
+            System.Drawing.Color.Green, // AA
+            System.Drawing.Color.HotPink, // A
+            System.Drawing.Color.DarkBlue, // B
+            System.Drawing.Color.DarkBlue, // C
+            System.Drawing.Color.Brown, // D
+            System.Drawing.Color.DarkRed // F
+        };
+
+        /// <summary>
         /// The amount of points to be awarded for each judgement type.
         /// </summary>
         internal static int[] judgePoints = new int[6]

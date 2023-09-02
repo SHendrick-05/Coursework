@@ -304,8 +304,13 @@ namespace Coursework.Gameplay
                 gameOverFrames--;
                 // Enough time has passed, move on.
                 if (gameOverFrames <= 0)
+                {
                     // Move on to the results screen
                     resultsScreen = true;
+                    // Save score
+                    Score chartScore = new Score(Users.loggedInUser.username, GameHandler.currentChart.ID, GameHandler.judgements, GameHandler.accuracy);
+                    Scores.AddScore(chartScore);
+                }
             }
 
             // The delay is over. Start playing the audio.

@@ -247,8 +247,6 @@ namespace Coursework.Gameplay
         /// </summary>
         internal Hold heldNote;
 
-        internal bool lnDB;
-
         /// <summary>
         /// The direction that the receptor is facing.
         /// </summary>

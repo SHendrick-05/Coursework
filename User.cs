@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Coursework
 {
@@ -20,6 +21,12 @@ namespace Coursework
         {
             string username = user.username;
             Database.deleteUser(username);
+            // Remove all scores.
+            foreach(uint ID in Scores.scoreDict.Keys)
+            {
+                Scores.scoreDict[ID].RemoveAll(x => x.User == username);
+            }
+            Scores.SaveScores();
         }
     }
 

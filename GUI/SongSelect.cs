@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Coursework.Gameplay;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -40,7 +41,7 @@ namespace Coursework.GUI
         // A wrapper function to run the game on a separate thread.
         internal void startGame()
         {
-            using (var game = new Gameplay.songPlayer(selectedFolder))
+            using (var game = new songPlayer(selectedFolder))
             {
                 game.Run();
             }
@@ -72,12 +73,12 @@ namespace Coursework.GUI
                 selectedFolder = (string)ctrl.Parent.Tag;
                 selectLabel.Text = "Selected song: " + ctrl.Parent.Controls[3].Text;
             }
-
         }
     }
 
     internal static class SongLoading
     {
+
         /// <summary>
         /// Gets every chart and creates a panel for each.
         /// </summary>
@@ -115,6 +116,9 @@ namespace Coursework.GUI
                         image = Image.FromFile(file);
             }
 
+            // Load the IDs
+            Chart.IDs.Add(chart.ID);
+
             // Get a template panel.
             Panel template = getTemplate(i, true);
             // Fill it in with relevant information.
@@ -125,6 +129,105 @@ namespace Coursework.GUI
             template.Controls[3].Text = chart.title;
             // Return the completed panel.
             return template;
+        }
+
+        /// <summary>
+        /// Loads all the scores for a chart.
+        /// </summary>
+        /// <param name="song">The chart to load scores for</param>
+        /// <returns>A list of panels of all scores for the chart.</returns>
+        internal static List<Panel> LoadScores(string folderPath)
+        {
+            Chart chart = new Chart();
+            foreach (string file in Directory.EnumerateFiles(folderPath))
+            {
+                if (Path.GetExtension(file) == ".json")
+                {
+                    string chartText = File.ReadAllText(file);
+                    chart = JsonConvert.DeserializeObject<Chart>(chartText);
+                }
+            }
+                List<Score> scores = Scores.scoreDict[chart.ID];
+            List<Panel> result = new List<Panel>();
+            for(int i = 0; i < scores.Count; i++)
+            {
+                result.Add(LoadScore(scores[i], i));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Loads a specific score
+        /// </summary>
+        /// <param name="score">The score to load</param>
+        /// <param name="i">The order of the score in the list</param>
+        /// <returns>A panel representing the score.</returns>
+        private static Panel LoadScore(Score score, int i)
+        {
+            Panel pnl = getScoreTemplate(i);
+            // Get the relevant information
+            pnl.Controls[0].Text = GameHandler.gradeStrings[(int)score.grade];
+            pnl.Controls[0].ForeColor = GameHandler.gradeColors[(int)score.grade];
+            pnl.Controls[1].Text = score.User;
+            pnl.Controls[2].Text = string.Format("{0:00.00}%", 100 * GameHandler.accuracy) + $" - {score.Judgements[0]}/{score.Judgements[1]}/{score.Judgements[2]}/{score.Judgements[3]}/{score.Judgements[4]}/{score.Judgements[5]}";
+            return pnl;
+        }
+
+        private static Panel getScoreTemplate(int i)
+        {
+            Panel scorePanel = new Panel();
+            Label gradeLabel = new Label();
+            Label userLabel = new Label();
+            Label judgementsLabel = new Label();
+
+            // 
+            // scorePanel
+            // 
+            scorePanel.BorderStyle = BorderStyle.FixedSingle;
+            scorePanel.Controls.Add(gradeLabel);
+            scorePanel.Controls.Add(userLabel);
+            scorePanel.Controls.Add(judgementsLabel);
+            scorePanel.Name = "chart" + i.ToString();
+            scorePanel.Size = new Size(509, 100);
+            scorePanel.TabIndex = 20;
+            //
+            // gradeLabel
+            //
+            gradeLabel.Dock = DockStyle.Left;
+            gradeLabel.Font = new Font("Century Gothic", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
+            gradeLabel.Location = new Point(0, 0);
+            gradeLabel.Name = "label1";
+            gradeLabel.Size = new Size(40, 62);
+            gradeLabel.TabIndex = 0;
+            gradeLabel.Text = "A";
+            gradeLabel.TextAlign = ContentAlignment.MiddleLeft;
+            //
+            // userLabel
+            //
+            userLabel.Dock = DockStyle.Top;
+            userLabel.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            userLabel.ForeColor = SystemColors.Control;
+            userLabel.Location = new Point(40, 0);
+            userLabel.Name = "label2";
+            userLabel.Size = new Size(245, 25);
+            userLabel.TabIndex = 1;
+            userLabel.Text = "SpinShootscore";
+            userLabel.TextAlign = ContentAlignment.MiddleLeft;
+            //
+            // judgementsLabel
+            //
+            judgementsLabel.Dock = DockStyle.Bottom;
+            judgementsLabel.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            judgementsLabel.ForeColor = SystemColors.Control;
+            judgementsLabel.Location = new Point(40, 37);
+            judgementsLabel.Name = "label3";
+            judgementsLabel.Size = new Size(245, 25);
+            judgementsLabel.TabIndex = 2;
+            judgementsLabel.Text = "95%";
+            judgementsLabel.TextAlign = ContentAlignment.MiddleLeft;
+
+            return scorePanel;
+
         }
 
         /// <summary>
@@ -195,7 +298,7 @@ namespace Coursework.GUI
             // songPicture
             // 
             chartPicture.Location = new Point(3, 3);
-            chartPicture.Name = "songPicture";
+            chartPicture.Name = "songPicture" + i.ToString();
             chartPicture.Size = new Size(167, 94);
             chartPicture.TabIndex = 0;
             chartPicture.TabStop = false;
@@ -207,7 +310,7 @@ namespace Coursework.GUI
             chartBPM.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
             chartBPM.ForeColor = SystemColors.Control;
             chartBPM.Location = new Point(176, 33);
-            chartBPM.Name = "songBPM";
+            chartBPM.Name = "songBPM" + i.ToString();
             chartBPM.Size = new Size(156, 25);
             chartBPM.TabIndex = 18;
             chartBPM.TextAlign = ContentAlignment.MiddleLeft;

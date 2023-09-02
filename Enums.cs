@@ -72,4 +72,39 @@
         /// </summary>
         HARD
     }
+
+    /// <summary>
+    /// The letter grades corresponding to each score.
+    /// </summary>
+    public enum Grade
+    {
+        /// <summary>
+        /// 99.75-100%
+        /// </summary>
+        AAA,
+        /// <summary>
+        /// 93-99.75%
+        /// </summary>
+        AA,
+        /// <summary>
+        /// 80-93%
+        /// </summary>
+        A,
+        /// <summary>
+        /// 70-80%
+        /// </summary>
+        B,
+        /// <summary>
+        /// 60-70%
+        /// </summary>
+        C,
+        /// <summary>
+        /// Below 60%
+        /// </summary>
+        D,
+        /// <summary>
+        /// Fail
+        /// </summary>
+        F
+    }
 }

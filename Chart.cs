@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Coursework
 {
@@ -7,6 +9,11 @@ namespace Coursework
     /// </summary>
     public class Chart
     {
+        /// <summary>
+        /// A list of all Chart IDs.
+        /// </summary>
+        public static List<uint> IDs;
+
         /// <summary>
         /// A unique identifier for the song.
         /// </summary>
@@ -48,6 +55,12 @@ namespace Coursework
         public Chart()
         {
             measures = new List<Dictionary<int, songNoteType>[]>();
+            Random rd = new Random();
+            do
+            {
+                ID = (uint)rd.Next(1000000);
+            } while (IDs.Contains(ID));
+            IDs.Add(ID);
         }
     }
 }
