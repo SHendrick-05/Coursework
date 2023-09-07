@@ -12,7 +12,7 @@ namespace Coursework
         /// <summary>
         /// A list of all Chart IDs.
         /// </summary>
-        public static List<uint> IDs;
+        public static List<uint> IDs = new List<uint>();
 
         /// <summary>
         /// A unique identifier for the song.
@@ -55,12 +55,7 @@ namespace Coursework
         public Chart()
         {
             measures = new List<Dictionary<int, songNoteType>[]>();
-            Random rd = new Random();
-            do
-            {
-                ID = (uint)rd.Next(1000000);
-            } while (IDs.Contains(ID));
-            IDs.Add(ID);
+            
         }
     }
 }

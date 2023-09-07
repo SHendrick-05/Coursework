@@ -267,6 +267,19 @@ namespace Coursework.GUI
                 editingChart.folderPath = path;
                 editingChart.BPM = (double)bpmBox.Value;
                 editingChart.author = Users.loggedInUser.username;
+
+                //Get an ID for the chart and add it to lists.
+                Random rd = new Random();
+                do
+                {
+                    editingChart.ID = (uint)rd.Next(1000000);
+                } while (Chart.IDs.Contains(editingChart.ID));
+
+                // Add the chart to the list of IDs and scores.
+                Chart.IDs.Add(editingChart.ID);
+                Scores.scoreDict.Add(editingChart.ID, new List<Score>());
+                Scores.SaveScores();
+
                 // Creates the folder if it does not already exist.
                 if (!Directory.Exists(path))
                 {
@@ -291,6 +304,7 @@ namespace Coursework.GUI
                 // Serialize and save the chart.
                 string chart = JsonConvert.SerializeObject(editingChart);
                 File.WriteAllText(path + @"\chart.json", chart);
+
 
                 // Exit.
                 (Application.OpenForms["Main"] as Main).Show();

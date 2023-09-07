@@ -1,9 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Coursework
 {
+    /// <summary>
+    /// Static class handling the management of scores.
+    /// </summary>
     internal static class Scores
     {
         /// <summary>
@@ -12,7 +16,7 @@ namespace Coursework
         static string path = @"Storage\scores.json";
 
         /// <summary>
-        /// The percentages needed for each letter grade.
+        /// The percentage accuracies needed for each letter grade.
         /// </summary>
         internal static double[] gradeBoundaries = new double[]
         {
@@ -27,7 +31,7 @@ namespace Coursework
         /// <summary>
         /// The dictionary of all scores, sorted by chart ID.
         /// </summary>
-        internal static Dictionary<uint, List<Score>> scoreDict;
+        public static Dictionary<uint, List<Score>> scoreDict;
 
         /// <summary>
         /// Adds a new score to the dictionary, before saving.
@@ -81,33 +85,37 @@ namespace Coursework
             LoadScores();
         }
     }
-    internal class Score
+
+    /// <summary>
+    /// A class representing an individual score.
+    /// </summary>
+    public class Score
     {
         /// <summary>
         /// The username of the person who set the score.
         /// </summary>
-        internal string User { get; set; }
+        public string User { get; set; }
         /// <summary>
         /// The ID of the chart the score was set on.
         /// </summary>
-        internal uint chartID { get; set; }
+        public uint chartID { get; set; }
         /// <summary>
         /// A list of the amount of each type of judgement.
         /// </summary>
-        internal int[] Judgements { get; set; }
+        public int[] Judgements { get; set; }
         /// <summary>
         /// The accuracy, as a double from 0 to 1.
         /// </summary>
-        internal double Accuracy { get; set; }
+        public double Accuracy { get; set; }
         /// <summary>
         /// A bool representing whether the chart was completely fully without failing.
         /// </summary>
-        internal bool Passed { get; set; }
+        public bool Passed { get; set; }
 
         /// <summary>
         /// The letter grade corresponding to the score.
         /// </summary>
-        internal Grade grade
+        public Grade grade
         {
             get
             {
@@ -124,7 +132,7 @@ namespace Coursework
         /// <summary>
         /// Constructor
         /// </summary>
-        internal Score(string user, uint ID, int[] judgements, double accuracy)
+        public Score(string user, uint ID, int[] judgements, double accuracy)
         {
             User = user;
             Judgements = judgements;

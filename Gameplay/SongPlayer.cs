@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using NAudio.Wave;
+using System.Xml.Linq;
 
 namespace Coursework.Gameplay
 {
@@ -95,6 +96,11 @@ namespace Coursework.Gameplay
         internal static WaveOut audioPlayer;
 
         /// <summary>
+        /// The grade achieved by the current score.
+        /// </summary>
+        internal Grade grade;
+
+        /// <summary>
         /// How many more frames the judgement label should be displayed for.
         /// </summary>
         internal static int labelFrames;
@@ -133,6 +139,11 @@ namespace Coursework.Gameplay
         /// The number of notes per each sample for the average line, in the results screen.
         /// </summary>
         private static int notesPerSample;
+
+        /// <summary>
+        /// A boolean value representing whether this run's score has been saved.
+        /// </summary>
+        private static bool scoreSaved;
 
         /// <summary>
         /// Updates the judgement label on a note hit.
@@ -200,6 +211,7 @@ namespace Coursework.Gameplay
             receptorGap = 200;
             isPlaying = false;
             resultsScreen = false;
+            scoreSaved = false;
 
             for (int i = 0; i < 4; i++)
             {
@@ -308,8 +320,14 @@ namespace Coursework.Gameplay
                     // Move on to the results screen
                     resultsScreen = true;
                     // Save score
-                    Score chartScore = new Score(Users.loggedInUser.username, GameHandler.currentChart.ID, GameHandler.judgements, GameHandler.accuracy);
-                    Scores.AddScore(chartScore);
+                    if (!scoreSaved)
+                    {
+                        // Save score
+                        Score chartScore = new Score(Users.loggedInUser != null ? Users.loggedInUser.username : "Guest", GameHandler.currentChart.ID, GameHandler.judgements, GameHandler.accuracy);
+                        grade = chartScore.grade;
+                        Scores.AddScore(chartScore);
+                        scoreSaved = true;
+                    }
                 }
             }
 
@@ -317,18 +335,17 @@ namespace Coursework.Gameplay
             if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay 
                 && audioPlayer.PlaybackState == PlaybackState.Stopped && isPlaying) // Ensures that this does not happen every frame.
             {
-                //audioPlayer.Init(audio);
-                //audioPlayer.Play();
+                audioPlayer.Init(audio);
+                audioPlayer.Play();
             }
 
             // Once the song has ended (no more arrows exist), wait for an equivalent delay before ending gameplay.
             if (GameHandler.arrows.All(x => x.Count == 0))
             {
-                isPlaying = false;
                 gameOverFrames = (int)(GameHandler.timeDelay * 60);
+                isPlaying = false;
                 if (audioPlayer.PlaybackState == PlaybackState.Playing)
                     audioPlayer.Stop();
-                GameHandler.speed = 0;
             }
 
             // Update input
@@ -428,8 +445,14 @@ namespace Coursework.Gameplay
             
             float textHeight = spriteFontLarge.MeasureString("Test").Y;
 
-            _spriteBatch.DrawString(spriteFontLarge, GameHandler.currentChart.title, textBase, Color.White);
-            _spriteBatch.DrawString(spriteFontLarge, "Charted by " + GameHandler.currentChart.author, textBase + textDivision, Color.White);
+            // Grade
+            _spriteBatch.DrawString(spriteFontLarge, GameHandler.gradeStrings[(int)grade], textBase, GameHandler.toXNAcolor(GameHandler.gradeColors[(int)grade]));
+
+            // Chart name
+            _spriteBatch.DrawString(spriteFontLarge, GameHandler.currentChart.title, textBase + textDivision, Color.White);
+            // Charter
+            _spriteBatch.DrawString(spriteFontLarge, "Charted by " + GameHandler.currentChart.author, textBase + 2 * textDivision, Color.White);
+
             
             // Draw percentage.
 

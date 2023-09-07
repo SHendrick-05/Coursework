@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NAudio.Wave;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Coursework.Gameplay
 {
@@ -234,6 +235,15 @@ namespace Coursework.Gameplay
         /// The width and height of the application bounds.
         /// </summary>
         internal static Point bounds;
+
+        /// <summary>
+        /// Converts a System.Drawing.Color to a Microsoft.XNA.Framework.Color
+        /// </summary>
+        /// <param name="color">A System.Drawing color</param>
+        /// <returns>An XNA color</returns>
+        internal static Color toXNAcolor(System.Drawing.Color color)
+            => new Color(color.R, color.G, color.B, color.A);
+
 
         /// <summary>
         /// Creates a hit arrow and adds it to the list

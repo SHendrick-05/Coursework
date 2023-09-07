@@ -13,6 +13,7 @@ namespace Coursework.GUI
     {
         private static string selectedFolder;
         private static Label selectLabel;
+        private static FlowLayoutPanel scorePanel;
         private void Drag(object sender, MouseEventArgs e)
         {
             // Ensure the button press was the left mouse button
@@ -26,6 +27,7 @@ namespace Coursework.GUI
             selectedFolder = "";
             InitializeComponent();
             selectLabel = selectedLabel;
+            scorePanel = scoresPanel;
         }
 
         // Runs the game upon clicking the button
@@ -73,6 +75,11 @@ namespace Coursework.GUI
                 selectedFolder = (string)ctrl.Parent.Tag;
                 selectLabel.Text = "Selected song: " + ctrl.Parent.Controls[3].Text;
             }
+
+            foreach(Panel pnl in SongLoading.LoadScores(selectedFolder))
+            {
+                scorePanel.Controls.Add(pnl);
+            }
         }
     }
 
@@ -103,7 +110,7 @@ namespace Coursework.GUI
         /// <returns>A panel representing the chart for use in selection</returns>
         private static Panel loadChart(string folderPath, int i)
         {
-            Chart chart = new Chart();
+            Chart chart = null;
             Image image = null;
             // Get the chart and image.
             foreach(string file in Directory.EnumerateFiles(folderPath))
@@ -117,7 +124,6 @@ namespace Coursework.GUI
             }
 
             // Load the IDs
-            Chart.IDs.Add(chart.ID);
 
             // Get a template panel.
             Panel template = getTemplate(i, true);
@@ -134,7 +140,7 @@ namespace Coursework.GUI
         /// <summary>
         /// Loads all the scores for a chart.
         /// </summary>
-        /// <param name="song">The chart to load scores for</param>
+        /// <param name="folderPath">The relative path of the folder containing the chart to load scores for.</param>
         /// <returns>A list of panels of all scores for the chart.</returns>
         internal static List<Panel> LoadScores(string folderPath)
         {
@@ -188,7 +194,7 @@ namespace Coursework.GUI
             scorePanel.Controls.Add(userLabel);
             scorePanel.Controls.Add(judgementsLabel);
             scorePanel.Name = "chart" + i.ToString();
-            scorePanel.Size = new Size(509, 100);
+            scorePanel.Size = new Size(285, 100);
             scorePanel.TabIndex = 20;
             //
             // gradeLabel
