@@ -43,7 +43,7 @@
             // 
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.playButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.playButton.Location = new System.Drawing.Point(818, 395);
+            this.playButton.Location = new System.Drawing.Point(870, 395);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(97, 43);
             this.playButton.TabIndex = 0;
@@ -59,7 +59,7 @@
             this.topPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.topPanel.Location = new System.Drawing.Point(0, 0);
             this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(1026, 36);
+            this.topPanel.Size = new System.Drawing.Size(1076, 36);
             this.topPanel.TabIndex = 16;
             // 
             // titleText
@@ -69,7 +69,7 @@
             this.titleText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(64)))), ((int)(((byte)(127)))));
             this.titleText.Location = new System.Drawing.Point(0, 0);
             this.titleText.Name = "titleText";
-            this.titleText.Size = new System.Drawing.Size(951, 36);
+            this.titleText.Size = new System.Drawing.Size(1001, 36);
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Game";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -80,7 +80,7 @@
             this.closeButton.FlatAppearance.BorderSize = 2;
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.closeButton.Location = new System.Drawing.Point(951, 0);
+            this.closeButton.Location = new System.Drawing.Point(1001, 0);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 36);
             this.closeButton.TabIndex = 0;
@@ -100,14 +100,14 @@
             this.chartLayout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.chartLayout.Location = new System.Drawing.Point(12, 42);
             this.chartLayout.Name = "chartLayout";
-            this.chartLayout.Size = new System.Drawing.Size(509, 396);
+            this.chartLayout.Size = new System.Drawing.Size(535, 396);
             this.chartLayout.TabIndex = 19;
             // 
             // selectedLabel
             // 
             this.selectedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.selectedLabel.ForeColor = System.Drawing.SystemColors.Control;
-            this.selectedLabel.Location = new System.Drawing.Point(818, 42);
+            this.selectedLabel.Location = new System.Drawing.Point(870, 42);
             this.selectedLabel.Name = "selectedLabel";
             this.selectedLabel.Size = new System.Drawing.Size(196, 350);
             this.selectedLabel.TabIndex = 20;
@@ -118,9 +118,9 @@
             // 
             this.scoresPanel.AutoScroll = true;
             this.scoresPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.scoresPanel.Location = new System.Drawing.Point(527, 42);
+            this.scoresPanel.Location = new System.Drawing.Point(553, 42);
             this.scoresPanel.Name = "scoresPanel";
-            this.scoresPanel.Size = new System.Drawing.Size(285, 396);
+            this.scoresPanel.Size = new System.Drawing.Size(311, 396);
             this.scoresPanel.TabIndex = 21;
             // 
             // SongSelect
@@ -128,7 +128,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(1026, 450);
+            this.ClientSize = new System.Drawing.Size(1076, 450);
             this.Controls.Add(this.scoresPanel);
             this.Controls.Add(this.selectedLabel);
             this.Controls.Add(this.chartLayout);

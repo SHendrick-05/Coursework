@@ -111,7 +111,6 @@ namespace Coursework
         /// A bool representing whether the chart was completely fully without failing.
         /// </summary>
         public bool Passed { get; set; }
-
         /// <summary>
         /// The letter grade corresponding to the score.
         /// </summary>
@@ -132,12 +131,13 @@ namespace Coursework
         /// <summary>
         /// Constructor
         /// </summary>
-        public Score(string user, uint ID, int[] judgements, double accuracy)
+        public Score(string user, uint ID, int[] judgements, double accuracy, bool passed)
         {
             User = user;
             Judgements = judgements;
             Accuracy = accuracy;
             chartID = ID;
+            Passed = passed;
         }
     }
 }

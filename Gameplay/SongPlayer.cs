@@ -298,13 +298,15 @@ namespace Coursework.Gameplay
                 foreach (Sprite spr in sprites)
                 {
                     spr.Update(gameTime);
-                    if (spr.isDeprecated) spritesToRemove.Add(spr);
+                    if (spr.isDeprecated) 
+                        spritesToRemove.Add(spr);
                 }
                 // Update each tag
                 foreach(Tag tag in tags)
                 {
                     tag.Update();
-                    if (tag.isDeprecated) tagsToRemove.Add(tag);
+                    if (tag.isDeprecated) 
+                        tagsToRemove.Add(tag);
                 }
 
                 // Remove the deprecated sprites and tags
@@ -319,15 +321,21 @@ namespace Coursework.Gameplay
                 {
                     // Move on to the results screen
                     resultsScreen = true;
-                    // Save score
+                    // Check if the score hasn't been saved yet
                     if (!scoreSaved)
                     {
                         // Save score
-                        Score chartScore = new Score(Users.loggedInUser != null ? Users.loggedInUser.username : "Guest", GameHandler.currentChart.ID, GameHandler.judgements, GameHandler.accuracy);
+                        Score chartScore = new Score(Users.loggedInUser != null ? Users.loggedInUser.username : "Guest",
+                            GameHandler.currentChart.ID,
+                            GameHandler.judgements,
+                            GameHandler.accuracy,
+                            GameHandler.HP > 0);
                         grade = chartScore.grade;
                         Scores.AddScore(chartScore);
+                        // Ensure it doesn't get saved again.
                         scoreSaved = true;
                     }
+
                 }
             }
 
@@ -335,12 +343,12 @@ namespace Coursework.Gameplay
             if (gameTime.TotalGameTime.TotalSeconds >= GameHandler.timeDelay 
                 && audioPlayer.PlaybackState == PlaybackState.Stopped && isPlaying) // Ensures that this does not happen every frame.
             {
-                audioPlayer.Init(audio);
-                audioPlayer.Play();
+                //audioPlayer.Init(audio);
+                //audioPlayer.Play();
             }
 
             // Once the song has ended (no more arrows exist), wait for an equivalent delay before ending gameplay.
-            if (GameHandler.arrows.All(x => x.Count == 0))
+            if (GameHandler.arrows.All(x => x.Count == 0) && isPlaying)
             {
                 gameOverFrames = (int)(GameHandler.timeDelay * 60);
                 isPlaying = false;
@@ -359,7 +367,7 @@ namespace Coursework.Gameplay
                 GameHandler.HP = 0;
                 gameOverFrames = (int)(GameHandler.timeDelay * 60);
                 isPlaying = false;
-                audioPlayer.Stop();
+                //audioPlayer.Stop();
             }
             else if (GameHandler.HP > 100)
                 GameHandler.HP = 100;

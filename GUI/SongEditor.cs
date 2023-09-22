@@ -229,7 +229,7 @@ namespace Coursework.GUI
                             if (openLNs[gen2])
                             {
                                 measure[gen2].Add(i * 60, songNoteType.HOLDEND);
-                                openLNs[gen] = false;
+                                openLNs[gen2] = false;
                             }
                             // Check if it should open a LN
                             else if (rnd.NextDouble() < LnPct)
@@ -238,7 +238,7 @@ namespace Coursework.GUI
                                 measure[gen2].Add(i * 60, songNoteType.HOLDSTART);
                             }
                             else
-                                measure[gen].Add(i * 60, songNoteType.HIT);
+                                measure[gen2].Add(i * 60, songNoteType.HIT);
                         }
                     }
                     return measure;

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -11,6 +12,7 @@ namespace Coursework.GUI
 {
     internal partial class SongSelect : Form
     {
+
         private static string selectedFolder;
         private static Label selectLabel;
         private static FlowLayoutPanel scorePanel;
@@ -75,6 +77,7 @@ namespace Coursework.GUI
                 selectedFolder = (string)ctrl.Parent.Tag;
                 selectLabel.Text = "Selected song: " + ctrl.Parent.Controls[3].Text;
             }
+            scorePanel.Controls.Clear();
 
             foreach(Panel pnl in SongLoading.LoadScores(selectedFolder))
             {
@@ -114,12 +117,16 @@ namespace Coursework.GUI
             Image image = null;
             // Get the chart and image.
             foreach(string file in Directory.EnumerateFiles(folderPath))
-            {                if (Path.GetExtension(file) == ".json")
+            {
+                string ext = Path.GetExtension(file);
+                // If chart file.
+                if (ext == ".json")
                 {
                     string chartText = File.ReadAllText(file);
                     chart = JsonConvert.DeserializeObject<Chart>(chartText);
                 }
-                else if (Path.GetExtension(file) != ".mp3")
+                // If image file
+                else if (SongEditor.imageExtensions.Contains(ext))
                         image = Image.FromFile(file);
             }
 
@@ -153,7 +160,7 @@ namespace Coursework.GUI
                     chart = JsonConvert.DeserializeObject<Chart>(chartText);
                 }
             }
-                List<Score> scores = Scores.scoreDict[chart.ID];
+            List<Score> scores = Scores.scoreDict[chart.ID];
             List<Panel> result = new List<Panel>();
             for(int i = 0; i < scores.Count; i++)
             {
@@ -175,7 +182,13 @@ namespace Coursework.GUI
             pnl.Controls[0].Text = GameHandler.gradeStrings[(int)score.grade];
             pnl.Controls[0].ForeColor = GameHandler.gradeColors[(int)score.grade];
             pnl.Controls[1].Text = score.User;
-            pnl.Controls[2].Text = string.Format("{0:00.00}%", 100 * GameHandler.accuracy) + $" - {score.Judgements[0]}/{score.Judgements[1]}/{score.Judgements[2]}/{score.Judgements[3]}/{score.Judgements[4]}/{score.Judgements[5]}";
+            pnl.Controls[2].Text = string.Format("{0:00.00}%", 100 * score.Accuracy) + $" - " +
+                $"{score.Judgements[0]}/" +
+                $"{score.Judgements[1]}/" +
+                $"{score.Judgements[2]}/" +
+                $"{score.Judgements[3]}/" +
+                $"{score.Judgements[4]}/" +
+                $"{score.Judgements[5]}";
             return pnl;
         }
 
@@ -207,6 +220,7 @@ namespace Coursework.GUI
             gradeLabel.TabIndex = 0;
             gradeLabel.Text = "A";
             gradeLabel.TextAlign = ContentAlignment.MiddleLeft;
+            gradeLabel.AutoSize = true;
             //
             // userLabel
             //
