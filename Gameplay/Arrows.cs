@@ -188,6 +188,10 @@ namespace Coursework.Gameplay
         /// The Y position that the note will stop being held at.
         /// </summary>
         internal int endY;
+
+        /// <summary>
+        /// A point representing the size of the LN body.
+        /// </summary>
         internal Point bodySize
         {
             get
