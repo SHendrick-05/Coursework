@@ -76,6 +76,7 @@
             this.topPanel.Name = "topPanel";
             this.topPanel.Size = new System.Drawing.Size(623, 36);
             this.topPanel.TabIndex = 2;
+            this.topPanel.MouseMove += Drag;
             // 
             // titleText
             // 
@@ -88,6 +89,7 @@
             this.titleText.TabIndex = 1;
             this.titleText.Text = "Game";
             this.titleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.titleText.MouseMove += Drag;
             // 
             // closeButton
             // 

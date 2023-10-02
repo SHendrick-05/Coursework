@@ -6,7 +6,7 @@ namespace Coursework.Gameplay
 {
 
     /// <summary>
-    /// The base class for most sprites that are being drawn.
+    /// The base class for any sprite with a texture.
     /// </summary>
     internal abstract class Sprite
     {
@@ -117,8 +117,10 @@ namespace Coursework.Gameplay
         internal Sprite()
         {
             rotation = 0f;
-            songPlayer.addSprite(this);
             isDeprecated = false;
+
+            // Add the sprite to the static list.
+            songPlayer.addSprite(this);
         }
     }
 

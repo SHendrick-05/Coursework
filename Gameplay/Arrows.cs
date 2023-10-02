@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Linq;
 namespace Coursework.Gameplay
 {
     /// <summary>
-    /// The arrow class that hits, mines and holds are inherited from.
+    /// The arrow class that hits, mines and holds are inherited from. Any object that is part of gameplay is inherited from this.
     /// </summary>
     internal abstract class Arrow : Sprite
     {

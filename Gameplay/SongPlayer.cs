@@ -11,7 +11,7 @@ using System.Xml.Linq;
 namespace Coursework.Gameplay
 {
     /// <summary>
-    /// The monogame application. Contains all gameplay.
+    /// The monogame application. Contains all gameplay drawing.
     /// </summary>
     internal class songPlayer : Game
     {
@@ -454,7 +454,7 @@ namespace Coursework.Gameplay
             float textHeight = spriteFontLarge.MeasureString("Test").Y;
 
             // Grade
-            _spriteBatch.DrawString(spriteFontLarge, GameHandler.gradeStrings[(int)grade], textBase, GameHandler.toXNAcolor(GameHandler.gradeColors[(int)grade]));
+            _spriteBatch.DrawString(spriteFontLarge, GameHandler.gradeStrings[(int)grade], textBase, GameHandler.ToXNAcolor(GameHandler.gradeColors[(int)grade]));
 
             // Chart name
             _spriteBatch.DrawString(spriteFontLarge, GameHandler.currentChart.title, textBase + textDivision, Color.White);

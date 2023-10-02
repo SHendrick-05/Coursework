@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NAudio.Wave;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Coursework.Gameplay
 {
@@ -241,7 +240,7 @@ namespace Coursework.Gameplay
         /// </summary>
         /// <param name="color">A System.Drawing color</param>
         /// <returns>An XNA color</returns>
-        internal static Color toXNAcolor(System.Drawing.Color color)
+        internal static Color ToXNAcolor(System.Drawing.Color color)
             => new Color(color.R, color.G, color.B, color.A);
 
 
@@ -308,13 +307,13 @@ namespace Coursework.Gameplay
             // If end, award a judgement and deprecate the LN
             if (end) 
             {
-                awardLNJudgement(distance);
+                AwardLNJudgement(distance);
                 LN.Deprecate();
             }
             // If start, award a judgement and hide the hit part.
             else
             {
-                awardJudgement(LN.measure * measureDivions + LN.measureDiv, distance);
+                AwardJudgement(LN.measure * measureDivions + LN.measureDiv, distance);
                 LN.clearTexture();
             }
         }
@@ -323,7 +322,7 @@ namespace Coursework.Gameplay
         /// Handles the tail hits of an LN
         /// </summary>
         /// <param name="distance">The pixel distance from the end.</param>
-        internal static void awardLNJudgement(float distance)
+        internal static void AwardLNJudgement(float distance)
         {
             double time = distance / speed;
             if (time > holdWindow)
@@ -339,7 +338,7 @@ namespace Coursework.Gameplay
         /// </summary>
         /// <param name="divisionCount">How many measure divisions (including full measures) into the song the note was hit</param>
         /// <param name="distance">The distance from the recetor the note was hit at.</param>
-        internal static void awardJudgement(int divisionCount, float distance)
+        internal static void AwardJudgement(int divisionCount, float distance)
         {
             // Get the time taken, in seconds.
             double time = distance / speed;
@@ -384,7 +383,7 @@ namespace Coursework.Gameplay
         internal static void HitNote(Hit arrow, float distance)
         {
             // Handle the judgement.
-            awardJudgement(arrow.measure * measureDivions + arrow.measureDiv, distance);
+            AwardJudgement(arrow.measure * measureDivions + arrow.measureDiv, distance);
             
             // Remove the arrow.
             arrow.Deprecate();

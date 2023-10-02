@@ -167,6 +167,7 @@ namespace Coursework.Security
             }
             else
             {
+                // Invalid password entered
                 return 3;
             }
         }

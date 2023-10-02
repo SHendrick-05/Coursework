@@ -8,7 +8,7 @@ namespace Coursework
         /// <summary>
         /// The relative path of the database. The storage folder has been instantiated in the Program entry point.
         /// </summary>
-        public static string dbPath = @"Storage\database.db";
+        internal static string dbPath = @"Storage\database.db";
 
         /// <summary>
         /// A static constructor which creates the database, and a table for user accounts.

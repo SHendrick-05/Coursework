@@ -25,6 +25,9 @@ namespace Coursework.GUI
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Opens a file selection menu to pick a song
+        /// </summary>
         private void browseButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -39,6 +42,9 @@ namespace Coursework.GUI
             }
         }
 
+        /// <summary>
+        /// Sets new paths and title for the chart.
+        /// </summary>
         private void OKbutton_Click(object sender, EventArgs e)
         {
             if (audioPath.Text != "...")
@@ -55,14 +61,21 @@ namespace Coursework.GUI
             Close();
         }
 
+        /// <summary>
+        /// Gets the current paths and title of the chart.
+        /// </summary>
         private void SongEditorPopup_Load(object sender, EventArgs e)
         {
+            titleBox.Text = SongEditor.editingChart.title;
             if (!string.IsNullOrWhiteSpace(SongEditor.audioPath))
                 audioPath.Text = SongEditor.audioPath;
             if (!string.IsNullOrWhiteSpace(SongEditor.imagePath))
                 imagePath.Text = SongEditor.imagePath;
         }
 
+        /// <summary>
+        /// Opens a file editor to select an image
+        /// </summary>
         private void browseImage_Click(object sender, EventArgs e)
         {
             // Prepare a dialog.
