@@ -283,10 +283,6 @@ namespace Coursework.Gameplay
                 Exit();
             }
 
-            // Remove this when done debugging. This is for testing purposes.
-            if (Input.kbState.IsKeyDown(Keys.Space))
-                GameHandler.HP = 0;
-
             // Update sprites and tags
             if (isPlaying)
             {
